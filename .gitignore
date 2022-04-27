@@ -11,8 +11,6 @@
 .mtj.tmp/
 
 # Package Files #
-!jpcap.jar
-*.jar
 *.war
 *.nar
 *.ear
