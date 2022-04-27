@@ -12,6 +12,7 @@
 
 # Package Files #
 *.jar
+!jpcap.jar
 *.war
 *.nar
 *.ear
