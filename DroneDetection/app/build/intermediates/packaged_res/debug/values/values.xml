@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <color name="black">#FF000000</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="address">Server Address:</string>
+    <string name="allowed">Allow</string>
+    <string name="app_name">DroneDetection</string>
+    <string name="connect">Connect!</string>
+    <string name="connectedMessage">ToyVPN is connected!</string>
+    <string name="connectingMessage">ToyVPN is connecting...</string>
+    <string name="disallowed">Disallow</string>
+    <string name="disconnect">Disconnect!</string>
+    <string name="disconnectedMessage">ToyVPN is disconnected!</string>
+    <string name="incomplete_proxy_settings">
+        Incomplete proxy settings. For HTTP proxy we require both hostname and port settings.
+    </string>
+    <string name="packages">Packages (comma separated):</string>
+    <string name="port">Server Port:</string>
+    <string name="proxyhost">HTTP proxy hostname</string>
+    <string name="proxyport">HTTP proxy port</string>
+    <string name="secret">Shared Secret:</string>
+    <string name="unknown_package_names">
+        Some of the specified package names do not correspond to any installed packages.
+    </string>
+    <style name="Theme.DroneDetection" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        
+        <item name="android:statusBarColor" ns1:targetApi="l">?attr/colorPrimaryVariant</item>
+        
+    </style>
+    <style name="item">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:singleLine">true</item>
+    </style>
+</resources>
