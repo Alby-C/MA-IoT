@@ -1,6 +1,9 @@
 package com.example.as_axispositioning;
 
+import static Miscellaneous.MiscellaneousOperations.Truncate;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.VectorEnabledTintResources;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -14,6 +17,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.as_axispositioning.Space.Vector;
+
+import java.sql.Struct;
+import java.time.LocalTime;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
@@ -30,11 +37,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private SensorEventListener listener = null;    //che sta in ascolto per le variazione del sensore, essendo un'interfaccia posso creare
     //una classe ad hoc per il listener, oppure per semplicità la faccio implementare da questa classe
 
-    private float initialX = 0;
-    private float initialY = 0;
-    private float initialZ = 0;
-
     //private ReentrantLock lock = new ReentrantLock();
+
+    private VectorSpace vectorSpace;
 
     //accelerazioni misurate in quel momento dal sensore
     private float currX = 0;
@@ -177,9 +182,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             {
                 cycles = 10;
 
-                initialX = meanX / 10f;
-                initialY = meanY / 10f;
-                initialZ = meanZ / 10f;
+                /*double xx = Truncate(_x, 7);
+                double yy = Truncate(_y, 7);
+                double zz = Truncate(_z, 7);*/
+
+                vectorSpace = new VectorSpace(new Vector(
+                        Truncate(meanX / 10., 7),
+                        Truncate(meanY / 10., 7),
+                        Truncate(meanZ / 10., 7)
+                ));
+
+                Log.i(TAG, "Axis set.\n"+meanX / 10.+"\n"+meanY / 10.+"\n"+meanZ / 10.);
+
+
 
                 meanX=0;
                 meanY=0;
@@ -188,7 +203,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 isAxisSet = true;
 
                 sensorManager.unregisterListener(listener);
-                Log.i(TAG, "Axis set.\n"+initialX+"\n"+initialY+"\n"+initialZ);
             }
 
             /*//lock.lock();
@@ -203,44 +217,54 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
         else
         {
-            if(_x>initialX+.5)
+            String _str;
+            Vector vector = vectorSpace.ConvertToNewReferenceSystem(new Vector(_x, _y, _z));
+
+            if(vector.X>.5)
             {
-                tvXPosition.setText("X: Tiltied left.\t"+_x);
+                _str = "X: Tiltied left.";
             }
-            else if(_x<initialX-.5)
+            else if(vector.X<-.5)
             {
-                tvXPosition.setText("X: Tilted right.\t"+_x);
+               _str = "X: Tilted right.";
             }
             else
             {
-                tvXPosition.setText("X: Stable.\t"+_x);
+                _str = "X: Stable.";
+            }
+            _str += "\nMeasured:" + _x + "\nTransform: " + vector.X;
+            tvXPosition.setText(_str);
+
+            if(vector.Y > .5)
+            {
+               _str = "Y: Tilted up.";
+            }
+            else if(vector.Y<-.5)
+            {
+                _str = "Y: Tilted down.";
+            }
+            else
+            {
+                _str = "Y: Stable.";
+            }
+            _str += "\nMeasured:" + _y + "\nTransform: " + vector.Y;
+            tvYPosition.setText(_str);
+
+            if(vector.Z>.5)
+            {
+                _str = "Z: Tilted boh.";
+            }
+            else if(vector.Z<.5)
+            {
+                _str = "Z: Tilted boh ma dall'altra parte.";
+            }
+            else
+            {
+                _str = "Z: Stable.";
             }
 
-            if(_y>initialY+.5)
-            {
-                tvYPosition.setText("Y: Tilted up.\t"+_y);
-            }
-            else if(_y<initialY-.5)
-            {
-                tvYPosition.setText("Y: Tilted down.\t"+_y);
-            }
-            else
-            {
-                tvZPosition.setText("Y: Stable.\t"+_y);
-            }
-
-            if(_z>initialZ+.5)
-            {
-                tvZPosition.setText("Z: Tilted boh.\t"+_z);
-            }
-            else if(_z<initialZ-.5)
-            {
-                tvZPosition.setText("Z: Tilted boh ma dall'altra parte.\t"+_z);
-            }
-            else
-            {
-                tvZPosition.setText("Z: Stable."+_z);
-            }
+            _str += "\nMeasured:" + _z + "\nTransform: " + vector.Z;
+            tvZPosition.setText(_str);
         }
 
         /*accValues.add(new Float[] {_x, _y, _z});
