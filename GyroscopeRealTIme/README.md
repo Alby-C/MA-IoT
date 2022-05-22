@@ -1,0 +1,3 @@
+ENG: This application is able to detect if a rotation is happening in real time on the z-axis. This is done through the integration in real time of the last 4 captures from the gyroscope. It's quite accurate and could be really useful to detect turns of the motorcycle
+
+ITA: Questa applicazione è in grado di capire se sta avvenendo una rotazione sull'asse z. Ciò viene fatto attraverso l'integrazione deglle ultime quattro catture del giroscopio (in real-time, non a posteriori come l'altra app). E' piuttosto precisa e potrebbe essere utile per la detezione delle pieghe della moto.

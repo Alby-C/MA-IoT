@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 // Da conventire in gradi (con un attimo di attenzione)
                 result = calculateRotationAngleY();
                 double resultDeg = result * 180 / Math.PI;
-                tvResult.setText("Y rotation angle is: \t" + resultDeg);
+                tvResult.setText("Y rotation angle is: " + resultDeg + "°");
                 result = 0;
             }
         });
