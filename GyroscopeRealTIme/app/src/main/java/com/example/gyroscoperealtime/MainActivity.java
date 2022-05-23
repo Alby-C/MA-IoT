@@ -11,10 +11,12 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewDebug;
 import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import com.example.gyroscoperealtime.Angle;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
 
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private static final float EPSILON = 0.06f; // costante di errore accettabil ~ 3.44 gradi
     private boolean angleFlag;
+    private Angle currentAngle = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,11 +79,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 gyroManager.unregisterListener(gyroListener);
             }
         });
-
-
     }
-
-
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
@@ -97,8 +96,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         gyroValues.add(values);
         ts = sensorEvent.timestamp;
 
-        if(isVariationHappening()){
-            tvResult.setText("Variation is happening");
+        if(isVariationHappening(2)){
+            if(!angleFlag){
+                currentAngle = new Angle();
+            }
         }
         else{
             tvResult.setText("No variation is happening");
@@ -110,21 +111,36 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
-    //
-    private boolean isVariationHappening (){
+    // This function is used to detect if there's a rotation happening on the axis
+    // which corresponds to the integer d: 0 -> x, 1 -> y, 2 -> z
+    private boolean isVariationHappening (int axis){
 
-        boolean verdict;
+        boolean verdict = false;
         float variationAngle = 0;
 
         for(int i = gyroValues.size(); i > 0 && i > gyroValues.size() - 3; i--){
 
             // Collect the values of the angluar acceleration on the z-axis
-            float instantY = gyroValues.get(i-1)[2];
-            float instantDelta = gyroValues.get(i-1)[3];
-            variationAngle = variationAngle + instantY*instantDelta;
+            float instantAngleDelta = gyroValues.get(i-1)[axis];
+            float instantTimeDelta = gyroValues.get(i-1)[3];
+            variationAngle = variationAngle + instantAngleDelta*instantTimeDelta;
         }
 
-        if (Math.abs(variationAngle) > EPSILON) {verdict = true;}
+        // Determine the angle axis
+        Angle.axis axis1 = null;
+        switch (axis){
+        case 0: axis1 = Angle.axis.X;
+        case 1: axis1 = Angle.axis.Y;
+        case 2: axis1 = Angle.axis.Z;
+        default:
+            // Throw exception
+        }
+
+        // If the variation is greater than EPSILON we check if the flag used know if we're already
+        // measuring the angle or if we should start
+        if (Math.abs(variationAngle) > EPSILON) {
+            verdict = true;
+        }
         else {verdict = false;}
         return verdict;
     }
