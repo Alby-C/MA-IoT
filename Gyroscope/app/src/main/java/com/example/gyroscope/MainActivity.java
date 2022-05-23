@@ -21,19 +21,28 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private final String TAG = "MainActivity";
 
-        private Button bttStart = null, bttStop = null;
+    // Buttons: "Start" starts the angle measurement, "Stop" stops it;
+    // "Reset" is useful just to clean the screen after the reset
+    private Button bttStart = null, bttStop = null, bttReset;
 
-    private TextView tvX = null, tvY = null, tvZ = null, tvResult = null;
+    // Each one displays the inclination on one axis
+    private TextView tvX = null, tvY = null, tvZ = null;
 
-    private ArrayList<double[]> gyroValues = null;
-
+    // Sensor managing
     private Sensor gyro = null;
     private SensorManager gyroManager = null;
     private SensorEventListener gyroListener = null;
 
-    double result;
+    // Rotation angles on the 3 axes
+    float angleX;
+    float angleY;
+    float angleZ;
 
+    // Constants for simple data processing
     private static final float NS2S = 1.0f / 1000000000.0f;
+    private static final float EPSILON = 0.06f;
+
+    // Variable used to save the current timestamp, needed to calculate the time delta accurately
     private double ts;
 
     @Override
@@ -41,16 +50,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Initializing buttons
         bttStart = findViewById(R.id.bttStart);
         bttStop = findViewById(R.id.bttStop);
+        bttReset = findViewById(R.id.bttReset);
 
+        // Initializing textviews
         tvX = findViewById(R.id.TVX);
         tvY = findViewById(R.id.TVY);
         tvZ = findViewById(R.id.TVZ);
-        tvResult = findViewById(R.id.tvResults);
 
-        gyroValues = new ArrayList<double[]>();
-
+        // Sensor set-up
         gyroManager = (SensorManager)getSystemService((Context.SENSOR_SERVICE));
         gyro = gyroManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
@@ -62,12 +72,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         bttStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gyroManager.registerListener(gyroListener, gyro, SensorManager.SENSOR_DELAY_NORMAL);
+                gyroManager.registerListener(gyroListener, gyro, SensorManager.SENSOR_DELAY_GAME);
                 // Inizializzo il timestamp
                 ts = SystemClock.elapsedRealtimeNanos();
-                // Cancella i valori precedenti della lista
-                gyroValues.clear();
-                tvResult.setText("");
+                angleX = 0;
+                angleY = 0;
+                angleZ = 0;
             }
         });
 
@@ -75,14 +85,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             @Override
             public void onClick(View view) {
                 gyroManager.unregisterListener(gyroListener);
-                // Da conventire in gradi (con un attimo di attenzione)
-                result = calculateRotationAngleY();
-                double resultDeg = result * 180 / Math.PI;
-                tvResult.setText("Y rotation angle is: " + resultDeg + "°");
-                result = 0;
+            }
+        });
+
+        bttReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                angleX = 0;
+                angleY = 0;
+                angleZ = 0;
+                ts = SystemClock.elapsedRealtimeNanos();
+                tvX.setText("0.0");
+                tvY.setText("0.0");
+                tvZ.setText("0.0");
             }
         });
     }
+
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
@@ -90,34 +109,25 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         float axisY = sensorEvent.values[1];
         float axisZ = sensorEvent.values[2];
 
-        // float omegaMag = (float) Math.sqrt(axisX*axisX + axisY*axisY + axisZ*axisZ);
+        float omegaMag = (float) Math.sqrt(axisX*axisX + axisY*axisY + axisZ*axisZ);
         // Calcolo il delta di tempo necessario per l'integrazione
+
         double delta = (sensorEvent.timestamp - ts) * NS2S;
-        double[] values = new double[]{axisX, axisY, axisZ, delta};
 
-        // Salvo i valori nella lista
-        gyroValues.add(values);
+        if(omegaMag > EPSILON){
+            // Omega = dTheta/dt => Theta = I(Omega) => Theta(t + dt) = Theta(t)+dt*delTheta
+            angleX += delta*axisX;
+            angleY += delta*axisY;
+            angleZ += delta*axisZ;
+        }
 
-        tvX.setText("X angular velocity is :" + axisX);
-        tvY.setText("Y angular velocity is :" + axisY);
-        tvZ.setText("Z angular velocity is :" + axisZ);
+        // We leave the variable in radians
+        tvX.setText("Rotation around X-axis: " + angleX * 180 / 3.14 + "°" );
+        tvY.setText("Rotation around Y-axis: " + angleY * 180 / 3.14 + "°");
+        tvZ.setText("Rotation around Z-axis: " + angleZ * 180 / 3.14 + "°");
 
         // Salvo il valore corrente necessario a calcolare il delta successivo
         ts = sensorEvent.timestamp;
-
-    }
-
-    private double calculateRotationAngleY(){
-        int i = 0;
-        double angle = 0;
-        Log.i(TAG, "List length is " + String.valueOf(gyroValues.size()));
-        while(i < gyroValues.size()){
-            double instantY = gyroValues.get(i)[1];
-            double instantDelta = gyroValues.get(i)[3];
-            angle = angle + instantY*instantDelta;
-            i++;
-        }
-        return angle;
     }
 
     @Override

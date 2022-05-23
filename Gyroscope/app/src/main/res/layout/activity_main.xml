@@ -32,25 +32,42 @@
         android:text="X velocity is :"
         />
 
+    <!--
     <TextView
         android:id="@+id/tvResults"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         />
-        <Button
-            android:id="@+id/bttStart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="180dp"
-            android:text="START"/>
 
-        <Button
-            android:id="@+id/bttStop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="STOP"/>
+    <TextView
+        android:id="@+id/tvResultsRT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        /> -->
 
+    <Button
+        android:id="@+id/bttStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:text="START"
+        />
+
+    <Button
+        android:id="@+id/bttStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="STOP"
+        />
+
+    <Button
+        android:id="@+id/bttReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset"
+        />
 
 
 </LinearLayout>
