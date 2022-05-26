@@ -3,7 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Gyroscope.iml" filepath="$PROJECT_DIR$/.idea/Gyroscope.iml" />
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Gyroscope.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Gyroscope.app.iml" />
+=======
+>>>>>>> 781586938791807659f10c705102a2719f299532
     </modules>
   </component>
 </project>

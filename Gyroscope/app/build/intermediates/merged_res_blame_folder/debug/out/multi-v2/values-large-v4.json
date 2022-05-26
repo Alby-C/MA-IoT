@@ -1,10 +1,27 @@
 {
     "logs": [
         {
+<<<<<<< HEAD
             "outputFile": "C:\\Users\\alexb\\MA-IoT\\Gyroscope\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-large-v4\\values-large-v4.xml",
             "map": [
                 {
                     "source": "C:\\Users\\alexb\\.gradle\\caches\\transforms-3\\4a311e76b5fb64820bb08cd92dfe0c84\\transformed\\material-1.6.0\\res\\values-large-v4\\values-large-v4.xml",
+=======
+            "outputFile": "C:\\Users\\moret\\GIT\\MultimediaApp\\Gyroscope\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-large-v4\\values-large-v4.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\moret\\.gradle\\caches\\transforms-3\\f791586eb8e3cddcf33fb36842d7675a\\transformed\\appcompat-1.4.1\\res\\values-large-v4\\values-large-v4.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10",
+                        "startColumns": "4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,114,185,256,326,396,464,532,636",
+                        "endColumns": "58,70,70,69,69,67,67,103,115",
+                        "endOffsets": "109,180,251,321,391,459,527,631,747"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\moret\\.gradle\\caches\\transforms-3\\4a311e76b5fb64820bb08cd92dfe0c84\\transformed\\material-1.6.0\\res\\values-large-v4\\values-large-v4.xml",
+>>>>>>> 781586938791807659f10c705102a2719f299532
                     "from": {
                         "startLines": "2,3,4,10",
                         "startColumns": "4,4,4,4",
@@ -21,6 +38,7 @@
                         "endColumns": "121,133,10,10",
                         "endOffsets": "869,1003,1444,1887"
                     }
+<<<<<<< HEAD
                 },
                 {
                     "source": "C:\\Users\\alexb\\.gradle\\caches\\transforms-3\\f791586eb8e3cddcf33fb36842d7675a\\transformed\\appcompat-1.4.1\\res\\values-large-v4\\values-large-v4.xml",
@@ -31,6 +49,8 @@
                         "endColumns": "58,70,70,69,69,67,67,103,115",
                         "endOffsets": "109,180,251,321,391,459,527,631,747"
                     }
+=======
+>>>>>>> 781586938791807659f10c705102a2719f299532
                 }
             ]
         }

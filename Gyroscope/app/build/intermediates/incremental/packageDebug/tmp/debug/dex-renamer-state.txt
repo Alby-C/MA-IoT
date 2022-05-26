@@ -1,9 +1,18 @@
+<<<<<<< HEAD
 #Thu May 26 14:49:24 CEST 2022
 base.2=C\:\\Users\\alexb\\MA-IoT\\Gyroscope\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\14\\classes.dex
 path.2=14/classes.dex
 base.1=C\:\\Users\\alexb\\MA-IoT\\Gyroscope\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
 path.1=0/classes.dex
 base.0=C\:\\Users\\alexb\\MA-IoT\\Gyroscope\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+=======
+#Thu May 26 16:04:58 CEST 2022
+base.2=C\:\\Users\\moret\\GIT\\MultimediaApp\\Gyroscope\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\14\\classes.dex
+path.2=14/classes.dex
+base.1=C\:\\Users\\moret\\GIT\\MultimediaApp\\Gyroscope\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+path.1=0/classes.dex
+base.0=C\:\\Users\\moret\\GIT\\MultimediaApp\\Gyroscope\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+>>>>>>> 781586938791807659f10c705102a2719f299532
 renamed.2=classes3.dex
 renamed.1=classes2.dex
 renamed.0=classes.dex

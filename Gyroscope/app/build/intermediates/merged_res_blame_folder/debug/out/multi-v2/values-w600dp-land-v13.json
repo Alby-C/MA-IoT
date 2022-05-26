@@ -1,10 +1,17 @@
 {
     "logs": [
         {
+<<<<<<< HEAD
             "outputFile": "C:\\Users\\alexb\\MA-IoT\\Gyroscope\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-w600dp-land-v13\\values-w600dp-land-v13.xml",
             "map": [
                 {
                     "source": "C:\\Users\\alexb\\.gradle\\caches\\transforms-3\\4a311e76b5fb64820bb08cd92dfe0c84\\transformed\\material-1.6.0\\res\\values-w600dp-land-v13\\values-w600dp-land-v13.xml",
+=======
+            "outputFile": "C:\\Users\\moret\\GIT\\MultimediaApp\\Gyroscope\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-w600dp-land-v13\\values-w600dp-land-v13.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\moret\\.gradle\\caches\\transforms-3\\4a311e76b5fb64820bb08cd92dfe0c84\\transformed\\material-1.6.0\\res\\values-w600dp-land-v13\\values-w600dp-land-v13.xml",
+>>>>>>> 781586938791807659f10c705102a2719f299532
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

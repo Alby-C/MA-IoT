@@ -1,10 +1,17 @@
 {
     "logs": [
         {
+<<<<<<< HEAD
             "outputFile": "C:\\Users\\alexb\\MA-IoT\\Gyroscope\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-et\\values-et.xml",
             "map": [
                 {
                     "source": "C:\\Users\\alexb\\.gradle\\caches\\transforms-3\\4a311e76b5fb64820bb08cd92dfe0c84\\transformed\\material-1.6.0\\res\\values-et\\values-et.xml",
+=======
+            "outputFile": "C:\\Users\\moret\\GIT\\MultimediaApp\\Gyroscope\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-et\\values-et.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\moret\\.gradle\\caches\\transforms-3\\4a311e76b5fb64820bb08cd92dfe0c84\\transformed\\material-1.6.0\\res\\values-et\\values-et.xml",
+>>>>>>> 781586938791807659f10c705102a2719f299532
                     "from": {
                         "startLines": "2,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -23,7 +30,11 @@
                     }
                 },
                 {
+<<<<<<< HEAD
                     "source": "C:\\Users\\alexb\\.gradle\\caches\\transforms-3\\f791586eb8e3cddcf33fb36842d7675a\\transformed\\appcompat-1.4.1\\res\\values-et\\values-et.xml",
+=======
+                    "source": "C:\\Users\\moret\\.gradle\\caches\\transforms-3\\f791586eb8e3cddcf33fb36842d7675a\\transformed\\appcompat-1.4.1\\res\\values-et\\values-et.xml",
+>>>>>>> 781586938791807659f10c705102a2719f299532
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -40,7 +51,11 @@
                     }
                 },
                 {
+<<<<<<< HEAD
                     "source": "C:\\Users\\alexb\\.gradle\\caches\\transforms-3\\02483169c4c9e0ddffa88758188ac6f1\\transformed\\core-1.7.0\\res\\values-et\\values-et.xml",
+=======
+                    "source": "C:\\Users\\moret\\.gradle\\caches\\transforms-3\\02483169c4c9e0ddffa88758188ac6f1\\transformed\\core-1.7.0\\res\\values-et\\values-et.xml",
+>>>>>>> 781586938791807659f10c705102a2719f299532
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
