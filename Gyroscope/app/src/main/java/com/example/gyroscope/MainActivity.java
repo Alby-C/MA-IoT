@@ -1,5 +1,8 @@
 package com.example.gyroscope;
 
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -37,6 +40,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     float angleX;
     float angleY;
     float angleZ;
+
+    float maxRightTilt= 0;
+    float maxLeftTilt= 0;
 
     // Constants for simple data processing
     private static final float NS2S = 1.0f / 1000000000.0f;
@@ -94,6 +100,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 angleX = 0;
                 angleY = 0;
                 angleZ = 0;
+                maxRightTilt = 0;
+                maxLeftTilt = 0;
                 ts = SystemClock.elapsedRealtimeNanos();
                 tvX.setText("0.0");
                 tvY.setText("0.0");
@@ -105,26 +113,40 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        float axisX = sensorEvent.values[0];
+        //float axisX = sensorEvent.values[0];
         float axisY = sensorEvent.values[1];
-        float axisZ = sensorEvent.values[2];
+        //float axisZ = sensorEvent.values[2];
 
-        float omegaMag = (float) Math.sqrt(axisX*axisX + axisY*axisY + axisZ*axisZ);
+        //float omegaMag = (float) Math.sqrt(axisX*axisX + axisY*axisY + axisZ*axisZ);
         // Calcolo il delta di tempo necessario per l'integrazione
 
         double delta = (sensorEvent.timestamp - ts) * NS2S;
 
-        if(omegaMag > EPSILON){
+        //if(omegaMag > EPSILON){
+        if(abs(axisY) > EPSILON){
             // Omega = dTheta/dt => Theta = I(Omega) => Theta(t + dt) = Theta(t)+dt*delTheta
-            angleX += delta*axisX;
-            angleY += delta*axisY;
-            angleZ += delta*axisZ;
+            //angleX += delta*axisX;
+            angleY += delta * axisY;
+            //angleZ += delta*axisZ;
         }
 
         // We leave the variable in radians
-        tvX.setText("Rotation around X-axis: " + angleX * 180 / 3.14 + "°" );
-        tvY.setText("Rotation around Y-axis: " + angleY * 180 / 3.14 + "°");
-        tvZ.setText("Rotation around Z-axis: " + angleZ * 180 / 3.14 + "°");
+        //tvX.setText("Rotation around X-axis: " + (float)(angleX * 180. / PI) + "°" );
+        tvY.setText("Rotation around Y-axis: " + (float)(angleY * 180. / PI) + "°");
+        //tvZ.setText("Rotation around Z-axis: " + (float)(angleZ * 180. / PI) + "°");
+
+
+        if(angleY > maxRightTilt){
+            maxRightTilt = angleY;
+        }
+
+        if (angleY < maxLeftTilt) {
+            maxLeftTilt = angleY;
+        }
+
+        tvX.setText("Max right tilt:" + (float)(maxRightTilt * 180. / PI) + "°");
+        tvZ.setText("Max left tilt:" + (float)(maxLeftTilt * 180. / PI) + "°");
+
 
         // Salvo il valore corrente necessario a calcolare il delta successivo
         ts = sensorEvent.timestamp;
