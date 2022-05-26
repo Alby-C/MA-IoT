@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Gradle: C./Users/alexb/MA-IoT/ProvaPacketSniffer/app/libs/jpcap.jar">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/app/libs/jpcap.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
