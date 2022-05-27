@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">BikeActivity</string>
+    <string name="swOrientation">Orientazione orizzontale</string>
+    <string name="btnStart">Inizia\nattività</string>
+    <string name="defaultTVMaxSpeed">Velocità massima:</string>
+    <string name="defaultTVAvgSpeed">Velocità media:</string>
+    <string name="defaultTVCurrSpeed">Velocità istantanea:</string>
+    <string name="defaultTVCurrTilt">Inclinazione corrente:</string>
+    <string name="defaultTVLeftMaxtTilt">Massima inclinazione sinistra:</string>
+    <string name="defaultTVRightMaxTilt">Massima inclinazione destra:</string>
+    <string name="defaultTVCurrX">X:</string>
+    <string name="defaultTVCurrY">Y:</string>
+    <string name="defaultTVCurrZ">Z:</string>
+
+    <string name="LAUNCH_MAIN_ACTIVITY_LANDSCAPE">com.multimediaapp.bikeactivity.MainActivityLandscape</string>
+    <string name="LAUNCH_MAIN_ACTIVITY_PORTRAIT">com.multimediaapp.bikeactivity.MainActivityPortrait</string>
+    <string name="LAUNCH_REAL_TIME_STATS_PORTRAIT">com.multimediaapp.bikeactivity.RealTimePortrait</string>
+    <string name="LAUNCH_REAL_TIME_STATS_LANDSCAPE">com.multimediaapp.bikeactivity.RealTimeLandscape</string>
+
+</resources>
