@@ -27,6 +27,8 @@ public class MainActivityPortrait extends AppCompatActivity {
         swOrientation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                /// creo un nuovo intento che dovrà essere lanciato per chiamare la main activity
+                /// ma in landascape mode
                 Intent toLandscapeIntent = new Intent(getString(R.string.LAUNCH_MAIN_ACTIVITY_LANDSCAPE));
 
                 startActivity(toLandscapeIntent);
@@ -37,6 +39,8 @@ public class MainActivityPortrait extends AppCompatActivity {
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /// creo un nuovo intento che dovrà essere lanciato per chiamare
+                /// la real time stats activity in portrait
                 Intent toRealTimePortrait = new Intent((getString(R.string.LAUNCH_REAL_TIME_STATS_PORTRAIT)));
 
                 startActivity(toRealTimePortrait);

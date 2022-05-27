@@ -81,12 +81,14 @@
         android:layout_marginTop="10dp"/>
 
     <Button
+        android:id="@+id/bttPause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Pause"
         android:layout_marginTop="75dp"/>
 
     <Button
+        android:id="@+id/bttStop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Stop"

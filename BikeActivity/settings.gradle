@@ -12,9 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-<<<<<<< HEAD:BikeActivity/settings.gradle
 rootProject.name = "BikeActivity"
-=======
-rootProject.name = "Gyroscope"
->>>>>>> Alby:Gyroscope/settings.gradle
 include ':app'
