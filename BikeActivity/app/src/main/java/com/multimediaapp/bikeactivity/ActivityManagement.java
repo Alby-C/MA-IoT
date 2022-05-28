@@ -107,7 +107,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
             maxLeftTilt = currentRoll;
         }
         tvCurrTilt.setText(getString(R.string.defaultTVCurrTilt) + " " + String.format("%.2f", currentRoll) );
-        tvLeftMaxTilt.setText(getString(R.string.defaultTVLeftMaxtTilt) + " " + maxLeftTilt);
-        tvRightMaxTilt.setText((getString(R.string.defaultTVRightMaxTilt) + " " + maxRightTilt));
+        tvLeftMaxTilt.setText(getString(R.string.defaultTVLeftMaxtTilt) + " " + String.format(".2f", maxLeftTilt));
+        tvRightMaxTilt.setText(getString(R.string.defaultTVRightMaxTilt) + " " + String.format(".2f",maxRightTilt));
     }
 }
