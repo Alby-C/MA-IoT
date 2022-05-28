@@ -16,22 +16,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BikeActivity"
         tools:targetApi="31">
-<!--===============================================================================================-->
+<!--==MUST BE SHOWN VERTICALLY=====================================================================-->
         <activity
             android:name=".RealTimeStatsPortrait"
-            android:exported="false"
-            android:screenOrientation="portrait">
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.multimediaapp.bikeactivity.RealTimePortrait"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-<!--===============================================================================================-->
+<!--==MUST BE SHOWN HORIZONTALLY===================================================================-->
         <activity
             android:name=".RealTimeStatsLandscape"
-            android:exported="false"
-            android:screenOrientation="landscape">
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.multimediaapp.bikeactivity.RealTimeLandscape"/>
 

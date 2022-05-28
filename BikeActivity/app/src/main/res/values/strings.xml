@@ -16,5 +16,6 @@
     <string name="LAUNCH_MAIN_ACTIVITY_PORTRAIT">com.multimediaapp.bikeactivity.MainActivityPortrait</string>
     <string name="LAUNCH_REAL_TIME_STATS_PORTRAIT">com.multimediaapp.bikeactivity.RealTimePortrait</string>
     <string name="LAUNCH_REAL_TIME_STATS_LANDSCAPE">com.multimediaapp.bikeactivity.RealTimeLandscape</string>
+    <string name="ORIENTATION">CHANGE_ORIENTATION_LABEL</string>
 
 </resources>
