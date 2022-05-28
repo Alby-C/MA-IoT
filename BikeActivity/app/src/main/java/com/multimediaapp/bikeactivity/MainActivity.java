@@ -30,7 +30,8 @@ public class MainActivity extends AppCompatActivity {
         swOrientation = findViewById(R.id.swOrientation);
         btnStart = findViewById(R.id.btnStart);
 
-        swOrientation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        swOrientation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
             /**
              * Manages the change of te state of the switch, changes the orientation of the screen
              * on the position of the switch.
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b)
-                    currOrientation =ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+                    currOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
                 else
                     currOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
 

@@ -21,33 +21,13 @@
             android:name=".ActivityManagement"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.multimediaapp.bikeactivity.RealTimePortrait"/>
-
+                <action android:name="com.multimediaapp.bikeactivity.ActivityManagement"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 <!--==MUST BE SHOWN HORIZONTALLY===================================================================-->
-        <activity
-            android:name=".RealTimeStatsLandscape"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.multimediaapp.bikeactivity.RealTimeLandscape"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-<!--===============================================================================================-->
-        <activity
-            android:name=".MainActivityLandscape"
-            android:exported="false"
-            android:screenOrientation="landscape">
-            <intent-filter>
-                <action android:name="com.multimediaapp.bikeactivity.MainActivityLandscape" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-<!--===============================================================================================-->
+        <!--===============================================================================================-->
+        <!--===============================================================================================-->
         <activity
             android:name=".MainActivity"
             android:exported="true"
