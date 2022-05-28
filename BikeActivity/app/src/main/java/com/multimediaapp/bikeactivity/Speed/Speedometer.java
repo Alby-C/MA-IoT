@@ -1,4 +1,4 @@
-package com.multimediaapp.bikeactivity;
+package com.multimediaapp.bikeactivity.Speed;
 
 import android.Manifest;
 import android.content.Context;
@@ -9,18 +9,21 @@ import android.location.LocationManager;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
+import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
+
 public class Speedometer implements LocationListener
 {
-    private final String Tag = "Speedometer";
+    private final String Tag = Speedometer.class.getSimpleName();;
+
     public LocationManager lm = null;
-    public Interface onSpeedChange = null;
+    public IMeasurementHandler onSpeedChange = null;
     private Context context = null;
     private float avgSpeed = 0;
     // indice per calcolarmi la media in modo dinamico
     float n = 1;
 
 
-    public Speedometer(LocationManager lm, Interface onSpeedChange, Context context)
+    public Speedometer(LocationManager lm, IMeasurementHandler onSpeedChange, Context context)
     {
         this.lm = lm;
         this.onSpeedChange = onSpeedChange;

@@ -19,7 +19,7 @@ public class MainActivityLandscape extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_portrait);
+        setContentView(R.layout.activity_main);
 
         /// setto lo switch per l'orientazione e il bottone di start
         swOrientation = findViewById(R.id.swOrientation);

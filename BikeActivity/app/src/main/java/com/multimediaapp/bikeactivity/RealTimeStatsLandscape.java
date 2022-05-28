@@ -22,7 +22,7 @@ public class RealTimeStatsLandscape extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_real_time_stats_landscape);
+        setContentView(R.layout.activity_management_landscape);
 
         /// setto tutte le mie text view e i miei bottoni
         tvMaxSpeed = findViewById(R.id.tvMaxSpeed);

@@ -1,19 +1,21 @@
 package com.multimediaapp.bikeactivity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class RealTimeStatsPortrait extends AppCompatActivity implements Interface {
+import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
+import com.multimediaapp.bikeactivity.Speed.Speedometer;
+
+public class ActivityManagement extends AppCompatActivity implements IMeasurementHandler {
+
+    private final String TAG = ActivityManagement.class.getSimpleName();
+
     private TextView tvMaxSpeed = null;
     private TextView tvAvgSpeed = null;
     private TextView tvCurrSpeed = null;
@@ -35,18 +37,16 @@ public class RealTimeStatsPortrait extends AppCompatActivity implements Interfac
     protected void onCreate(Bundle savedInstanceState) {
         int _contentView;
         int _orientation = getIntent().getIntExtra(getString(R.string.ORIENTATION),ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setRequestedOrientation(_orientation);
         switch (_orientation){
             case ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE:
-                _contentView = R.layout.activity_real_time_stats_landscape;
+                _contentView = R.layout.activity_management_landscape;
                 break;
             case ActivityInfo.SCREEN_ORIENTATION_PORTRAIT:
             default:
-                _contentView = R.layout.activity_real_time_stats_portrait;
+                _contentView = R.layout.activity_management_portrait;
                 break;
         }
-
-
+        setRequestedOrientation(_orientation);
         super.onCreate(savedInstanceState);
         setContentView(_contentView);
 
