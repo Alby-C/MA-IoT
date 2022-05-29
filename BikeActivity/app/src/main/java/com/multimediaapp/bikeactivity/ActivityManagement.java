@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.multimediaapp.bikeactivity.Accelerometer.Accelerometer;
 import com.multimediaapp.bikeactivity.Gyroscope.Roll;
 import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
 import com.multimediaapp.bikeactivity.Speed.Speedometer;
@@ -42,6 +43,12 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private float maxSpeed = 0;
     private float maxRightTilt= 0;
     private float maxLeftTilt= 0;
+    private float angle = 0;
+
+    private Accelerometer accellerometer = null;
+    private Sensor acc = null;
+    private SensorManager accManager = null;
+    private float acceleartionAxis = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -83,6 +90,10 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         gyroManager = (SensorManager)getSystemService((Context.SENSOR_SERVICE));
         gyro = gyroManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         roll = new Roll(gyro, gyroManager, this, this, _orientation);
+
+        accManager = (SensorManager)getSystemService((Context.SENSOR_SERVICE));
+        acc = gyroManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        accellerometer = new Accelerometer(acc, accManager, this, _orientation);
     }
 
     @Override
@@ -98,15 +109,25 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     @Override
     public void onChangeRoll(float currentRoll)
     {
-        currentRoll = (float)(currentRoll * 180. / Math.PI);
+        this.angle = (float)(currentRoll * 180. / Math.PI);
+    }
 
-        if(currentRoll > maxRightTilt){
-            maxRightTilt = currentRoll;
+    @Override
+    public void onChangeAcc(float acc)
+    {
+        this.acceleartionAxis = acc;
+        /// complementary filter to have very accuracy data
+        this.angle = (float)(0.98 * this.angle + 0.02 * this.acceleartionAxis);
+
+        if(this.angle > maxRightTilt){
+            maxRightTilt = this.angle;
         }
-        if (currentRoll< maxLeftTilt) {
-            maxLeftTilt = currentRoll;
+        if (this.angle < maxLeftTilt) {
+            maxLeftTilt = this.angle;
         }
-        tvCurrTilt.setText(getString(R.string.defaultTVCurrTilt) + " " + String.format("%.2f", Math.abs(currentRoll)) );
+        /// complementary filter to have very accuracy data
+
+        tvCurrTilt.setText(getString(R.string.defaultTVCurrTilt) + " " + String.format("%.2f", Math.abs(this.angle)) );
         tvLeftMaxTilt.setText(getString(R.string.defaultTVLeftMaxtTilt) + " " + String.format("%.2f", -1 * maxLeftTilt));
         tvRightMaxTilt.setText(getString(R.string.defaultTVRightMaxTilt) + " " + String.format("%.2f",maxRightTilt));
     }
