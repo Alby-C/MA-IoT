@@ -24,8 +24,9 @@ public class Roll implements SensorEventListener
     /// constant for threeshold
     private static final float EPSILON = 0.06f;
     /// variables
-    private float angleX;
-    private float angleY;
+    private float angle = 0;
+    private float axis = 0;
+    private int coord = 0;
     private int orientation = 0;
     /// time to calculate the integral
     private double ts;
@@ -44,9 +45,9 @@ public class Roll implements SensorEventListener
     public void Start(int orientation)
     {
         if(orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-            angleY = 0;
+            coord = 1;
         else
-            angleX = 0;
+            coord = 0;
 
         gyroManager.registerListener(gyroListener, gyro, SensorManager.SENSOR_DELAY_GAME);
         // timestamp initialization
@@ -57,31 +58,16 @@ public class Roll implements SensorEventListener
     @Override
     public void onSensorChanged(SensorEvent event) {
         double delta = (event.timestamp - ts) * NS2S;
-        /// management of portrait or landscape mode
-        if (this.orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-        {
-            float axisY = event.values[1];
+            /// get accellaration angular
+            axis = event.values[coord];
             /// check the threeshold
-            if(Math.abs(axisY) > EPSILON)
+            if(Math.abs(axis) > EPSILON)
             {
                 /// discrete integral for calculate the angle
-                angleY += delta * axisY;
+                angle += delta * axis;
                 /// send new angle to activity management
-                onRollChange.onChangeRoll(angleY);
+                onRollChange.onChangeRoll(angle);
             }
-        }
-        else
-        {
-            float axisX = event.values[0];
-            /// check the threeshold
-            if(Math.abs(axisX) > EPSILON)
-            {
-                /// discrete integral for calculate the angle
-                angleX += delta * axisX;
-                /// send new angle to activity management
-                onRollChange.onChangeRoll(angleX);
-            }
-        }
         /// set new timestamp
         ts = event.timestamp;
     }

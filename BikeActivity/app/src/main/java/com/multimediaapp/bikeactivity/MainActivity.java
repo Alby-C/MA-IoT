@@ -16,7 +16,7 @@ import android.widget.Switch;
 public class MainActivity extends AppCompatActivity {
 
     private final String TAG = MainActivity.class.getSimpleName();
-    ///current orientation of the screen.
+    /// current orientation of the screen.
     private int currOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
 
     private Switch swOrientation = null;
@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
              */
             @Override
             public void onClick(View view) {
-                /// creo un nuovo intento che dovrà essere lanciato per chiamare
-                /// la real time stats activity in portrait
+                /// create a new intent that will have to be launched to call
+                /// real time stats activity in portrait
                 Intent toActivityManagement = new Intent((getString(R.string.LAUNCH_BIKE_ACTIVITY)));
 
                 toActivityManagement.putExtra(getString(R.string.ORIENTATION),currOrientation);

@@ -19,7 +19,7 @@ public class Speedometer implements LocationListener
     public IMeasurementHandler onSpeedChange = null;
     private Context context = null;
     private float avgSpeed = 0;
-    // indice per calcolarmi la media in modo dinamico
+    // index to calculate the average dynamically
     float n = 1;
 
 
@@ -33,16 +33,16 @@ public class Speedometer implements LocationListener
 
     public void Start()
     {
-        // verifico se se son riuscito ad instanziare la location service
+        // check if I have been able to instantiate the location service
         if (lm != null)
         {
-            // check necessario per poter avere la requestLocationUpdate poichè ha bisogno dei permessi
+            // check necessary to be able to have the requestLocationUpdate as it needs permissions
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
             {
-             // codice per la gestione dei permessi non ricevuto
+             // code for the management of permissions not received
             }
-            // se ho ricevuto i permessi allora inizio a ricevere gli update della mia locazione
+            // if received the permits then start to receive the updates of my location
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
     }
@@ -50,12 +50,12 @@ public class Speedometer implements LocationListener
     @Override
     public void onLocationChanged(@NonNull Location location)
     {
-            // ricavo la velocità in metri al secondo e la converto in km/h moltiplicando per 3.6
+            // get the speed in meters per second and convert it to km/h multiplying by 3.6
             float nCurrentSpeed = location.getSpeed() * 3.6f;
-            /// calcolo la media della velocità tramite una serie matematica
+            /// calculation of the average speed through a portrait mathematical series
             avgSpeed = (1/n)*(nCurrentSpeed+(n-1)*avgSpeed);
             n++;
-            /// invio i risultati
+            /// send result to activity management
             onSpeedChange.onChangeSpeed(nCurrentSpeed, avgSpeed);
     }
 }
