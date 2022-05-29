@@ -14,5 +14,5 @@ public interface IMeasurementHandler
    * @param currentRoll Current roll detected
    */
   void onChangeRoll(float currentRoll);
-  void onChangeAcc(float acc);
+  void onChangeAcc(float accelerationAxis, float accZ);
 }

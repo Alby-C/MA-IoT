@@ -20,7 +20,7 @@ import com.multimediaapp.bikeactivity.Speed.Speedometer;
 public class ActivityManagement extends AppCompatActivity implements IMeasurementHandler {
 
     private final String TAG = ActivityManagement.class.getSimpleName();
-    /// layout class
+    /// Layout class
     private TextView tvMaxSpeed = null;
     private TextView tvAvgSpeed = null;
     private TextView tvCurrSpeed = null;
@@ -32,23 +32,29 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private TextView tvCurrZ = null;
     private Button bttPause = null;
     private Button bttStop = null;
-   ////////////////////////////////////////////
+   ///////////////////////////// Gyro
+
     private Sensor gyro = null;
     private SensorManager gyroManager = null;
     private Roll roll = null;
-    ////////////////////////////////////////////
+
+    //////////////////////////// Speedometer
     private LocationManager lm = null;
     private Speedometer speedometer = null;
-    /// variables
+
+    /////////////////////////// Accelerometer
+    private Accelerometer accellerometer = null;
+    private Sensor acc = null;
+    private SensorManager accManager = null;
+    private float acceleartionAxis = 0;
+    private float accelZ = 0;
+
+    /////////////////////////// Variables
     private float maxSpeed = 0;
     private float maxRightTilt= 0;
     private float maxLeftTilt= 0;
     private float angle = 0;
 
-    private Accelerometer accellerometer = null;
-    private Sensor acc = null;
-    private SensorManager accManager = null;
-    private float acceleartionAxis = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -69,7 +75,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         super.onCreate(savedInstanceState);
         setContentView(_contentView);
 
-        /// set all text view and button
+        /// Set all text view and button
         tvMaxSpeed = findViewById(R.id.tvMaxSpeed);
         tvAvgSpeed = findViewById(R.id.tvAvgSpeed);
         tvCurrSpeed = findViewById(R.id.tvCurrSpeed);
@@ -82,15 +88,16 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         bttPause = findViewById(R.id.bttPause);
         bttStop = findViewById(R.id.bttStop);
 
-        /// location manager instance to pass to the spedometer class
+        /// Location manager instance to pass to the spedometer class
         lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         speedometer = new Speedometer(lm, this, this);
 
-        /// gyro request
+        /// Gyro request
         gyroManager = (SensorManager)getSystemService((Context.SENSOR_SERVICE));
         gyro = gyroManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         roll = new Roll(gyro, gyroManager, this, this, _orientation);
 
+        /// Accelerometer request
         accManager = (SensorManager)getSystemService((Context.SENSOR_SERVICE));
         acc = gyroManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         accellerometer = new Accelerometer(acc, accManager, this, _orientation);
@@ -113,9 +120,10 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     }
 
     @Override
-    public void onChangeAcc(float acc)
+    public void onChangeAcc(float acceleartionAxis, float accelZ)
     {
-        this.acceleartionAxis = acc;
+        this.acceleartionAxis = acceleartionAxis;
+        this.accelZ = accelZ;
         /// complementary filter to have very accuracy data
         this.angle = (float)(0.98 * this.angle + 0.02 * this.acceleartionAxis);
 
@@ -125,8 +133,6 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         if (this.angle < maxLeftTilt) {
             maxLeftTilt = this.angle;
         }
-        /// complementary filter to have very accuracy data
-
         tvCurrTilt.setText(getString(R.string.defaultTVCurrTilt) + " " + String.format("%.2f", Math.abs(this.angle)) );
         tvLeftMaxTilt.setText(getString(R.string.defaultTVLeftMaxtTilt) + " " + String.format("%.2f", -1 * maxLeftTilt));
         tvRightMaxTilt.setText(getString(R.string.defaultTVRightMaxTilt) + " " + String.format("%.2f",maxRightTilt));

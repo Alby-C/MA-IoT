@@ -11,17 +11,18 @@ import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
 
 public class Accelerometer implements SensorEventListener
 {
-    private  Sensor acc = null;
+    private Sensor acc = null;
     private SensorManager accManager = null;
-    private IMeasurementHandler onAccChange = null;
     private SensorEventListener accListener = null;
+    private IMeasurementHandler onAccChange = null;
     private int orientation = 0;
-    private float accelAngle = 0;
-    private float axis = 0;
+    /// Accelleration of axis Y or axis X
+    private float accelerationAxis = 0;
+    /// Accelleration axis Z
     private float accelZ = 0;
     private int coord = 0;
 
-    public Accelerometer(Sensor acc, SensorManager accManager, IMeasurementHandler onAccChange,int orientation)
+    public Accelerometer(Sensor acc, SensorManager accManager, IMeasurementHandler onAccChange, int orientation)
     {
         this.acc = acc;
         this.accManager = accManager;
@@ -43,14 +44,11 @@ public class Accelerometer implements SensorEventListener
     @Override
     public void onSensorChanged(SensorEvent event)
     {
-        // il sensor event restituisce i 3 valori in ordine x y e z, quindi li metto nelle mie
-        //variabili locali
-        // _x = event.values[0];
-        axis = event.values[coord];
+        /// get acceleration
+        accelerationAxis = event.values[coord];
         accelZ = event.values[2];
-        /// complementary filter to have very accuracy data
-        accelAngle = (float)(Math.atan2(-1* accelAngle, Math.sqrt(accelAngle*accelAngle + accelZ*accelZ)) * 180/Math.PI);
-        onAccChange.onChangeAcc(accelAngle);
+        /// send values to activity management
+        onAccChange.onChangeAcc(accelerationAxis, accelZ);
     }
 
     @Override
