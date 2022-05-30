@@ -44,8 +44,10 @@ public class Roll implements SensorEventListener
     public void Start(int orientation)
     {
         if(orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+            /// y axis on portrait mode
             coord = 1;
         else
+            /// x axis on landascape mode
             coord = 0;
 
         gyroManager.registerListener(gyroListener, gyro, SensorManager.SENSOR_DELAY_GAME);

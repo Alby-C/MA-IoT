@@ -128,7 +128,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         if (this.angle > -5 && this.angle < 5)
         {
             /// Complementary filter to have very accuracy data
-            this.angle = (float) (0.99 * this.angle + 0.01 * this.acceleartionAxis);
+            this.angle = (float) (0.98 * this.angle + 0.02 * this.acceleartionAxis);
         }
         if (this.angle > maxRightTilt)
             maxRightTilt = this.angle;
