@@ -19,25 +19,24 @@ public class Roll implements SensorEventListener
     private IMeasurementHandler onRollChange = null;
     private Context context = null;
 
-    /// constant for calculate the angle
+    /// Constant to convert nanosec to sec
     private static final float NS2S = 1.0f / 1000000000.0f;
-    /// constant for threeshold
+    /// Constant for threeshold
     private static final float EPSILON = 0.06f;
-    /// variables
+    /// Variables
     private float angle = 0;
     private float axis = 0;
     private int coord = 0;
     private int orientation = 0;
-    /// time to calculate the integral
+    /// Time to calculate the integral
     private double ts;
 
-    public Roll(Sensor gyro, SensorManager gyroManager, IMeasurementHandler onRollChange, Context context, int orientation )
+    public Roll(Sensor gyro, SensorManager gyroManager, IMeasurementHandler onRollChange, int orientation )
     {
         this.gyro = gyro;
         this.gyroManager = gyroManager;
         this.gyroListener = this;
         this.onRollChange = onRollChange;
-        this.context = context;
         this.orientation = orientation;
         Start(orientation);
     }
@@ -52,28 +51,28 @@ public class Roll implements SensorEventListener
         gyroManager.registerListener(gyroListener, gyro, SensorManager.SENSOR_DELAY_GAME);
         // timestamp initialization
         ts = SystemClock.elapsedRealtimeNanos();
-
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
         double delta = (event.timestamp - ts) * NS2S;
-            /// get accellaration angular
+            /// Get accellaration angular
             axis = event.values[coord];
             /// check the threeshold
             if(Math.abs(axis) > EPSILON)
             {
-                /// discrete integral for calculate the angle
+                /// Discrete integral to calculate the angle
                 angle += delta * axis;
-                /// send new angle to activity management
+                /// Send new angle to activity management
                 onRollChange.onChangeRoll(angle);
             }
-        /// set new timestamp
+        /// Set new timestamp
         ts = event.timestamp;
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    public void onAccuracyChanged(Sensor sensor, int accuracy)
+    {
 
     }
 }

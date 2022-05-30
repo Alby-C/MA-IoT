@@ -95,7 +95,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         /// Gyro request
         gyroManager = (SensorManager)getSystemService((Context.SENSOR_SERVICE));
         gyro = gyroManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-        roll = new Roll(gyro, gyroManager, this, this, _orientation);
+        roll = new Roll(gyro, gyroManager, this, _orientation);
 
         /// Accelerometer request
         accManager = (SensorManager)getSystemService((Context.SENSOR_SERVICE));
@@ -124,7 +124,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     {
         this.acceleartionAxis = acceleartionAxis;
         this.accelZ = accelZ;
-        /// complementary filter to have very accuracy data
+        /// Complementary filter to have very accuracy data
         this.angle = (float)(0.98 * this.angle + 0.02 * this.acceleartionAxis);
 
         if(this.angle > maxRightTilt){
@@ -133,8 +133,8 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         if (this.angle < maxLeftTilt) {
             maxLeftTilt = this.angle;
         }
-        tvCurrTilt.setText(getString(R.string.defaultTVCurrTilt) + " " + String.format("%.2f", Math.abs(this.angle)) );
-        tvLeftMaxTilt.setText(getString(R.string.defaultTVLeftMaxtTilt) + " " + String.format("%.2f", -1 * maxLeftTilt));
-        tvRightMaxTilt.setText(getString(R.string.defaultTVRightMaxTilt) + " " + String.format("%.2f",maxRightTilt));
+        tvCurrTilt.setText(getString(R.string.defaultTVCurrTilt) + " " + String.format("%.2f", Math.abs(this.angle)) + "°" );
+        tvLeftMaxTilt.setText(getString(R.string.defaultTVLeftMaxtTilt) + " " + String.format("%.2f", -1 * maxLeftTilt) + "°");
+        tvRightMaxTilt.setText(getString(R.string.defaultTVRightMaxTilt) + " " + String.format("%.2f",maxRightTilt) + "°");
     }
 }

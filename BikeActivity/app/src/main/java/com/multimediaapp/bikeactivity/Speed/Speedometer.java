@@ -19,7 +19,7 @@ public class Speedometer implements LocationListener
     public IMeasurementHandler onSpeedChange = null;
     private Context context = null;
     private float avgSpeed = 0;
-    // index to calculate the average dynamically
+    // index to calculate speed average dynamically
     float n = 1;
 
 
@@ -50,12 +50,12 @@ public class Speedometer implements LocationListener
     @Override
     public void onLocationChanged(@NonNull Location location)
     {
-            // get the speed in meters per second and convert it to km/h multiplying by 3.6
+            // Get the speed in meters per second and convert it to km/h multiplying by 3.6
             float nCurrentSpeed = location.getSpeed() * 3.6f;
-            /// calculation of the average speed through a portrait mathematical series
+            /// Calculation of  speed average through a portrait mathematical series
             avgSpeed = (1/n)*(nCurrentSpeed+(n-1)*avgSpeed);
             n++;
-            /// send result to activity management
+            /// Send result to activity management
             onSpeedChange.onChangeSpeed(nCurrentSpeed, avgSpeed);
     }
 }
