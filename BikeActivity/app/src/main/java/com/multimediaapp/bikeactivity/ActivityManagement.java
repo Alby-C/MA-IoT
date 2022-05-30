@@ -122,8 +122,8 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     @Override
     public void onChangeAcc(float acceleartionAxis, float accelZ)
     {
-        this.acceleartionAxis = acceleartionAxis;
-        this.accelZ = accelZ;
+        this.acceleartionAxis = (float) (Math.atan2(acceleartionAxis,accelZ) * 180/Math.PI);
+
         /// Complementary filter to have very accuracy data
         this.angle = (float)(0.98 * this.angle + 0.02 * this.acceleartionAxis);
 
@@ -133,7 +133,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         if (this.angle < maxLeftTilt) {
             maxLeftTilt = this.angle;
         }
-        tvCurrTilt.setText(getString(R.string.defaultTVCurrTilt) + " " + String.format("%.2f", Math.abs(this.angle)) + "°" );
+        tvCurrTilt.setText(getString(R.string.defaultTVCurrTilt) + " " + String.format("%d",(int)Math.abs(this.angle)) + "°" );
         tvLeftMaxTilt.setText(getString(R.string.defaultTVLeftMaxtTilt) + " " + String.format("%.2f", -1 * maxLeftTilt) + "°");
         tvRightMaxTilt.setText(getString(R.string.defaultTVRightMaxTilt) + " " + String.format("%.2f",maxRightTilt) + "°");
     }
