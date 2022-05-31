@@ -36,9 +36,11 @@ public class Accelerometer implements SensorEventListener
     {
         accManager.registerListener(accListener, acc, SensorManager.SENSOR_DELAY_GAME);
         if(orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-            coord = 1;
-        else
+            /// set coord x for the portrait mode
             coord = 0;
+        else
+            /// set coord y for the portrait mode
+            coord = 1;
     }
 
     @Override

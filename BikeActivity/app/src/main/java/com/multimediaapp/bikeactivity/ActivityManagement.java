@@ -54,6 +54,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private float maxRightTilt= 0;
     private float maxLeftTilt= 0;
     private float angle = 0;
+    private float tempRoll = 0;
 
 
     @Override
@@ -116,28 +117,32 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     @Override
     public void onChangeRoll(float currentRoll)
     {
-        this.angle = (float) (currentRoll * 180. / Math.PI);
-
+        this.tempRoll = (float)(currentRoll * 180. / Math.PI);
+        /// Complementary filter to have very accuracy data
+        this.angle = (float) (0.90 * (this.angle + this.tempRoll) + 0.10* this.acceleartionAxis);
+        setAngle();
     }
 
     @Override
     public void onChangeAcc(float acceleartionAxis, float accelZ)
     {
-        this.acceleartionAxis = (float) (Math.atan2(acceleartionAxis,accelZ) * 180/Math.PI);
+        /// Calculate the angle of accellerometer
+        this.acceleartionAxis = (float) (Math.atan(acceleartionAxis / accelZ) * 180 / Math.PI);
+        /// Complementary filter to have very accuracy data
+        this.angle = (float) (0.90 * (this.angle + this.tempRoll) + 0.10 * this.acceleartionAxis);
+        setAngle();
+    }
 
-        if (this.angle > -5 && this.angle < 5)
-        {
-            /// Complementary filter to have very accuracy data
-            this.angle = (float) (0.98 * this.angle + 0.02 * this.acceleartionAxis);
-        }
+private void setAngle()
+    {
         if (this.angle > maxRightTilt)
             maxRightTilt = this.angle;
 
         if (this.angle < maxLeftTilt)
             maxLeftTilt = this.angle;
 
-        tvCurrTilt.setText(getString(R.string.defaultTVCurrTilt) + " " + String.format("%.2f", Math.abs(this.angle)) + "°");
-        tvLeftMaxTilt.setText(getString(R.string.defaultTVLeftMaxtTilt) + " " + String.format("%.2f", -1 * maxLeftTilt) + "°");
-        tvRightMaxTilt.setText(getString(R.string.defaultTVRightMaxTilt) + " " + String.format("%.2f", maxRightTilt) + "°");
+        tvCurrTilt.setText(getString(R.string.defaultTVCurrTilt) + " " + (int)Math.abs(this.angle) + "°");
+        tvLeftMaxTilt.setText(getString(R.string.defaultTVLeftMaxtTilt) + " " + (int)( -1 * maxLeftTilt) + "°");
+        tvRightMaxTilt.setText(getString(R.string.defaultTVRightMaxTilt) + " " + (int)maxRightTilt + "°");
     }
 }

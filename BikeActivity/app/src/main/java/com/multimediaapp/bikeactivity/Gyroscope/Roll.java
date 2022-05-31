@@ -58,16 +58,15 @@ public class Roll implements SensorEventListener
     @Override
     public void onSensorChanged(SensorEvent event) {
         double delta = (event.timestamp - ts) * NS2S;
-            /// Get accellaration angular
-            axis = event.values[coord];
-            /// check the threeshold
-            if(Math.abs(axis) > EPSILON)
-            {
-                /// Discrete integral to calculate the angle
-                angle += delta * axis;
-                /// Send new angle to activity management
-                onRollChange.onChangeRoll(angle);
-            }
+        /// Get accellaration angular
+        axis = event.values[coord];
+
+        /// Discrete integral to calculate the angle
+        angle = (float) delta * axis;
+
+        /// Send new angle to activity management
+        onRollChange.onChangeRoll(angle);
+
         /// Set new timestamp
         ts = event.timestamp;
     }
