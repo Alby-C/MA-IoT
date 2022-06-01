@@ -26,7 +26,7 @@ public class Gyro extends BaseSensor<IGyroListener> implements SensorEventListen
         if(listeners.size() == 0)
             requestToStart = true;
         else {
-            gyroManager.registerListener(gyroListener, gyro, SensorManager.SENSOR_DELAY_NORMAL);
+            gyroManager.registerListener(gyroListener, gyro, SensorManager.SENSOR_DELAY_GAME);
             isRunning = true;
         }
     }
