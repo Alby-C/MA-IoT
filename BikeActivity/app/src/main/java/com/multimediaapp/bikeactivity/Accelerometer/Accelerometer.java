@@ -15,8 +15,7 @@ public class Accelerometer extends BaseSensor<IAccelListener> implements SensorE
     private final SensorManager accManager;
     private final SensorEventListener accListener;
 
-    public Accelerometer(Sensor acc, SensorManager accManager)
-    {
+    public Accelerometer(Sensor acc, SensorManager accManager){
         this.acc = acc;
         this.accManager = accManager;
         this.accListener = this;

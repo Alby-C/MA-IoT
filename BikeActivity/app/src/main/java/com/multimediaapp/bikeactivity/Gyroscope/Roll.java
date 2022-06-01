@@ -20,12 +20,13 @@ import Space.Vector;
 public class Roll implements IGyroListener, IAccelListener {
     private final String TAG = Roll.class.getSimpleName();
 
+    ///////////////////////////
     private static final int X = 0;
     private static final int Y = 1;
     private static final int Z = 2;
     private static final float NS2S = 1.0f / 1000000000.0f; ///Constant to convert from nanoseconds to seconds
     private static final double R2D = 180./ PI;             ///Constant to convert from radians to degree
-    private static final float EPSILON =0.01f;             ///Constant for threshold
+    private static final float EPSILON =0.01f;              ///Constant for threshold
 
     private final float filterPercent = 0.95f;
     private final IMeasurementHandler iMeasurementHandler;
