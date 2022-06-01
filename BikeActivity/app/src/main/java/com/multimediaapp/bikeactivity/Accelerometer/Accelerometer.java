@@ -5,22 +5,11 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
+import com.multimediaapp.bikeactivity.BaseClasses.BaseSensor;
 import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
-import com.multimediaapp.bikeactivity.Interfaces.ISensorManager;
-import com.multimediaapp.bikeactivity.MainActivity;
 
-import java.util.ArrayList;
-
-public class Accelerometer implements SensorEventListener, ISensorManager<IAccelListener>
-{
+public class Accelerometer extends BaseSensor<IAccelListener> implements SensorEventListener {
     private final String TAG = Accelerometer.class.getSimpleName();
-
-    /// Array of listeners to the new values of the gyroscope
-    private final ArrayList<IAccelListener> listeners = new ArrayList<>();
-    /// True if the sensor is getting
-    private boolean isRunning = false;
-    /// this flag if no listeners are subscribed, is set to true in the start method
-    private boolean requestToStart = false;
 
     private final Sensor acc;
     private final SensorManager accManager;
@@ -49,22 +38,6 @@ public class Accelerometer implements SensorEventListener, ISensorManager<IAccel
             accManager.unregisterListener(accListener);
 
         requestToStart = false;
-    }
-
-    @Override
-    public void SubscribeListener(IAccelListener listener) {
-        if(!this.listeners.contains(listener))
-            this.listeners.add(listener);
-
-        if(requestToStart){
-            Start();
-            requestToStart = false;
-        }
-    }
-
-    @Override
-    public void UnsubscribeListener(IAccelListener listener) {
-        this.listeners.remove(listener);
     }
 
     @Override

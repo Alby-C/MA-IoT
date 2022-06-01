@@ -10,7 +10,7 @@ import static java.lang.Math.sqrt;
 public class CartesianSpaceOperations {
     private final String TAG = CartesianSpaceOperations.class.getSimpleName();
 
-    private static final double PI_OVER2 = PI / 2.;
+    private static final float PI_OVER2 = (float)(PI / 2.);
 
     /**
      * Determines, on the basis of the angle passed to it, in which half-space
@@ -19,11 +19,11 @@ public class CartesianSpaceOperations {
      *              reference system orthogonal to the plane that divides the space in two.
      * @return 1.0 if it is in the non-negative half-space, -1.0 if it is in the negative half.
      */
-    public static double whichHalfSpace(double angle){
+    public static float whichHalfSpace(float angle){
         if(angle <= PI_OVER2)
-            return 1.;
+            return 1.f;
         else
-            return -1.;
+            return -1.f;
     }
     /**
      * Calculate the angle between two vectors.
@@ -31,12 +31,12 @@ public class CartesianSpaceOperations {
      * @param v2 The second vector.
      * @return The angle between v1 and v2 in radians, in the range [0, pi].
      */
-    public static double AngleBetween(Vector v1, Vector v2){
+    public static float AngleBetween(Vector v1, Vector v2){
         /*            /  v1 · v2 \
             a = acos | ---------- |
                       \ |v1|·|v2|/
         */
-        return acos((DotProduct(v1, v2))/(v1.getModule() * v2.getModule()));
+        return (float) acos((DotProduct(v1, v2))/(v1.getModule() * v2.getModule()));
     }
 
     /**
@@ -45,12 +45,12 @@ public class CartesianSpaceOperations {
      * @param p2 The second point.
      * @return The distance between the two points.
      */
-    public static double Distance(Point p1, Point p2){
-        double x = p1.X - p2.X;
-        double y = p1.Y - p2.Y;
-        double z = p1.Z - p2.Z;
+    public static float Distance(Point p1, Point p2){
+        float x = p1.X - p2.X;
+        float y = p1.Y - p2.Y;
+        float z = p1.Z - p2.Z;
 
-        return sqrt(x * x + y * y + z * z);
+        return (float) sqrt(x * x + y * y + z * z);
     }
     /**
      * Calculates the distance of a point from a line.
@@ -58,10 +58,10 @@ public class CartesianSpaceOperations {
      * @param l The line from which you want to calculate the distance.
      * @return The distance between point and line.
      */
-    public static double Distance(Point p, Line l){
+    public static float Distance(Point p, Line l){
         //d = |(P - pointOnLine)x(l, m, n)| / sqrt(l^2 + m^2 + n^2)
-        return CrossProduct( new Vector( p, l.startPoint ), l.dirVector ).getModule()
-            / sqrt(l.dirVector.X * l.dirVector.X + l.dirVector.Y * l.dirVector.Y + l.dirVector.Z * l.dirVector.Z);
+        return (float) (CrossProduct( new Vector( p, l.startPoint ), l.dirVector ).getModule()
+            / sqrt(l.dirVector.X * l.dirVector.X + l.dirVector.Y * l.dirVector.Y + l.dirVector.Z * l.dirVector.Z));
     }
 
     /**
@@ -74,7 +74,7 @@ public class CartesianSpaceOperations {
         // l.startPoint = (x0, y0, z0)
         //  l.dirVector = (l,m,n)
         //            p = (a,b,c)
-        double t = ((-l.startPoint.X + p.X) * l.dirVector.X +   //((-x0 + a) * l +
+        float t = ((-l.startPoint.X + p.X) * l.dirVector.X +   //((-x0 + a) * l +
                     (-l.startPoint.Y + p.Y) * l.dirVector.Y +   // (-y0 + b) * m +
                     (-l.startPoint.Z + p.Z) * l.dirVector.Z)    // (-z0 + c) * n)
                     /(l.dirVector.X * l.dirVector.X +           //(l^2 +
@@ -134,7 +134,7 @@ public class CartesianSpaceOperations {
      * @param v2 The second vector.
      * @return The result of the dot product.
      */
-    public static double DotProduct(Vector v1, Vector v2){
+    public static float DotProduct(Vector v1, Vector v2){
         return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
     }
 

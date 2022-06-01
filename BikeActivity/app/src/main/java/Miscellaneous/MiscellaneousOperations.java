@@ -2,6 +2,7 @@ package Miscellaneous;
 
 public class MiscellaneousOperations {
     private static final int SIGNIFICANT_DIGITS = 5;
+    private static final float TRUNCATE_CONSTANT = (float) Math.pow(10, SIGNIFICANT_DIGITS);
 
     /**
      * Truncates the specified number to the number of significant digits specified
@@ -9,10 +10,9 @@ public class MiscellaneousOperations {
      * @param num The number to be truncated.
      * @return The num number truncated.
      */
-    public static double Truncate(double num){
-        double sigDigits = Math.pow(10, SIGNIFICANT_DIGITS);
-        long numToLong = (long)(num * sigDigits);
-        return (double)numToLong / sigDigits;
+    public static float Truncate(double num){
+        long numToLong = (long)(num * TRUNCATE_CONSTANT);
+        return (float)(numToLong / TRUNCATE_CONSTANT);
     }
 
     /**
@@ -21,9 +21,9 @@ public class MiscellaneousOperations {
      * @param significantDigits The number of significant digits.
      * @return The num number truncated.
      */
-    public static double Truncate(double num, int significantDigits){
-        double sigDigits = Math.pow(10, significantDigits);
+    public static float Truncate(double num, int significantDigits){
+        float sigDigits = (float)Math.pow(10, significantDigits);
         long numToLong = (long)(num * sigDigits);
-        return (double)numToLong / sigDigits;
+        return (float)numToLong / sigDigits;
     }
 }

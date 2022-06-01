@@ -6,9 +6,9 @@ import androidx.annotation.NonNull;
  * Representation of a point in Cartesian space.
  */
 public class Point {
-    public final double X;
-    public final double Y;
-    public final double Z;
+    public final float X;
+    public final float Y;
+    public final float Z;
 
     /**
      * Initialize a point.
@@ -16,7 +16,7 @@ public class Point {
      * @param Y Ordinate.
      * @param Z Height.
      */
-    public Point(double X, double Y, double Z){
+    public Point(float X, float Y, float Z){
         this.X = X;
         this.Y = Y;
         this.Z = Z;

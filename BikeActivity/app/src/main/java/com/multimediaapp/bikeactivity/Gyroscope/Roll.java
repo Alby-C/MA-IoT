@@ -9,6 +9,8 @@ import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
 import com.multimediaapp.bikeactivity.Interfaces.IGyroListener;
 import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
 
+import Space.ReferenceSystemCommutator;
+
 public class Roll implements IGyroListener, IAccelListener {
     private final String TAG = Roll.class.getSimpleName();
 
@@ -31,9 +33,6 @@ public class Roll implements IGyroListener, IAccelListener {
     private long prevTimestamp;
     // Current component to the accelerometer of the angle
     private float currAccelAngle;
-
-    private boolean newGyro;
-    private boolean newAccel;
 
     public Roll(IMeasurementHandler iMeasurementHandler, int orientation){
         if(orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){

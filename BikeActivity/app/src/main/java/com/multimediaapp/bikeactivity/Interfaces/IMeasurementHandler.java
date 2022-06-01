@@ -1,7 +1,6 @@
 package com.multimediaapp.bikeactivity.Interfaces;
 
-public interface IMeasurementHandler
-{
+public interface IMeasurementHandler{
   /**
    * method to handle the variation of speed
    * @param newSpeed  Current speed detected
@@ -14,6 +13,4 @@ public interface IMeasurementHandler
    * @param currentRoll Current roll detected
    */
   void onChangeRoll(float currentRoll);
-
-  void onChangeAcc(float accelerationAxis, float accZ);
 }

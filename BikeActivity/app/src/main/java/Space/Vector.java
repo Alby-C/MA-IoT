@@ -9,9 +9,9 @@ public class Vector {
      //The null vector
     public static final Vector ZERO_VECTOR = new Vector(0,0,0);
 
-    public final double X;
-    public final double Y;
-    public final double Z;
+    public final float X;
+    public final float Y;
+    public final float Z;
 
     /**
      * Initialize a vector.
@@ -19,7 +19,7 @@ public class Vector {
      * @param Y Ordinate.
      * @param Z Height.
      */
-    public Vector(double X, double Y, double Z){
+    public Vector(float X, float Y, float Z){
         this.X = X;
         this.Y = Y;
         this.Z = Z;
@@ -42,7 +42,7 @@ public class Vector {
      * @param unitVector The unit vector that establishes the direction
      *              (if it is not a unit vector it will still be normalized).
      */
-    public Vector(double module, Vector unitVector){
+    public Vector(float module, Vector unitVector){
         if(unitVector.getModule() != 1)
             unitVector = unitVector.toUnitVector();
 
@@ -55,8 +55,8 @@ public class Vector {
      * Calculates the modulus of the current vector instance.
      * @return The instance module.
      */
-    public double getModule() {
-        return Math.sqrt(X * X + Y * Y + Z * Z);
+    public float getModule() {
+        return (float)Math.sqrt(X * X + Y * Y + Z * Z);
     }
 
     /**
@@ -87,8 +87,8 @@ public class Vector {
      * [2] = Z.
      * @return The current instance as an array.
      */
-    public double[] toArray(){
-        return new double[]{this.X, this.Y, this.Z};
+    public float[] toArray(){
+        return new float[]{this.X, this.Y, this.Z};
     }
 
     /**

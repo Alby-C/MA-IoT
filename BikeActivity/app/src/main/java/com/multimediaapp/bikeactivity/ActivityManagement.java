@@ -14,10 +14,14 @@ import android.widget.TextView;
 import com.multimediaapp.bikeactivity.Accelerometer.Accelerometer;
 import com.multimediaapp.bikeactivity.Gyroscope.Gyro;
 import com.multimediaapp.bikeactivity.Gyroscope.Roll;
+import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
 import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
 import com.multimediaapp.bikeactivity.Speed.Speedometer;
 
-public class ActivityManagement extends AppCompatActivity implements IMeasurementHandler {
+import Space.ReferenceSystemCommutator;
+import Space.Vector;
+
+public class ActivityManagement extends AppCompatActivity implements IMeasurementHandler, IAccelListener {
 
     private final String TAG = ActivityManagement.class.getSimpleName();
 
@@ -55,6 +59,11 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private float maxSpeed = 0;
     private float maxRightRoll = 0;
     private float maxLeftRoll = 0;
+
+    /////////////////////////// Reference systems
+    private ReferenceSystemCommutator rsCommutator;
+    private AccelCommutator accelCommutator;
+    private GyroCommutator gyroCommutator;
 
 
     @Override
@@ -99,16 +108,29 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         gyroManager = (SensorManager)getSystemService((Context.SENSOR_SERVICE));
         gyro = gyroManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         gyroscope = new Gyro(gyro, gyroManager);
-        gyroscope.SubscribeListener(roll);
 
         /// Accelerometer request
         accManager = (SensorManager)getSystemService((Context.SENSOR_SERVICE));
         acc = gyroManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         accelerometer = new Accelerometer(acc, accManager);
-        accelerometer.SubscribeListener(roll);
 
-        gyroscope.Start();
+        ReferenceSystemCommutatorInit();
+    }
+
+    private void ReferenceSystemCommutatorInit() {
+        accelerometer.SubscribeListener(this);
         accelerometer.Start();
+    }
+
+    private void Start(){
+        accelerometer.SubscribeListener(accelCommutator);
+        gyroscope.SubscribeListener(gyroCommutator);
+
+        accelCommutator.SubscribeListener(roll);
+        gyroCommutator.SubscribeListener(roll);
+
+        accelerometer.Start();
+        gyroscope.Start();
     }
 
     @Override
@@ -134,9 +156,35 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         tvCurrTilt.setText(getString(R.string.defaultTVCurrTilt) + " " + (int)roll + "°");
     }
 
+    private final int AVERAGE_CYCLES = 10;
+    private int cycles = AVERAGE_CYCLES;
+    private float meanX = 0,meanY = 0, meanZ = 0;
+    /**
+     * It takes care of initializing the rfCommutator.
+     * @param timestamp The timestamp of the measurement.
+     * @param newValues New linear acceleration values along three axis in m/s^2.
+     */
     @Override
-    public void onChangeAcc(float accelerationAxis, float accelZ) {
+    public void onChangeAccel(long timestamp, float[] newValues) {
+        if(cycles > 0){
+            meanX+=newValues[0];
+            meanY+=newValues[1];
+            meanZ+=newValues[2];
 
+            cycles--;
+        }
+        else{
+            accelerometer.Stop();
+            accelerometer.UnsubscribeListener(this);
+
+            cycles = AVERAGE_CYCLES;
+
+            rsCommutator = new ReferenceSystemCommutator(new Vector(meanX/cycles,meanY/cycles, meanZ/cycles));
+
+            accelCommutator = new AccelCommutator(rsCommutator);
+            gyroCommutator = new GyroCommutator(rsCommutator);
+
+            Start();
+        }
     }
-
 }
