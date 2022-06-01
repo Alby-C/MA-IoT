@@ -6,8 +6,8 @@
     <string name="defaultTVMaxSpeed">Velocità massima:</string>
     <string name="defaultTVAvgSpeed">Velocità media:</string>
     <string name="defaultTVCurrSpeed">Velocità istantanea:</string>
-    <string name="defaultTVCurrTilt">Inclinazione corrente:</string>
-    <string name="defaultTVLeftMaxtTilt">Massima inclinazione sinistra:</string>
+    <string name="defaultTVCurrRoll">Inclinazione corrente:</string>
+    <string name="defaultTVLeftMaxRoll">Massima inclinazione sinistra:</string>
     <string name="defaultTVRightMaxTilt">Massima inclinazione destra:</string>
     <string name="defaultTVCurrX">X:</string>
     <string name="defaultTVCurrY">Y:</string>
