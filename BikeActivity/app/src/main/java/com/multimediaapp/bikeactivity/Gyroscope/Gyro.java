@@ -8,10 +8,13 @@ import android.hardware.SensorManager;
 
 import com.multimediaapp.bikeactivity.Interfaces.IGyroListener;
 import com.multimediaapp.bikeactivity.Interfaces.ISensorManager;
+import com.multimediaapp.bikeactivity.MainActivity;
 
 import java.util.ArrayList;
 
 public class Gyro implements SensorEventListener, ISensorManager<IGyroListener>{
+    private final String TAG = Gyro.class.getSimpleName();
+
     /// Array of listeners to the new values of the gyroscope
     private final ArrayList<IGyroListener> listeners = new ArrayList<>();
     /// True if the sensor is getting

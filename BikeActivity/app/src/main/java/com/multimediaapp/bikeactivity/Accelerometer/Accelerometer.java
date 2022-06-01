@@ -7,11 +7,14 @@ import android.hardware.SensorManager;
 
 import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
 import com.multimediaapp.bikeactivity.Interfaces.ISensorManager;
+import com.multimediaapp.bikeactivity.MainActivity;
 
 import java.util.ArrayList;
 
 public class Accelerometer implements SensorEventListener, ISensorManager<IAccelListener>
 {
+    private final String TAG = Accelerometer.class.getSimpleName();
+
     /// Array of listeners to the new values of the gyroscope
     private final ArrayList<IAccelListener> listeners = new ArrayList<>();
     /// True if the sensor is getting

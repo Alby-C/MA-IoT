@@ -10,12 +10,14 @@ import com.multimediaapp.bikeactivity.Interfaces.IGyroListener;
 import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
 
 public class Roll implements IGyroListener, IAccelListener {
+    private final String TAG = Roll.class.getSimpleName();
+
     private static final int X = 0;
     private static final int Y = 1;
     private static final int Z = 2;
     private static final float NS2S = 1.0f / 1000000000.0f; ///Constant to convert from nanoseconds to seconds
     private static final double R2D = 180./ PI;             ///Constant to convert from radians to degree
-    private static final float EPSILON = 0.06f;             ///Constant for threshold
+    private static final float EPSILON =0.01f;             ///Constant for threshold
 
     private final IMeasurementHandler iMeasurementHandler;
 
@@ -70,7 +72,7 @@ public class Roll implements IGyroListener, IAccelListener {
 
     public void calculateRoll() {
         /// Complementary filter to have very accuracy data
-        this.currAngle = (float) (0.90f * (this.currAngle + this.currGyroAngle) + 0.1f * this.currAccelAngle);
+        this.currAngle = (0.98f * (this.currAngle + this.currGyroAngle)) + (0.02f * this.currAccelAngle);
 
         iMeasurementHandler.onChangeRoll(currAngle);
     }
