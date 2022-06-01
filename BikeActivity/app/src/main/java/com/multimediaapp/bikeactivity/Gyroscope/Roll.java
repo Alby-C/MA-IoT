@@ -84,6 +84,7 @@ public class Roll implements IGyroListener, IAccelListener {
 
     public void calculateRoll() {
         /// Complementary filter to have very accuracy data
+
         this.currAngle = ( filterPercent * (this.currAngle + this.currGyroAngle)) + ((1-filterPercent)* this.currAccelAngle);
 
         iMeasurementHandler.onChangeRoll(currAngle);
