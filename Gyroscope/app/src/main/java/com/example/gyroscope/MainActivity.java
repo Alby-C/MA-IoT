@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     // Constants for simple data processing
     private static final float NS2S = 1.0f / 1000000000.0f;
     private static final float EPSILON = 0.06f;
+
+    private List<float[]> angleValues = null;
 
     // Variable used to save the current timestamp, needed to calculate the time delta accurately
     private double ts;
@@ -95,9 +98,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 angleY = 0;
                 angleZ = 0;
                 ts = SystemClock.elapsedRealtimeNanos();
-                tvX.setText("0.0");
-                tvY.setText("0.0");
-                tvZ.setText("0.0");
+                tvX.setText("Rotation around X-axis: 0.0°");
+                tvY.setText("Rotation around X-axis: 0.0°");
+                tvZ.setText("Rotation around X-axis: 0.0°");
             }
         });
     }
@@ -116,14 +119,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         if(omegaMag > EPSILON){
             // Omega = dTheta/dt => Theta = I(Omega) => Theta(t + dt) = Theta(t)+dt*delTheta
-            angleX += delta*axisX;
-            angleY += delta*axisY;
-            angleZ += delta*axisZ;
+            if(axisX>EPSILON){
+                angleX += delta*axisX;
+            }
+            if(axisY>EPSILON){
+                angleX += delta*axisX;
+            }
+            if(axisZ>EPSILON){
+                angleX += delta*axisX;
+            }
         }
 
         // We leave the variable in radians
-        tvX.setText("Rotation around X-axis: " + angleX * 180 / 3.14 + "°" );
-        tvY.setText("Rotation around Y-axis: " + angleY * 180 / 3.14 + "°");
+        tvX.setText("Rotation around X-axis: " + (float)(angleX * 180 / 3.14) + "°" );
+        tvY.setText("Rotation around Y-axis: " + (angleY * 180 / 3.14 + "°");
         tvZ.setText("Rotation around Z-axis: " + angleZ * 180 / 3.14 + "°");
 
         // Salvo il valore corrente necessario a calcolare il delta successivo
