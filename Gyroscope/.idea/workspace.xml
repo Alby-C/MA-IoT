@@ -9,15 +9,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-<<<<<<< HEAD
-    <list default="true" id="363909e9-da9f-4468-8e33-a948d3f61e17" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-=======
     <list default="true" id="6685678f-e4e9-4638-8f0a-e69b0f452cee" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/gyroscope/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/gyroscope/MainActivity.java" afterDir="false" />
->>>>>>> 781586938791807659f10c705102a2719f299532
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,33 +28,19 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-<<<<<<< HEAD
-  <component name="ProjectId" id="29T681uysf4a2LpmXIFRj2g5FvF" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
-=======
   <component name="ProjectId" id="29hcT1LZWDIu2ua1sAQF3KZIIW9" />
   <component name="ProjectViewState">
     <option name="flattenPackages" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
->>>>>>> 781586938791807659f10c705102a2719f299532
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
-<<<<<<< HEAD
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="cidr.known.project.marker" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/OneDrive - unige.it/UNI/IoT/App Multimedia and IoT/AndroidStudioProjects/Async" />
-=======
     <property name="cidr.known.project.marker" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
->>>>>>> 781586938791807659f10c705102a2719f299532
   </component>
   <component name="RunManager">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
@@ -76,11 +57,6 @@
       <option name="MODE" value="default_activity" />
       <option name="CLEAR_LOGCAT" value="false" />
       <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
-<<<<<<< HEAD
-      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
-      <option name="FORCE_STOP_RUNNING_APP" value="true" />
-=======
->>>>>>> 781586938791807659f10c705102a2719f299532
       <option name="INSPECTION_WITHOUT_ACTIVITY_RESTART" value="false" />
       <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
       <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
@@ -128,28 +104,6 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-<<<<<<< HEAD
-      <changelist id="363909e9-da9f-4468-8e33-a948d3f61e17" name="Default Changelist" comment="" />
-      <created>1653124565466</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1653124565466</updated>
-    </task>
-    <servers />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-=======
       <changelist id="6685678f-e4e9-4638-8f0a-e69b0f452cee" name="Changes" comment="" />
       <created>1653568766965</created>
       <option name="number" value="Default" />
@@ -158,5 +112,4 @@
     </task>
     <servers />
   </component>
->>>>>>> 781586938791807659f10c705102a2719f299532
 </project>

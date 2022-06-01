@@ -27,6 +27,7 @@ public class Roll implements IGyroListener, IAccelListener {
     private static final double R2D = 180./ PI;             ///Constant to convert from radians to degree
     private static final float EPSILON =0.01f;             ///Constant for threshold
 
+    private final float filterPercent = 0.95f;
     private final IMeasurementHandler iMeasurementHandler;
 
     private final int gyroAxis;
@@ -82,7 +83,7 @@ public class Roll implements IGyroListener, IAccelListener {
 
     public void calculateRoll() {
         /// Complementary filter to have very accuracy data
-        this.currAngle = ( 0.90f * (this.currAngle + this.currGyroAngle)) + (0.10f * this.currAccelAngle);
+        this.currAngle = ( filterPercent * (this.currAngle + this.currGyroAngle)) + ((1-filterPercent)* this.currAccelAngle);
 
         iMeasurementHandler.onChangeRoll(currAngle);
     }

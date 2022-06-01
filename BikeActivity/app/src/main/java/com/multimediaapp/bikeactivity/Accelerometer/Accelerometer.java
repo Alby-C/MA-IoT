@@ -27,7 +27,7 @@ public class Accelerometer extends BaseSensor<IAccelListener> implements SensorE
         if(listeners.size() == 0)
             requestToStart = true;
         else {
-            accManager.registerListener(accListener, acc, SensorManager.SENSOR_DELAY_NORMAL);
+            accManager.registerListener(accListener, acc, SensorManager.SENSOR_DELAY_GAME);
             isRunning = true;
         }
     }
