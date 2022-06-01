@@ -1,6 +1,10 @@
 package com.multimediaapp.bikeactivity.Gyroscope;
 
 import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.atan;
+
+import static Space.CartesianSpaceOperations.AngleBetween;
 
 import android.content.pm.ActivityInfo;
 import android.os.SystemClock;
@@ -9,7 +13,9 @@ import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
 import com.multimediaapp.bikeactivity.Interfaces.IGyroListener;
 import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
 
+import Space.CartesianSpaceOperations;
 import Space.ReferenceSystemCommutator;
+import Space.Vector;
 
 public class Roll implements IGyroListener, IAccelListener {
     private final String TAG = Roll.class.getSimpleName();
@@ -25,6 +31,7 @@ public class Roll implements IGyroListener, IAccelListener {
 
     private final int gyroAxis;
     private final int accelRefAxis;
+    private final int inverter;
 
     // Current angle
     private float currAngle = 0;
@@ -38,10 +45,12 @@ public class Roll implements IGyroListener, IAccelListener {
         if(orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
             gyroAxis = Y;
             accelRefAxis = X;
+            inverter = -1;
         }
         else{
             gyroAxis = X;
             accelRefAxis = Y;
+            inverter = 1;
         }
 
         this.iMeasurementHandler = iMeasurementHandler;
@@ -64,14 +73,16 @@ public class Roll implements IGyroListener, IAccelListener {
 
     @Override
     public void onChangeAccel(long timestamp, float[] newValues) {
-        this.currAccelAngle = (float) (Math.atan(newValues[accelRefAxis] / newValues[Z]) * R2D);
+        this.currAccelAngle = inverter * (float)(atan(newValues[accelRefAxis] / newValues[Z]) * R2D);
+
+        //this.currAccelAngle = (float) ((newValues[0]/abs(newValues[0]))*AngleBetween(new Vector(newValues[0],0,newValues[Z]), new Vector(0, 0, 1))*R2D);
 
         calculateRoll();
     }
 
     public void calculateRoll() {
         /// Complementary filter to have very accuracy data
-        this.currAngle = (0.98f * (this.currAngle + this.currGyroAngle)) + (0.02f * this.currAccelAngle);
+        this.currAngle = ( 0.90f * (this.currAngle + this.currGyroAngle)) + (0.10f * this.currAccelAngle);
 
         iMeasurementHandler.onChangeRoll(currAngle);
     }
