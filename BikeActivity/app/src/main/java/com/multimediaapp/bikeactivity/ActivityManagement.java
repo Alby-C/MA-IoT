@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.multimediaapp.bikeactivity.Accelerometer.Accelerometer;
+import com.multimediaapp.bikeactivity.Accelerometer.Jump;
 import com.multimediaapp.bikeactivity.Gyroscope.Gyro;
 import com.multimediaapp.bikeactivity.Gyroscope.Roll;
 import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
@@ -65,6 +66,8 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private AccelCommutator accelCommutator;
     private GyroCommutator gyroCommutator;
 
+    private Jump jump;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +103,9 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         /// Location manager instance to pass to the speedometer class
         lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         speedometer = new Speedometer(lm, this, this);
+
+        /// Jump manager
+        jump = new Jump(this);
 
         /// Roll manager
         roll = new Roll(this, _orientation);
@@ -146,14 +152,19 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     public void onChangeRoll(float roll) {
         if (roll > maxRightRoll){
             maxRightRoll = roll;
-            tvRightMaxTilt.setText(getString(R.string.defaultTVRightMaxTilt) + " " + (int) maxRightRoll + "°");
+            tvRightMaxTilt.setText(getString(R.string.defaultTVRightMaxTilt) + " " + (int)maxRightRoll + "°");
         }
         else if (roll < maxLeftRoll) {
             maxLeftRoll = roll;
-            tvLeftMaxTilt.setText(getString(R.string.defaultTVLeftMaxtTilt) + " " + (int)( maxLeftRoll) + "°");
+            tvLeftMaxTilt.setText(getString(R.string.defaultTVLeftMaxtTilt) + " " + (int)maxLeftRoll + "°");
         }
 
         tvCurrTilt.setText(getString(R.string.defaultTVCurrTilt) + " " + (int)roll + "°");
+    }
+
+    @Override
+    public void onJumpHappened(long flightTime) {
+
     }
 
     private final int AVERAGE_CYCLES = 10;

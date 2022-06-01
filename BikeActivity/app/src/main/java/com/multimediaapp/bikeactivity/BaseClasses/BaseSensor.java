@@ -4,6 +4,10 @@ import com.multimediaapp.bikeactivity.Interfaces.IGyroListener;
 
 import java.util.ArrayList;
 
+/**
+ * Base class for a sensor manager class.
+ * @param <T> The type of listener that can subscribe to this sensor.
+ */
 public abstract class BaseSensor<T> {
     /// Array of listeners to the new values of the gyroscope
     protected final ArrayList<T> listeners = new ArrayList<>();
