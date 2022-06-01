@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -13,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.multimediaapp.bikeactivity.Accelerometer.Accelerometer;
+import com.multimediaapp.bikeactivity.Gyroscope.Gyro;
 import com.multimediaapp.bikeactivity.Gyroscope.Roll;
 import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
 import com.multimediaapp.bikeactivity.Speed.Speedometer;
@@ -20,7 +20,8 @@ import com.multimediaapp.bikeactivity.Speed.Speedometer;
 public class ActivityManagement extends AppCompatActivity implements IMeasurementHandler {
 
     private final String TAG = ActivityManagement.class.getSimpleName();
-    /// Layout class
+
+    /// Layout classes
     private TextView tvMaxSpeed = null;
     private TextView tvAvgSpeed = null;
     private TextView tvCurrSpeed = null;
@@ -32,34 +33,32 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private TextView tvCurrZ = null;
     private Button bttPause = null;
     private Button bttStop = null;
-   ///////////////////////////// Gyro
 
+   ///////////////////////////// Gyro
     private Sensor gyro = null;
     private SensorManager gyroManager = null;
-    private Roll roll = null;
+    private Gyro gyroscope = null;
 
     //////////////////////////// Speedometer
     private LocationManager lm = null;
     private Speedometer speedometer = null;
 
     /////////////////////////// Accelerometer
-    private Accelerometer accellerometer = null;
+    private Accelerometer accelerometer = null;
     private Sensor acc = null;
     private SensorManager accManager = null;
-    private float acceleartionAxis = 0;
-    private float accelZ = 0;
+
+    /////////////////////////// Roll Evaluator
+    private Roll roll;
 
     /////////////////////////// Variables
     private float maxSpeed = 0;
-    private float maxRightTilt= 0;
-    private float maxLeftTilt= 0;
-    private float angle = 0;
-    private float tempRoll = 0;
+    private float maxRightRoll = 0;
+    private float maxLeftRoll = 0;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         int _contentView;
         int _orientation = getIntent().getIntExtra(getString(R.string.ORIENTATION),ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         switch (_orientation)
@@ -89,24 +88,31 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         bttPause = findViewById(R.id.bttPause);
         bttStop = findViewById(R.id.bttStop);
 
-        /// Location manager instance to pass to the spedometer class
+        /// Location manager instance to pass to the speedometer class
         lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         speedometer = new Speedometer(lm, this, this);
+
+        /// Roll manager
+        roll = new Roll(this, _orientation);
 
         /// Gyro request
         gyroManager = (SensorManager)getSystemService((Context.SENSOR_SERVICE));
         gyro = gyroManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-        roll = new Roll(gyro, gyroManager, this, _orientation);
+        gyroscope = new Gyro(gyro, gyroManager);
+        gyroscope.SubscribeListener(roll);
 
         /// Accelerometer request
         accManager = (SensorManager)getSystemService((Context.SENSOR_SERVICE));
         acc = gyroManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        accellerometer = new Accelerometer(acc, accManager, this, _orientation);
+        accelerometer = new Accelerometer(acc, accManager);
+        accelerometer.SubscribeListener(roll);
+
+        gyroscope.Start();
+        accelerometer.Start();
     }
 
     @Override
-    public void onChangeSpeed(float newSpeed, float avgSpeed)
-    {
+    public void onChangeSpeed(float newSpeed, float avgSpeed) {
         tvCurrSpeed.setText(getString(R.string.defaultTVCurrSpeed) + " " + String.format("%.2f", newSpeed));
         tvAvgSpeed.setText(getString(R.string.defaultTVAvgSpeed) + " " + String.format("%.2f",avgSpeed));
         if(newSpeed > maxSpeed)
@@ -115,34 +121,22 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     }
 
     @Override
-    public void onChangeRoll(float currentRoll)
-    {
-        this.tempRoll = (float)(currentRoll * 180. / Math.PI);
-        /// Complementary filter to have very accuracy data
-        this.angle = (float) (0.90 * (this.angle + this.tempRoll) + 0.10* this.acceleartionAxis);
-        setAngle();
+    public void onChangeRoll(float roll) {
+        if (roll > maxRightRoll){
+            maxRightRoll = roll;
+            tvRightMaxTilt.setText(getString(R.string.defaultTVRightMaxTilt) + " " + (int) maxRightRoll + "°");
+        }
+        else if (roll < maxLeftRoll) {
+            maxLeftRoll = roll;
+            tvLeftMaxTilt.setText(getString(R.string.defaultTVLeftMaxtTilt) + " " + (int)( maxLeftRoll) + "°");
+        }
+
+        tvCurrTilt.setText(getString(R.string.defaultTVCurrTilt) + " " + (int)roll + "°");
     }
 
     @Override
-    public void onChangeAcc(float acceleartionAxis, float accelZ)
-    {
-        /// Calculate the angle of accellerometer
-        this.acceleartionAxis = (float) (Math.atan(acceleartionAxis / accelZ) * 180 / Math.PI);
-        /// Complementary filter to have very accuracy data
-        this.angle = (float) (0.90 * (this.angle + this.tempRoll) + 0.10 * this.acceleartionAxis);
-        setAngle();
+    public void onChangeAcc(float accelerationAxis, float accelZ) {
+
     }
 
-private void setAngle()
-    {
-        if (this.angle > maxRightTilt)
-            maxRightTilt = this.angle;
-
-        if (this.angle < maxLeftTilt)
-            maxLeftTilt = this.angle;
-
-        tvCurrTilt.setText(getString(R.string.defaultTVCurrTilt) + " " + (int)Math.abs(this.angle) + "°");
-        tvLeftMaxTilt.setText(getString(R.string.defaultTVLeftMaxtTilt) + " " + (int)( -1 * maxLeftTilt) + "°");
-        tvRightMaxTilt.setText(getString(R.string.defaultTVRightMaxTilt) + " " + (int)maxRightTilt + "°");
-    }
 }

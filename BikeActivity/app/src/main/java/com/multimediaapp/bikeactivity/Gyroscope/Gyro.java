@@ -1,33 +1,32 @@
-package com.multimediaapp.bikeactivity.Accelerometer;
+package com.multimediaapp.bikeactivity.Gyroscope;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
+
+import com.multimediaapp.bikeactivity.Interfaces.IGyroListener;
 import com.multimediaapp.bikeactivity.Interfaces.ISensorManager;
 
 import java.util.ArrayList;
 
-public class Accelerometer implements SensorEventListener, ISensorManager<IAccelListener>
-{
+public class Gyro implements SensorEventListener, ISensorManager<IGyroListener>{
     /// Array of listeners to the new values of the gyroscope
-    private final ArrayList<IAccelListener> listeners = new ArrayList<>();
+    private final ArrayList<IGyroListener> listeners = new ArrayList<>();
     /// True if the sensor is getting
     private boolean isRunning = false;
     /// this flag if no listeners are subscribed, is set to true in the start method
     private boolean requestToStart = false;
 
-    private final Sensor acc;
-    private final SensorManager accManager;
-    private final SensorEventListener accListener;
+    private final Sensor gyro;
+    private final SensorManager gyroManager;
+    private final SensorEventListener gyroListener;
 
-    public Accelerometer(Sensor acc, SensorManager accManager)
-    {
-        this.acc = acc;
-        this.accManager = accManager;
-        this.accListener = this;
+    public Gyro(Sensor gyro, SensorManager gyroManager ){
+        this.gyro = gyro;
+        this.gyroManager = gyroManager;
+        this.gyroListener = this;
     }
 
     @Override
@@ -35,7 +34,7 @@ public class Accelerometer implements SensorEventListener, ISensorManager<IAccel
         if(listeners.size() == 0)
             requestToStart = true;
         else {
-            accManager.registerListener(accListener, acc, SensorManager.SENSOR_DELAY_NORMAL);
+            gyroManager.registerListener(gyroListener, gyro, SensorManager.SENSOR_DELAY_NORMAL);
             isRunning = true;
         }
     }
@@ -43,13 +42,13 @@ public class Accelerometer implements SensorEventListener, ISensorManager<IAccel
     @Override
     public void Stop() {
         if(!isRunning)
-            accManager.unregisterListener(accListener);
+            gyroManager.unregisterListener(gyroListener);
 
         requestToStart = false;
     }
 
     @Override
-    public void SubscribeListener(IAccelListener listener) {
+    public void SubscribeListener(IGyroListener listener) {
         if(!this.listeners.contains(listener))
             this.listeners.add(listener);
 
@@ -60,22 +59,20 @@ public class Accelerometer implements SensorEventListener, ISensorManager<IAccel
     }
 
     @Override
-    public void UnsubscribeListener(IAccelListener listener) {
+    public void UnsubscribeListener(IGyroListener listener) {
         this.listeners.remove(listener);
     }
 
     @Override
-    public void onSensorChanged(SensorEvent event) {
-        for (IAccelListener listener :
+    public void onSensorChanged(SensorEvent event){
+        for (IGyroListener listener :
                 listeners) {
-            listener.onChangeAccel(event.timestamp, event.values);
+            listener.onChangeGyro(event.timestamp, event.values);
         }
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy)
-    {
+    public void onAccuracyChanged(Sensor sensor, int accuracy){
 
     }
-
 }

@@ -1,79 +1,77 @@
 package com.multimediaapp.bikeactivity.Gyroscope;
 
-import android.content.Context;
+import static java.lang.Math.PI;
+
 import android.content.pm.ActivityInfo;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.SystemClock;
 
-
+import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
+import com.multimediaapp.bikeactivity.Interfaces.IGyroListener;
 import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
 
-public class Roll implements SensorEventListener
-{
-    private Sensor gyro = null;
-    private SensorManager gyroManager = null;
-    private SensorEventListener gyroListener = null;
-    private IMeasurementHandler onRollChange = null;
-    private Context context = null;
+public class Roll implements IGyroListener, IAccelListener {
+    private static final int X = 0;
+    private static final int Y = 1;
+    private static final int Z = 2;
+    private static final float NS2S = 1.0f / 1000000000.0f; ///Constant to convert from nanoseconds to seconds
+    private static final double R2D = 180./ PI;             ///Constant to convert from radians to degree
+    private static final float EPSILON = 0.06f;             ///Constant for threshold
 
-    /// Constant to convert nanosec to sec
-    private static final float NS2S = 1.0f / 1000000000.0f;
-    /// Constant for threeshold
-    private static final float EPSILON = 0.06f;
-    /// Variables
-    private float angle = 0;
-    private float axis = 0;
-    private int coord = 0;
-    private int orientation = 0;
-    /// Time to calculate the integral
-    private double ts;
+    private final IMeasurementHandler iMeasurementHandler;
 
-    public Roll(Sensor gyro, SensorManager gyroManager, IMeasurementHandler onRollChange, int orientation )
-    {
-        this.gyro = gyro;
-        this.gyroManager = gyroManager;
-        this.gyroListener = this;
-        this.onRollChange = onRollChange;
-        this.orientation = orientation;
-        Start(orientation);
-    }
+    private final int gyroAxis;
+    private final int accelRefAxis;
 
-    public void Start(int orientation)
-    {
-        if(orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-            /// y axis on portrait mode
-            coord = 1;
-        else
-            /// x axis on landascape mode
-            coord = 0;
+    // Current angle
+    private float currAngle = 0;
+    // Current component to the gyro of the angle
+    private float currGyroAngle;
+    private long prevTimestamp;
+    // Current component to the accelerometer of the angle
+    private float currAccelAngle;
 
-        gyroManager.registerListener(gyroListener, gyro, SensorManager.SENSOR_DELAY_GAME);
-        // timestamp initialization
-        ts = SystemClock.elapsedRealtimeNanos();
+    private boolean newGyro;
+    private boolean newAccel;
+
+    public Roll(IMeasurementHandler iMeasurementHandler, int orientation){
+        if(orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
+            gyroAxis = Y;
+            accelRefAxis = X;
+        }
+        else{
+            gyroAxis = X;
+            accelRefAxis = Y;
+        }
+
+        this.iMeasurementHandler = iMeasurementHandler;
+
+        prevTimestamp = SystemClock.elapsedRealtimeNanos();
     }
 
     @Override
-    public void onSensorChanged(SensorEvent event) {
-        double delta = (event.timestamp - ts) * NS2S;
-        /// Get accellaration angular
-        axis = event.values[coord];
+    public void onChangeGyro(long timestamp, float[] newValues) {
+        float delta = (timestamp - this.prevTimestamp) * NS2S;
 
-        /// Discrete integral to calculate the angle
-        angle = (float) delta * axis;
+        /// Discrete integral to calculate the angle, then convert it to degrees
+        this.currGyroAngle = (float) (delta * newValues[gyroAxis] * R2D);
 
-        /// Send new angle to activity management
-        onRollChange.onChangeRoll(angle);
+        calculateRoll();
 
         /// Set new timestamp
-        ts = event.timestamp;
+        prevTimestamp = timestamp;
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy)
-    {
+    public void onChangeAccel(long timestamp, float[] newValues) {
+        this.currAccelAngle = (float) (Math.atan(newValues[accelRefAxis] / newValues[Z]) * R2D);
 
+        calculateRoll();
+    }
+
+    public void calculateRoll() {
+        /// Complementary filter to have very accuracy data
+        this.currAngle = (float) (0.90f * (this.currAngle + this.currGyroAngle) + 0.1f * this.currAccelAngle);
+
+        iMeasurementHandler.onChangeRoll(currAngle);
     }
 }

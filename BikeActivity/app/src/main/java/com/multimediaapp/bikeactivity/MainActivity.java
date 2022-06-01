@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnStart.setOnClickListener(new View.OnClickListener() {
             /**
-             * When click occours means that the bike activity is starting, so passes control to
+             * When click occurs means that the bike activity is starting, so passes control to
              * ActivityManagement.
              */
             @Override
