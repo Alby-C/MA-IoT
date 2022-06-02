@@ -6,6 +6,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.SystemClock;
+
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
@@ -21,6 +23,7 @@ public class Speedometer implements LocationListener
     private float avgSpeed = 0;
     // index to calculate speed average dynamically
     float n = 1;
+    private static final float NS2S = 1.0f / 1000000000.0f; ///Constant to convert from nanoseconds to seconds
 
 
     public Speedometer(LocationManager lm, IMeasurementHandler onSpeedChange, Context context)
@@ -50,13 +53,15 @@ public class Speedometer implements LocationListener
     @Override
     public void onLocationChanged(@NonNull Location location)
     {
+            long timestamp = SystemClock.elapsedRealtimeNanos();
             // Get the speed in meters per second and convert it to km/h multiplying by 3.6
             float nCurrentSpeed = location.getSpeed() * 3.6f;
             /// Calculation of  speed average through a portrait mathematical series
             avgSpeed = (1/n)*(nCurrentSpeed+(n-1)*avgSpeed);
             n++;
+
             /// Send result to activity management
-            onSpeedChange.onChangeSpeed(nCurrentSpeed, avgSpeed);
+            onSpeedChange.onChangeSpeed(nCurrentSpeed, avgSpeed, timestamp);
     }
 }
 

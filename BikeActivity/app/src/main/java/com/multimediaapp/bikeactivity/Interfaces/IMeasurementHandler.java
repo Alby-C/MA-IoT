@@ -6,13 +6,8 @@ public interface IMeasurementHandler{
    * @param newSpeed  Current speed detected
    * @param avgSpeed  Average speed
    */
-  void onChangeSpeed(float newSpeed, float avgSpeed);
+  void onChangeSpeed(float newSpeed, float avgSpeed, long timestamp);
 
-  /**
-   * Method to handle the variation of roll.
-   * @param currentRoll Current roll detected
-   */
-  void onChangeRoll(float currentRoll);
 
   /**
    * Method to handle the jump event.

@@ -2,27 +2,33 @@ package com.multimediaapp.bikeactivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.multimediaapp.bikeactivity.Accelerometer.Accelerometer;
 import com.multimediaapp.bikeactivity.Accelerometer.Jump;
+import com.multimediaapp.bikeactivity.DataBase.MyContentProvider;
+import com.multimediaapp.bikeactivity.DataBase.SaveData;
 import com.multimediaapp.bikeactivity.Gyroscope.Gyro;
 import com.multimediaapp.bikeactivity.Gyroscope.Roll;
 import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
 import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
+import com.multimediaapp.bikeactivity.Interfaces.IRollListener;
 import com.multimediaapp.bikeactivity.Speed.Speedometer;
 
 import Space.ReferenceSystemCommutator;
 import Space.Vector;
 
-public class ActivityManagement extends AppCompatActivity implements IMeasurementHandler, IAccelListener {
+public class ActivityManagement extends AppCompatActivity implements IMeasurementHandler, IAccelListener, IRollListener {
 
     private final String TAG = ActivityManagement.class.getSimpleName();
 
@@ -87,6 +93,12 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         super.onCreate(savedInstanceState);
         setContentView(_contentView);
 
+        /// Drop previous table
+        MyContentProvider.db.execSQL("DELETE FROM " + MyContentProvider.ACC_TABLE);
+        MyContentProvider.db.execSQL("DELETE FROM " + MyContentProvider.SPEED_TABLE);
+        MyContentProvider.db.execSQL("DELETE FROM  " + MyContentProvider.ROLL_TABLE);
+
+
         /// Set all text view and button
         tvMaxSpeed = findViewById(R.id.tvMaxSpeed);
         tvAvgSpeed = findViewById(R.id.tvAvgSpeed);
@@ -100,6 +112,17 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         bttPause = findViewById(R.id.bttPause);
         bttStop = findViewById(R.id.bttStop);
 
+        bttStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent toGraphActivity = new Intent((getString(R.string.LAUNCH_GRAPH_ACTIVITY)));
+                startActivity(toGraphActivity);
+                finish();
+            }
+        });
+        SaveData saveData = new SaveData(this);
+
         /// Location manager instance to pass to the speedometer class
         lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         speedometer = new Speedometer(lm, this, this);
@@ -108,7 +131,9 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         jump = new Jump(this);
 
         /// Roll manager
-        roll = new Roll(this, _orientation);
+        roll = new Roll( _orientation);
+        roll.SubscribeListener(this);
+        roll.SubscribeListener(saveData);
 
         /// Gyro request
         gyroManager = (SensorManager)getSystemService((Context.SENSOR_SERVICE));
@@ -121,6 +146,9 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         accelerometer = new Accelerometer(acc, accManager);
 
         ReferenceSystemCommutatorInit();
+
+
+
     }
 
     private void ReferenceSystemCommutatorInit() {
@@ -140,7 +168,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     }
 
     @Override
-    public void onChangeSpeed(float newSpeed, float avgSpeed) {
+    public void onChangeSpeed(float newSpeed, float avgSpeed, long timestamp) {
         tvCurrSpeed.setText(getString(R.string.defaultTVCurrSpeed) + " " + String.format("%.2f", newSpeed));
         tvAvgSpeed.setText(getString(R.string.defaultTVAvgSpeed) + " " + String.format("%.2f",avgSpeed));
         if(newSpeed > maxSpeed)
@@ -149,7 +177,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     }
 
     @Override
-    public void onChangeRoll(float roll) {
+    public void onChangeRoll(float roll, long timestamp) {
         if (roll > maxRightRoll){
             maxRightRoll = roll;
             tvRightMaxTilt.setText(getString(R.string.defaultTVRightMaxTilt) + " " + (int)maxRightRoll + "°");
@@ -158,7 +186,6 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
             maxLeftRoll = roll;
             tvLeftMaxTilt.setText(getString(R.string.defaultTVLeftMaxtTilt) + " " + (int)maxLeftRoll + "°");
         }
-
         tvCurrTilt.setText(getString(R.string.defaultTVCurrTilt) + " " + (int)roll + "°");
     }
 

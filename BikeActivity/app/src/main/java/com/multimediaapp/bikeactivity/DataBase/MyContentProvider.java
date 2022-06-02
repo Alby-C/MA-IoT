@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 public class MyContentProvider extends ContentProvider {
 
     private MyDataBase dbHelper;
-    private SQLiteDatabase db;
+    public static SQLiteDatabase db;
 
     public static final String SPEED_TABLE = "Velocità";
     public static final String ROLL_TABLE = "Angolo_di_piega";

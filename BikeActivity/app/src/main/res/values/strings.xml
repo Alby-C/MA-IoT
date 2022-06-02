@@ -13,6 +13,7 @@
     <string name="defaultTVCurrY">Y:</string>
     <string name="defaultTVCurrZ">Z:</string>
 
+    <string name="LAUNCH_GRAPH_ACTIVITY">com.multimediaapp.bikeactivity.GraphActivity</string>
     <string name="LAUNCH_BIKE_ACTIVITY">com.multimediaapp.bikeactivity.ActivityManagement</string>
     <string name="ORIENTATION">CHANGE_ORIENTATION_LABEL</string>
 

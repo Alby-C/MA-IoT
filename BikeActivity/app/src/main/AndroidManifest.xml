@@ -16,18 +16,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BikeActivity"
         tools:targetApi="31">
-<!--==MUST BE SHOWN VERTICALLY=====================================================================-->
+        <!--================================================================================================= -->
+        <activity
+            android:name=".GraphActivity"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.multimediaapp.bikeactivity.GraphActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <!-- ==MUST BE SHOWN VERTICALLY===================================================================== -->
         <activity
             android:name=".ActivityManagement"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.multimediaapp.bikeactivity.ActivityManagement"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.multimediaapp.bikeactivity.ActivityManagement" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>
-<!--==MUST BE SHOWN HORIZONTALLY===================================================================-->
-        <!--===============================================================================================-->
-        <!--===============================================================================================-->
+        </activity> <!-- ==MUST BE SHOWN HORIZONTALLY=================================================================== -->
+        <!-- =============================================================================================== -->
+        <!-- =============================================================================================== -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -43,6 +51,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <provider
+            android:authorities="com.multimediaapp.bikeactivity.DataBase"
+            android:name=".DataBase.MyContentProvider"
+            android:exported="true"
+            android:grantUriPermissions="true"
+            ></provider>
     </application>
 
 </manifest>
