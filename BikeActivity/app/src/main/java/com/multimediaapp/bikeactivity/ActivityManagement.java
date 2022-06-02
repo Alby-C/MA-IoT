@@ -1,5 +1,7 @@
 package com.multimediaapp.bikeactivity;
 
+import static Miscellaneous.MiscellaneousOperations.Truncate;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
@@ -42,8 +44,8 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private TextView tvCurrX = null;
     private TextView tvCurrY = null;
     private TextView tvCurrZ = null;
-    private Button bttPause = null;
-    private Button bttStop = null;
+    private Button btnPause = null;
+    private Button btnStop = null;
 
    ///////////////////////////// Gyro
     private Sensor gyro = null;
@@ -101,18 +103,18 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
 
         /// Set all text view and button
         tvMaxSpeed = findViewById(R.id.tvMaxSpeed);
-        tvAvgSpeed = findViewById(R.id.tvAvgSpeed);
+        tvAvgSpeed = findViewById(R.id.tvAverageSpeed);
         tvCurrSpeed = findViewById(R.id.tvCurrSpeed);
-        tvCurrTilt = findViewById(R.id.tvCurrTilt);
-        tvLeftMaxTilt = findViewById(R.id.tvLeftMaxTilt);
-        tvRightMaxTilt = findViewById(R.id.tvRightMaxTilt);
+        tvCurrTilt = findViewById(R.id.tvCurrRoll);
+        tvLeftMaxTilt = findViewById(R.id.tvLeftMaxRoll);
+        tvRightMaxTilt = findViewById(R.id.tvRightMaxRoll);
         tvCurrX = findViewById(R.id.tvCurrX);
         tvCurrY = findViewById(R.id.tvCurrY);
         tvCurrZ = findViewById( R.id.tvCurrZ);
-        bttPause = findViewById(R.id.bttPause);
-        bttStop = findViewById(R.id.bttStop);
+        btnPause = findViewById(R.id.btnPause);
+        btnStop = findViewById(R.id.btnStop);
 
-        bttStop.setOnClickListener(new View.OnClickListener() {
+        btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
@@ -161,32 +163,36 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         gyroscope.SubscribeListener(gyroCommutator);
 
         accelCommutator.SubscribeListener(roll);
+        accelCommutator.SubscribeListener(this);
         gyroCommutator.SubscribeListener(roll);
 
         accelerometer.Start();
         gyroscope.Start();
     }
 
-    @Override
-    public void onChangeSpeed(float newSpeed, float avgSpeed, long timestamp) {
-        tvCurrSpeed.setText(getString(R.string.defaultTVCurrSpeed) + " " + String.format("%.2f", newSpeed));
-        tvAvgSpeed.setText(getString(R.string.defaultTVAvgSpeed) + " " + String.format("%.2f",avgSpeed));
-        if(newSpeed > maxSpeed)
-            maxSpeed = newSpeed;
-            tvMaxSpeed.setText(getString(R.string.defaultTVMaxSpeed) + " " + String.format("%.2f",maxSpeed));
-    }
 
     @Override
     public void onChangeRoll(float roll, long timestamp) {
         if (roll > maxRightRoll){
             maxRightRoll = roll;
-            tvRightMaxTilt.setText(getString(R.string.defaultTVRightMaxTilt) + " " + (int)maxRightRoll + "°");
+            tvRightMaxTilt.setText((int)maxRightRoll + "°");
         }
         else if (roll < maxLeftRoll) {
             maxLeftRoll = roll;
-            tvLeftMaxTilt.setText(getString(R.string.defaultTVLeftMaxtTilt) + " " + (int)maxLeftRoll + "°");
+            tvLeftMaxTilt.setText((int)maxLeftRoll + "°");
         }
-        tvCurrTilt.setText(getString(R.string.defaultTVCurrTilt) + " " + (int)roll + "°");
+        tvCurrTilt.setText((int)roll + "°");
+    }
+
+    @Override
+    public void onChangeSpeed(float newSpeed, float avgSpeed, long timestamp) {
+
+        tvCurrSpeed.setText(String.format("%.2f", newSpeed));
+        tvAvgSpeed.setText(String.format("%.2f",avgSpeed));
+
+        if(newSpeed > maxSpeed)
+            maxSpeed = newSpeed;
+        tvMaxSpeed.setText(String.format("%.2f",maxSpeed));
     }
 
     @Override
@@ -197,6 +203,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private final int AVERAGE_CYCLES = 10;
     private int cycles = AVERAGE_CYCLES;
     private float meanX = 0,meanY = 0, meanZ = 0;
+    private boolean bool = true;
     /**
      * It takes care of initializing the rfCommutator.
      * @param timestamp The timestamp of the measurement.
@@ -204,25 +211,35 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
      */
     @Override
     public void onChangeAccel(long timestamp, float[] newValues) {
-        if(cycles > 0){
-            meanX+=newValues[0];
-            meanY+=newValues[1];
-            meanZ+=newValues[2];
+        if(bool){
+            if(cycles > 0){
+                meanX+=newValues[0];
+                meanY+=newValues[1];
+                meanZ+=newValues[2];
 
-            cycles--;
+                cycles--;
+            }
+            else{
+
+                accelerometer.Stop();
+                accelerometer.UnsubscribeListener(this);
+
+                cycles = AVERAGE_CYCLES;
+
+                rsCommutator = new ReferenceSystemCommutator(new Vector(meanX/cycles,meanY/cycles, meanZ/cycles));
+
+                accelCommutator = new AccelCommutator(rsCommutator);
+                gyroCommutator = new GyroCommutator(rsCommutator);
+
+                bool = false;
+                Start();
+            }
         }
         else{
-            accelerometer.Stop();
-            accelerometer.UnsubscribeListener(this);
-
-            cycles = AVERAGE_CYCLES;
-
-            rsCommutator = new ReferenceSystemCommutator(new Vector(meanX/cycles,meanY/cycles, meanZ/cycles));
-
-            accelCommutator = new AccelCommutator(rsCommutator);
-            gyroCommutator = new GyroCommutator(rsCommutator);
-
-            Start();
+            tvCurrX.setText(Truncate(newValues[0],1)+"\nm/s2");
+            tvCurrY.setText(Truncate(newValues[1],1)+"\nm/s2");
+            tvCurrZ.setText(Truncate(newValues[2],1)+"\nm/s2");
         }
+
     }
 }
