@@ -1,11 +1,8 @@
 package com.multimediaapp.bikeactivity;
 
 import static android.os.SystemClock.elapsedRealtimeNanos;
-import static java.lang.Thread.*;
+import static java.lang.Thread.sleep;
 import static Miscellaneous.MiscellaneousOperations.Truncate;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,12 +11,12 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.os.Bundle;
-
 import android.util.Log;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.multimediaapp.bikeactivity.Accelerometer.Accelerometer;
 import com.multimediaapp.bikeactivity.Accelerometer.Jump;
@@ -27,16 +24,14 @@ import com.multimediaapp.bikeactivity.DataBase.MyContentProvider;
 import com.multimediaapp.bikeactivity.DataBase.SaveData;
 import com.multimediaapp.bikeactivity.Gyroscope.Gyro;
 import com.multimediaapp.bikeactivity.Gyroscope.Roll;
-import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
 import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
-import com.multimediaapp.bikeactivity.Interfaces.IRollListener;
 import com.multimediaapp.bikeactivity.Speed.Speedometer;
 
 import Space.ReferenceSystemCommutator;
 import Space.Vector;
 import Time.Time;
 
-public class ActivityManagement extends AppCompatActivity implements IMeasurementHandler, IAccelListener, IRollListener {
+public class ActivityManagement extends AppCompatActivity implements IMeasurementHandler {
 
     private final String TAG = ActivityManagement.class.getSimpleName();
 
@@ -304,16 +299,6 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     }
 
     @Override
-    public void onChangeSpeed(float newSpeed, float avgSpeed) {
-        tvCurrSpeed.setText(String.format("%.2f", newSpeed));
-        tvAvgSpeed.setText(String.format("%.2f",avgSpeed));
-        if(newSpeed > maxSpeed)
-            maxSpeed = newSpeed;
-            tvMaxSpeed.setText(String.format("%.2f",maxSpeed));
-    }
-
-
-    @Override
     public void onChangeRoll(float roll, long timestamp) {
         if (roll > maxRightRoll){
             maxRightRoll = roll;
@@ -327,8 +312,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     }
 
     @Override
-    public void onChangeSpeed(float newSpeed, float avgSpeed, long timestamp) {
-
+    public void onChangeSpeed(long timestamp, float newSpeed, float avgSpeed) {
         tvCurrSpeed.setText(String.format("%.2f", newSpeed));
         tvAvgSpeed.setText(String.format("%.2f",avgSpeed));
 
@@ -382,6 +366,11 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
             tvCurrY.setText(Truncate(newValues[1],1)+"\nm/s2");
             tvCurrZ.setText(Truncate(newValues[2],1)+"\nm/s2");
         }
+
+    }
+
+    @Override
+    public void onChangeGyro(long timestamp, float[] newValues) {
 
     }
 }

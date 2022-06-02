@@ -69,7 +69,7 @@ public class Speedometer implements LocationListener
             n++;
 
             /// Send result to activity management
-            onSpeedChange.onChangeSpeed(nCurrentSpeed, avgSpeed, timestamp);
+            onSpeedChange.onChangeSpeed(timestamp, nCurrentSpeed, avgSpeed);
     }
 }
 

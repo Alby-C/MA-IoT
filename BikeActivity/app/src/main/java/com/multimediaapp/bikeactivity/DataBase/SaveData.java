@@ -3,11 +3,9 @@ package com.multimediaapp.bikeactivity.DataBase;
 import android.content.ContentValues;
 import android.content.Context;
 
-import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
 import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
-import com.multimediaapp.bikeactivity.Interfaces.IRollListener;
 
-public class SaveData implements IAccelListener, IMeasurementHandler, IRollListener {
+public class SaveData implements IMeasurementHandler {
 
     String[] speedCol = {
             MyContentProvider._ID_Col,
@@ -35,13 +33,9 @@ public class SaveData implements IAccelListener, IMeasurementHandler, IRollListe
 
     }
 
-    @Override
-    public void onChangeSpeed(float newSpeed, float avgSpeed) {
-
-    }
 
     @Override
-    public void onChangeSpeed(float newSpeed, float avgSpeed, long timestamp) {
+    public void onChangeSpeed(long timestamp,float newSpeed, float avgSpeed) {
         timestamp = (long) (timestamp * NS2S);
         ContentValues speedValues = new ContentValues();
 
@@ -62,6 +56,11 @@ public class SaveData implements IAccelListener, IMeasurementHandler, IRollListe
 
     @Override
     public void onJumpHappened(long flightTime) {
+
+    }
+
+    @Override
+    public void onChangeGyro(long timestamp, float[] newValues) {
 
     }
 }
