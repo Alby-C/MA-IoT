@@ -1,5 +1,7 @@
 package com.multimediaapp.bikeactivity;
 
+import static android.os.SystemClock.elapsedRealtimeNanos;
+import static java.lang.Thread.*;
 import static Miscellaneous.MiscellaneousOperations.Truncate;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +12,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -23,6 +27,7 @@ import com.multimediaapp.bikeactivity.Speed.Speedometer;
 
 import Space.ReferenceSystemCommutator;
 import Space.Vector;
+import Time.Time;
 
 public class ActivityManagement extends AppCompatActivity implements IMeasurementHandler, IAccelListener {
 
@@ -38,10 +43,19 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private TextView tvCurrX = null;
     private TextView tvCurrY = null;
     private TextView tvCurrZ = null;
-    private Button btnPause = null;
+    private TextView tvElapsedTime = null;
+    private Button btnPauseResume = null;
     private Button btnStop = null;
 
-   ///////////////////////////// Gyro
+    //////////////////////////// Activity status
+    private boolean isRunning;              ///true if is running, false if is on pause
+    private boolean isPausing;              ///true if is in pause
+    private boolean isStopping;             ///true if is in stopping phase
+    private long startingTimestamp;         ///[ns] The timestamp of the first Start of the activity
+    private long totalPauseLength;          ///[ns] The total length of all the pauses
+    private long startingPauseTimestamp;    ///[ns] The timestamp of the starting of the last pause
+
+    //////////////////////////// Gyro
     private Sensor gyro = null;
     private SensorManager gyroManager = null;
     private Gyro gyroscope = null;
@@ -68,8 +82,12 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private AccelCommutator accelCommutator;
     private GyroCommutator gyroCommutator;
 
+    /////////////////////////// Jump Evaluator
     private Jump jump;
 
+    /////////////////////////// Activity duration
+    private Thread chronometer;
+    private Time activityDuration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,13 +116,52 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         tvRightMaxTilt = findViewById(R.id.tvRightMaxRoll);
         tvCurrX = findViewById(R.id.tvCurrX);
         tvCurrY = findViewById(R.id.tvCurrY);
-        tvCurrZ = findViewById( R.id.tvCurrZ);
-        btnPause = findViewById(R.id.btnPause);
+        tvCurrZ = findViewById(R.id.tvCurrZ);
+        tvElapsedTime = findViewById(R.id.tvElapsedTime);
+        btnPauseResume = findViewById(R.id.btnPauseResume);
         btnStop = findViewById(R.id.btnStop);
+
+        btnPauseResume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isPausing){
+                    Pause();
+                    btnPauseResume.setText(getText(R.string.btnResume));
+                }
+                else {
+                    Resume();
+                    btnPauseResume.setText(getText(R.string.btnPause));
+                }
+            }
+        });
+
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Stop();
+
+            }
+        });
+
+        /// Activity status init
+        isRunning = false;
+        isPausing = true;
+        isStopping = false;
+        totalPauseLength = 0;
 
         /// Location manager instance to pass to the speedometer class
         lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         speedometer = new Speedometer(lm, this, this);
+
+        /// Chronometer initialization
+        chronometer = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Chronometer();
+            }
+        },"chronometer");
+        chronometer.setPriority(Thread.MIN_PRIORITY);
+        activityDuration = new Time();
 
         /// Jump manager
         jump = new Jump(this);
@@ -140,7 +197,96 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
 
         accelerometer.Start();
         gyroscope.Start();
+        speedometer.Start();
+
+        startingTimestamp = elapsedRealtimeNanos();
+        isPausing = false;
+        isRunning = true;
+
+        Log.i(TAG, "launching thread");
+        chronometer.start();
     }
+
+    private void Pause(){
+        if(isRunning) {
+            accelerometer.Stop();
+            gyroscope.Stop();
+            speedometer.Stop();
+
+            startingPauseTimestamp = elapsedRealtimeNanos();
+
+            isPausing = true;
+            isRunning = false;
+        }
+    }
+
+    private void Resume(){
+        if(!isRunning){
+            accelerometer.Start();
+            gyroscope.Start();
+            speedometer.Start();
+
+            totalPauseLength += elapsedRealtimeNanos() - startingPauseTimestamp;
+            isRunning = true;
+            isPausing = false;
+        }
+    }
+
+    private void Stop(){
+        accelerometer.UnsubscribeListener(accelCommutator);
+        gyroscope.UnsubscribeListener(gyroCommutator);
+
+        accelCommutator.UnsubscribeListener(roll);
+        accelCommutator.UnsubscribeListener(this);
+        gyroCommutator.UnsubscribeListener(roll);
+
+        accelerometer.Stop();
+        gyroscope.Stop();
+        speedometer.Stop();
+
+        isRunning = false;
+        isPausing = false;
+        isStopping = true;
+
+        try {
+            chronometer.join(5000);
+        } catch (InterruptedException e) {
+            chronometer.interrupt();
+        }
+    }
+
+    /**
+     * Class that will be used from chronometer thread, takes care of showing the
+     * the duration of the activity.
+     */
+    private void Chronometer(){
+        Log.i(TAG +"thr:" + chronometer.getName(), "Thread started");
+        int NS2S = 1000000000;
+        do {
+            while (isRunning) {
+                /// current time - starting time - time spent in pause
+                activityDuration = new Time((int)((elapsedRealtimeNanos()-startingTimestamp-totalPauseLength)/NS2S));
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setTVElapsedTimeText();
+                    }
+                });
+
+                try {
+                    sleep(1000);
+                } catch (InterruptedException e) {
+                    Log.e(TAG +"thr:" + chronometer.getName(), e.toString());
+                }
+            }
+        }while(!isStopping);
+    }
+
+    private void setTVElapsedTimeText() {
+        tvElapsedTime.setText(activityDuration.toString());
+    }
+
 
     @Override
     public void onChangeSpeed(float newSpeed, float avgSpeed) {
@@ -173,7 +319,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private final int AVERAGE_CYCLES = 10;
     private int cycles = AVERAGE_CYCLES;
     private float meanX = 0,meanY = 0, meanZ = 0;
-    private boolean bool = true;
+    private boolean onRSCommutatorInit = true;
     /**
      * It takes care of initializing the rfCommutator.
      * @param timestamp The timestamp of the measurement.
@@ -181,7 +327,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
      */
     @Override
     public void onChangeAccel(long timestamp, float[] newValues) {
-        if(bool){
+        if(onRSCommutatorInit){
             if(cycles > 0){
                 meanX+=newValues[0];
                 meanY+=newValues[1];
@@ -201,7 +347,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
                 accelCommutator = new AccelCommutator(rsCommutator);
                 gyroCommutator = new GyroCommutator(rsCommutator);
 
-                bool = false;
+                onRSCommutatorInit = false;
                 Start();
             }
         }

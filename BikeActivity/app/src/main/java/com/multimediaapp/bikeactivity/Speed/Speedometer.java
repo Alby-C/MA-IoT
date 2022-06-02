@@ -22,13 +22,13 @@ public class Speedometer implements LocationListener
     // index to calculate speed average dynamically
     float n = 1;
 
+    private boolean isRunning = false;
 
     public Speedometer(LocationManager lm, IMeasurementHandler onSpeedChange, Context context)
     {
         this.lm = lm;
         this.onSpeedChange = onSpeedChange;
         this.context = context;
-        Start();
     }
 
     public void Start()
@@ -44,6 +44,14 @@ public class Speedometer implements LocationListener
             }
             // if received the permits then start to receive the updates of my location
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+            isRunning = true;
+        }
+    }
+
+    public void Stop(){
+        if(isRunning){
+            lm.removeUpdates(this);
+            isRunning = true;
         }
     }
 

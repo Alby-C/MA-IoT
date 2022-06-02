@@ -33,7 +33,7 @@ public class Gyro extends BaseSensor<IGyroListener> implements SensorEventListen
 
     @Override
     public void Stop() {
-        if(!isRunning)
+        if(isRunning)
             gyroManager.unregisterListener(gyroListener);
 
         requestToStart = false;

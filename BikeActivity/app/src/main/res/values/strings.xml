@@ -2,7 +2,6 @@
     <string name="app_name">BikeActivity</string>
 
     <string name="swOrientation">Orientazione orizzontale</string>
-    <string name="btnStart">Inizia\nattività</string>
     <string name="defaultTVMaxSpeed">Velocità massima:</string>
     <string name="defaultTVAvgSpeed">Velocità media:</string>
     <string name="defaultTVCurrSpeed">Velocità istantanea:</string>
@@ -13,7 +12,14 @@
     <string name="defaultTVCurrY">Y:</string>
     <string name="defaultTVCurrZ">Z:</string>
 
+    <string name="btnStart">Inizia\nattività</string>
+    <string name="btnStop">Stop</string>
+    <string name="btnPause">Pause</string>
+    <string name="btnResume">Resume</string>
+
     <string name="LAUNCH_BIKE_ACTIVITY">com.multimediaapp.bikeactivity.ActivityManagement</string>
     <string name="ORIENTATION">CHANGE_ORIENTATION_LABEL</string>
+    <string name="defaultTVElapsedTime">Tempo attività:</string>
+
 
 </resources>

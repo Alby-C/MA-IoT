@@ -257,25 +257,51 @@
         android:textSize="30dp" />
     <!---====================================================-->
 
+    <TextView
+        android:id="@+id/tvElapsTime"
+        android:layout_width="123dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/tvCurrY"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="15dp"
+        android:layout_toEndOf="@+id/tvX"
+        android:gravity="center"
+        android:text="@string/defaultTVElapsedTime"
+        android:textSize="13dp" />
+
+    <TextView
+        android:id="@+id/tvElapsedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvElapsTime"
+        android:layout_alignStart="@+id/tvElapsTime"
+        android:layout_alignEnd="@+id/tvElapsTime"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:gravity="center"
+        android:textSize="30dp" />
+    <!---====================================================-->
+
     <Button
-        android:id="@+id/btnPause"
+        android:id="@+id/btnPauseResume"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvCurrY"
         android:layout_alignParentStart="true"
         android:layout_marginStart="95dp"
         android:layout_marginTop="136dp"
-        android:text="Stop" />
+        android:text="@string/btnPause" />
 
     <Button
         android:id="@+id/btnStop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/btnPause"
+        android:layout_alignTop="@+id/btnPauseResume"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="95dp"
-        android:text="Pause"/>
+        android:text="@string/btnStop"/>
 
 
 </RelativeLayout>

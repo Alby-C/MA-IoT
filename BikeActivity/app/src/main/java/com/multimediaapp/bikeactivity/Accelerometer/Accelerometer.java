@@ -33,7 +33,7 @@ public class Accelerometer extends BaseSensor<IAccelListener> implements SensorE
 
     @Override
     public void Stop() {
-        if(!isRunning)
+        if(isRunning)
             accManager.unregisterListener(accListener);
 
         requestToStart = false;
