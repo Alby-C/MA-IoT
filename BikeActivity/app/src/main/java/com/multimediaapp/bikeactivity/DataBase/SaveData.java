@@ -44,7 +44,7 @@ public class SaveData implements IMeasurementHandler {
     }
 
     @Override
-    public void onChangeRoll(float currentRoll, long timestamp) {
+    public void onChangeRoll(long timestamp, float currentRoll) {
         timestamp = (long) (timestamp * NS2S);
         ContentValues rollValues = new ContentValues();
 

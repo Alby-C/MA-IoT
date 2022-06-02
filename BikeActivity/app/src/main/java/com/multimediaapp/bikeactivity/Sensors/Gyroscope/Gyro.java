@@ -1,4 +1,4 @@
-package com.multimediaapp.bikeactivity.Gyroscope;
+package com.multimediaapp.bikeactivity.Sensors.Gyroscope;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -23,7 +23,7 @@ public class Gyro extends BaseSensor<IGyroListener> implements SensorEventListen
 
     @Override
     public void Start() {
-        if(listeners.size() == 0)
+        if(internalListeners.size() == 0)
             requestToStart = true;
         else {
             gyroManager.registerListener(gyroListener, gyro, SensorManager.SENSOR_DELAY_GAME);
@@ -42,8 +42,13 @@ public class Gyro extends BaseSensor<IGyroListener> implements SensorEventListen
     @Override
     public void onSensorChanged(SensorEvent event){
         for (IGyroListener listener :
-                listeners) {
-            listener.onChangeGyro(event.timestamp, event.values);
+                internalListeners) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    listener.onChangeGyro(event.timestamp, event.values);
+                }
+            }).start();
         }
     }
 

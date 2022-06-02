@@ -1,4 +1,4 @@
-package com.multimediaapp.bikeactivity.Accelerometer;
+package com.multimediaapp.bikeactivity.Sensors.Accelerometer;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -23,7 +23,7 @@ public class Accelerometer extends BaseSensor<IAccelListener> implements SensorE
 
     @Override
     public void Start() {
-        if(listeners.size() == 0)
+        if(internalListeners.size() == 0)
             requestToStart = true;
         else {
             accManager.registerListener(accListener, acc, SensorManager.SENSOR_DELAY_GAME);
@@ -42,8 +42,13 @@ public class Accelerometer extends BaseSensor<IAccelListener> implements SensorE
     @Override
     public void onSensorChanged(SensorEvent event) {
         for (IAccelListener listener :
-                listeners) {
-            listener.onChangeAccel(event.timestamp, event.values);
+                internalListeners) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    listener.onChangeAccel(event.timestamp, event.values);
+                }
+            }).start();
         }
     }
 

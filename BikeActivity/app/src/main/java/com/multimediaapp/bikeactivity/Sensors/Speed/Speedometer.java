@@ -1,4 +1,4 @@
-package com.multimediaapp.bikeactivity.Speed;
+package com.multimediaapp.bikeactivity.Sensors.Speed;
 
 import android.Manifest;
 import android.content.Context;
@@ -11,11 +11,13 @@ import android.os.SystemClock;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
+import com.multimediaapp.bikeactivity.BaseClasses.BaseSensor;
 import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
+import com.multimediaapp.bikeactivity.Interfaces.ISpeedListener;
 
-public class Speedometer implements LocationListener
+public class Speedometer extends BaseSensor<ISpeedListener> implements LocationListener
 {
-    private final String Tag = Speedometer.class.getSimpleName();;
+    private final String TAG = Speedometer.class.getSimpleName();;
 
     public LocationManager lm = null;
     public IMeasurementHandler onSpeedChange = null;
@@ -34,6 +36,7 @@ public class Speedometer implements LocationListener
         this.context = context;
     }
 
+    @Override
     public void Start()
     {
         // check if I have been able to instantiate the location service
@@ -51,6 +54,7 @@ public class Speedometer implements LocationListener
         }
     }
 
+    @Override
     public void Stop(){
         if(isRunning){
             lm.removeUpdates(this);
@@ -68,8 +72,16 @@ public class Speedometer implements LocationListener
             avgSpeed = (1/n)*(nCurrentSpeed+(n-1)*avgSpeed);
             n++;
 
-            /// Send result to activity management
-            onSpeedChange.onChangeSpeed(timestamp, nCurrentSpeed, avgSpeed);
+        for (ISpeedListener listener:
+                internalListeners) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    /// Send result to activity management
+                    onSpeedChange.onChangeSpeed(timestamp, nCurrentSpeed, avgSpeed);
+                }
+            }).start();
+        }
     }
 }
 

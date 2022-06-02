@@ -19,7 +19,7 @@ public class GyroCommutator extends BaseSensor<IGyroListener> implements IGyroLi
         Vector commutedVector = rfCommutator.ConvertToNewReferenceSystem(new Vector(newValues[0], newValues[1], newValues[2]));
 
         for (IGyroListener listener :
-                listeners) {
+                internalListeners) {
             listener.onChangeGyro(timestamp, commutedVector.toArray());
         }
     }

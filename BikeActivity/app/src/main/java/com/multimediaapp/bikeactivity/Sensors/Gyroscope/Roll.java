@@ -1,10 +1,7 @@
-package com.multimediaapp.bikeactivity.Gyroscope;
+package com.multimediaapp.bikeactivity.Sensors.Gyroscope;
 
 import static java.lang.Math.PI;
-import static java.lang.Math.abs;
 import static java.lang.Math.atan;
-
-import static Space.CartesianSpaceOperations.AngleBetween;
 
 import android.content.pm.ActivityInfo;
 import android.os.SystemClock;
@@ -12,12 +9,7 @@ import android.os.SystemClock;
 import com.multimediaapp.bikeactivity.BaseClasses.BaseSensor;
 import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
 import com.multimediaapp.bikeactivity.Interfaces.IGyroListener;
-import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
 import com.multimediaapp.bikeactivity.Interfaces.IRollListener;
-
-import Space.CartesianSpaceOperations;
-import Space.ReferenceSystemCommutator;
-import Space.Vector;
 
 public class Roll extends BaseSensor<IRollListener> implements IGyroListener, IAccelListener {
     private final String TAG = Roll.class.getSimpleName();
@@ -71,8 +63,6 @@ public class Roll extends BaseSensor<IRollListener> implements IGyroListener, IA
         prevTimestamp = timestamp;
 
         calculateRoll();
-
-
     }
 
     @Override
@@ -89,9 +79,9 @@ public class Roll extends BaseSensor<IRollListener> implements IGyroListener, IA
 
         this.currAngle = ( filterPercent * (this.currAngle + this.currGyroAngle)) + ((1-filterPercent)* this.currAccelAngle);
 
-        for(IRollListener listener : listeners)
-        {
-            listener.onChangeRoll(currAngle, prevTimestamp);
+        for(IRollListener listener
+                : internalListeners){
+            listener.onChangeRoll(prevTimestamp, currAngle);
         }
 
     }

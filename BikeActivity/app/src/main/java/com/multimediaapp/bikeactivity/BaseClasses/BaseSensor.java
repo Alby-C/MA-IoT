@@ -1,7 +1,5 @@
 package com.multimediaapp.bikeactivity.BaseClasses;
 
-import com.multimediaapp.bikeactivity.Interfaces.IGyroListener;
-
 import java.util.ArrayList;
 
 /**
@@ -10,7 +8,8 @@ import java.util.ArrayList;
  */
 public abstract class BaseSensor<T> {
     /// Array of listeners to the new values of the gyroscope
-    protected final ArrayList<T> listeners = new ArrayList<>();
+    protected final ArrayList<T> internalListeners = new ArrayList<>();
+    protected T[] listeners;
     /// True if the sensor is getting
     protected boolean isRunning = false;
     /// this flag if no listeners are subscribed, is set to true in the start method
@@ -31,12 +30,12 @@ public abstract class BaseSensor<T> {
      * @param listener Listener class to subscribe.
      */
     public void SubscribeListener(T listener) {
-        if(!this.listeners.contains(listener))
-            this.listeners.add(listener);
+        if(!this.internalListeners.contains(listener))
+            this.internalListeners.add(listener);
 
-        if(requestToStart){
+        if(this.requestToStart){
             Start();
-            requestToStart = false;
+            this.requestToStart = false;
         }
     }
 
@@ -45,6 +44,6 @@ public abstract class BaseSensor<T> {
      * @param listener Listener to unsubscribe.
      */
     public void UnsubscribeListener(T listener) {
-        this.listeners.remove(listener);
+        this.internalListeners.remove(listener);
     }
 }

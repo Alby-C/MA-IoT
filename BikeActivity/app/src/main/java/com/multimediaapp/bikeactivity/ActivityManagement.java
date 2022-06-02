@@ -18,14 +18,14 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.multimediaapp.bikeactivity.Accelerometer.Accelerometer;
-import com.multimediaapp.bikeactivity.Accelerometer.Jump;
+import com.multimediaapp.bikeactivity.Sensors.Accelerometer.Accelerometer;
+import com.multimediaapp.bikeactivity.Sensors.Accelerometer.Jump;
 import com.multimediaapp.bikeactivity.DataBase.MyContentProvider;
 import com.multimediaapp.bikeactivity.DataBase.SaveData;
-import com.multimediaapp.bikeactivity.Gyroscope.Gyro;
-import com.multimediaapp.bikeactivity.Gyroscope.Roll;
+import com.multimediaapp.bikeactivity.Sensors.Gyroscope.Gyro;
+import com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll;
 import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
-import com.multimediaapp.bikeactivity.Speed.Speedometer;
+import com.multimediaapp.bikeactivity.Sensors.Speed.Speedometer;
 
 import Space.ReferenceSystemCommutator;
 import Space.Vector;
@@ -35,7 +35,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
 
     private final String TAG = ActivityManagement.class.getSimpleName();
 
-    /// Layout classes
+    //////////////////////////// Layout classes
     private TextView tvMaxSpeed = null;
     private TextView tvAvgSpeed = null;
     private TextView tvCurrSpeed = null;
@@ -49,6 +49,8 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private Button btnPauseResume = null;
     private Button btnStop = null;
 
+    private Thread tvUpdater;
+
     //////////////////////////// Activity status
     private boolean isRunning;              ///true if is running, false if is on pause
     private boolean isPausing;              ///true if is in pause
@@ -57,7 +59,12 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private long totalPauseLength;          ///[ns] The total length of all the pauses
     private long startingPauseTimestamp;    ///[ns] The timestamp of the starting of the last pause
 
-    //////////////////////////// Gyro
+    /////////////////////////// Variables
+    private float maxSpeed = 0;
+    private float maxRightRoll = 0;
+    private float maxLeftRoll = 0;
+
+    //////////////////////////// Gyroscope
     private Sensor gyro = null;
     private SensorManager gyroManager = null;
     private Gyro gyroscope = null;
@@ -74,22 +81,20 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     /////////////////////////// Roll Evaluator
     private Roll roll;
 
-    /////////////////////////// Variables
-    private float maxSpeed = 0;
-    private float maxRightRoll = 0;
-    private float maxLeftRoll = 0;
+    /////////////////////////// Jump Evaluator
+    private Jump jump;
 
     /////////////////////////// Reference systems
     private ReferenceSystemCommutator rsCommutator;
     private AccelCommutator accelCommutator;
     private GyroCommutator gyroCommutator;
 
-    /////////////////////////// Jump Evaluator
-    private Jump jump;
-
     /////////////////////////// Activity duration
     private Thread chronometer;
     private Time activityDuration;
+
+    /////////////////////////// Saving management
+    private SaveData saveData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +119,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         MyContentProvider.db.execSQL("DELETE FROM " + MyContentProvider.SPEED_TABLE);
         MyContentProvider.db.execSQL("DELETE FROM  " + MyContentProvider.ROLL_TABLE);
 
+        saveData = new SaveData(this);
 
         /// Set all text view and button
         tvMaxSpeed = findViewById(R.id.tvMaxSpeed);
@@ -154,13 +160,18 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
             }
         });
 
+        tvUpdater = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                TextviewUpdater();
+            }
+        });
+
         /// Activity status init
         isRunning = false;
         isPausing = true;
         isStopping = false;
         totalPauseLength = 0;
-
-        SaveData saveData = new SaveData(this);
 
         /// Location manager instance to pass to the speedometer class
         lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -177,12 +188,10 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         activityDuration = new Time();
 
         /// Jump manager
-        jump = new Jump(this);
+        jump = new Jump();
 
         /// Roll manager
         roll = new Roll( _orientation);
-        roll.SubscribeListener(this);
-        roll.SubscribeListener(saveData);
 
         /// Gyro request
         gyroManager = (SensorManager)getSystemService((Context.SENSOR_SERVICE));
@@ -206,6 +215,9 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         accelerometer.SubscribeListener(accelCommutator);
         gyroscope.SubscribeListener(gyroCommutator);
 
+        jump.SubscribeListener(this);
+        roll.SubscribeListener(this);
+        roll.SubscribeListener(saveData);
         accelCommutator.SubscribeListener(roll);
         accelCommutator.SubscribeListener(this);
         gyroCommutator.SubscribeListener(roll);
@@ -218,8 +230,10 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         isPausing = false;
         isRunning = true;
 
-        Log.i(TAG, "launching thread");
+        Log.i(TAG, "launching threads");
+
         chronometer.start();
+        tvUpdater.start();
     }
 
     private void Pause(){
@@ -276,6 +290,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
      */
     private void Chronometer(){
         Log.i(TAG +"thr:" + chronometer.getName(), "Thread started");
+
         int NS2S = 1000000000;
         do {
             while (isRunning) {
@@ -299,31 +314,69 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     }
 
     @Override
-    public void onChangeRoll(float roll, long timestamp) {
-        if (roll > maxRightRoll){
-            maxRightRoll = roll;
-            tvRightMaxTilt.setText((int)maxRightRoll + "°");
-        }
-        else if (roll < maxLeftRoll) {
-            maxLeftRoll = roll;
-            tvLeftMaxTilt.setText((int)maxLeftRoll + "°");
-        }
-        tvCurrTilt.setText((int)roll + "°");
+    public void onChangeRoll(long timestamp,float currRoll) {
+        if (currRoll > maxRightRoll)
+            maxRightRoll = currRoll;
+        else if (currRoll < maxLeftRoll)
+            maxLeftRoll = currRoll;
+
+        this.currRoll = currRoll;
     }
 
     @Override
     public void onChangeSpeed(long timestamp, float newSpeed, float avgSpeed) {
-        tvCurrSpeed.setText(String.format("%.2f", newSpeed));
-        tvAvgSpeed.setText(String.format("%.2f",avgSpeed));
+        this.newSpeed = newSpeed;
+        this.avgSpeed = avgSpeed;
 
         if(newSpeed > maxSpeed)
             maxSpeed = newSpeed;
-        tvMaxSpeed.setText(String.format("%.2f",maxSpeed));
     }
 
     @Override
     public void onJumpHappened(long flightTime) {
 
+    }
+
+    private float currRoll = 0;
+
+    private float newSpeed = 0;
+    private float avgSpeed = 0;
+
+    private float accelX = 0;
+    private float accelY = 0;
+    private float accelZ = 0;
+
+    private void TextviewUpdater(){
+        do {
+            while(isRunning) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //onChangeRoll
+                        tvRightMaxTilt.setText((int) maxRightRoll + "°");
+                        tvLeftMaxTilt.setText((int) maxLeftRoll + "°");
+                        tvCurrTilt.setText((int) currRoll + "°");
+
+                        ///onChangeSpeed
+                        tvCurrSpeed.setText(String.format("%.2f", newSpeed));
+                        tvAvgSpeed.setText(String.format("%.2f", avgSpeed));
+                        tvMaxSpeed.setText(String.format("%.2f", maxSpeed));
+
+                        ///onChangeAccel
+                        tvCurrX.setText(Truncate(accelX, 1) + "\nm/s2");
+                        tvCurrY.setText(Truncate(accelY, 1) + "\nm/s2");
+                        tvCurrZ.setText(Truncate(accelZ, 1) + "\nm/s2");
+                    }
+                });
+
+
+                try {
+                    sleep(200);
+                } catch (InterruptedException e) {
+                    Log.e(TAG + "thr:" + chronometer.getName(), e.toString());
+                }
+            }
+        }while(!isStopping);
     }
 
     private final int AVERAGE_CYCLES = 10;
@@ -358,15 +411,19 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
                 gyroCommutator = new GyroCommutator(rsCommutator);
 
                 onRSCommutatorInit = false;
-                Start();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Start();
+                    }
+                });
             }
         }
         else{
-            tvCurrX.setText(Truncate(newValues[0],1)+"\nm/s2");
-            tvCurrY.setText(Truncate(newValues[1],1)+"\nm/s2");
-            tvCurrZ.setText(Truncate(newValues[2],1)+"\nm/s2");
+            accelX = newValues[0];
+            accelY = newValues[1];
+            accelZ = newValues[2];
         }
-
     }
 
     @Override
