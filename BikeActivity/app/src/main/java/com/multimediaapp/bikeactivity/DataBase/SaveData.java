@@ -1,5 +1,7 @@
 package com.multimediaapp.bikeactivity.DataBase;
 
+import static android.os.SystemClock.elapsedRealtimeNanos;
+
 import android.content.ContentValues;
 import android.content.Context;
 
@@ -22,12 +24,16 @@ public class SaveData implements IMeasurementHandler {
             MyContentProvider.IstantAcc_Col,
             MyContentProvider.TimeStamp_Col
     };
-    private static final float NS2S = 1.0f / 1000000000.0f; ///Constant to convert from nanoseconds to seconds
+    private static final long NS2S = 1000000000; ///Constant to convert from nanoseconds to seconds
     private Context context;
-    public SaveData(Context context)
-    {
+    private long startingTime;
+
+
+    public SaveData(Context context) {
         this.context = context;
+        this.startingTime = elapsedRealtimeNanos();
     }
+
     @Override
     public void onChangeAccel(long timestamp, float[] newValues) {
 
@@ -36,7 +42,7 @@ public class SaveData implements IMeasurementHandler {
 
     @Override
     public void onChangeSpeed(long timestamp,float newSpeed, float avgSpeed) {
-        timestamp = (long) (timestamp * NS2S);
+        timestamp = (timestamp - startingTime);
         ContentValues speedValues = new ContentValues();
 
         speedValues.put(MyContentProvider.IstantSpeed_Col, newSpeed);
@@ -45,7 +51,7 @@ public class SaveData implements IMeasurementHandler {
 
     @Override
     public void onChangeRoll(long timestamp, float currentRoll) {
-        timestamp = (long) (timestamp * NS2S);
+        timestamp = (timestamp - startingTime);
         ContentValues rollValues = new ContentValues();
 
         rollValues.put(MyContentProvider.IstantRoll_Col, currentRoll);

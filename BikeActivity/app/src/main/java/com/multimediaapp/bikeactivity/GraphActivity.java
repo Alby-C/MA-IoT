@@ -55,7 +55,7 @@ public class GraphActivity extends AppCompatActivity {
 
        for(int i = 0; i < rollCursor.getCount(); i++)
         {
-            yAXES.add(new Entry(rollCursor.getLong(2), rollCursor.getFloat(1)));
+            yAXES.add(new Entry((float)rollCursor.getLong(2)/1000000000.f, rollCursor.getFloat(1)));
             /// move to the next roll
             rollCursor.moveToNext();
         }
