@@ -9,15 +9,17 @@ import static Space.CartesianSpaceOperations.AngleBetween;
 import android.content.pm.ActivityInfo;
 import android.os.SystemClock;
 
+import com.multimediaapp.bikeactivity.BaseClasses.BaseSensor;
 import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
 import com.multimediaapp.bikeactivity.Interfaces.IGyroListener;
 import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
+import com.multimediaapp.bikeactivity.Interfaces.IRollListener;
 
 import Space.CartesianSpaceOperations;
 import Space.ReferenceSystemCommutator;
 import Space.Vector;
 
-public class Roll implements IGyroListener, IAccelListener {
+public class Roll extends BaseSensor<IRollListener> implements IGyroListener, IAccelListener {
     private final String TAG = Roll.class.getSimpleName();
 
     ///////////////////////////
@@ -29,7 +31,6 @@ public class Roll implements IGyroListener, IAccelListener {
     private static final float EPSILON =0.01f;              ///Constant for threshold
 
     private final float filterPercent = 0.95f;
-    private final IMeasurementHandler iMeasurementHandler;
 
     private final int gyroAxis;
     private final int accelRefAxis;
@@ -43,7 +44,7 @@ public class Roll implements IGyroListener, IAccelListener {
     // Current component to the accelerometer of the angle
     private float currAccelAngle;
 
-    public Roll(IMeasurementHandler iMeasurementHandler, int orientation){
+    public Roll( int orientation){
         if(orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
             gyroAxis = Y;
             accelRefAxis = X;
@@ -55,7 +56,6 @@ public class Roll implements IGyroListener, IAccelListener {
             inverter = 1;
         }
 
-        this.iMeasurementHandler = iMeasurementHandler;
 
         prevTimestamp = SystemClock.elapsedRealtimeNanos();
     }
@@ -67,10 +67,12 @@ public class Roll implements IGyroListener, IAccelListener {
         /// Discrete integral to calculate the angle, then convert it to degrees
         this.currGyroAngle = (float) (delta * newValues[gyroAxis] * R2D);
 
-        calculateRoll();
-
         /// Set new timestamp
         prevTimestamp = timestamp;
+
+        calculateRoll();
+
+
     }
 
     @Override
@@ -87,6 +89,20 @@ public class Roll implements IGyroListener, IAccelListener {
 
         this.currAngle = ( filterPercent * (this.currAngle + this.currGyroAngle)) + ((1-filterPercent)* this.currAccelAngle);
 
-        iMeasurementHandler.onChangeRoll(currAngle);
+        for(IRollListener listener : listeners)
+        {
+            listener.onChangeRoll(currAngle, prevTimestamp);
+        }
+
+    }
+
+    @Override
+    public void Start() {
+
+    }
+
+    @Override
+    public void Stop() {
+
     }
 }
