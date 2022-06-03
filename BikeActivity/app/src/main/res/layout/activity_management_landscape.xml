@@ -17,18 +17,18 @@
         android:layout_height="1dp"
         android:layout_alignEnd="@+id/barView1"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="135dp"
-        android:layout_marginEnd="0dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="-3dp"
         android:background="@color/black" />
 
     <View
         android:id="@+id/barView3"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_below="@+id/barView2"
         android:layout_alignEnd="@+id/barView1"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="135dp"
+        android:layout_marginTop="99dp"
+        android:layout_marginEnd="2dp"
         android:background="@color/black" />
 
     <TextView
@@ -117,8 +117,8 @@
         android:layout_height="35dp"
         android:layout_alignStart="@+id/tvAvgSpeed"
         android:layout_alignTop="@+id/barView2"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="29dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:text="@string/defaultTVLeftMaxRoll"
         android:textSize="13dp" />
@@ -277,7 +277,7 @@
         android:layout_height="35dp"
         android:layout_below="@+id/btnStop"
         android:layout_alignEnd="@+id/btnPauseResume"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="-17dp"
         android:gravity="center"
         android:text="@string/defaultTVElapsedTime"
@@ -301,10 +301,10 @@
         android:id="@+id/btnPauseResume"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="208dp"
-        android:layout_marginBottom="85dp"
+        android:layout_below="@+id/tvElapsedTime"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="22dp"
+        android:layout_toEndOf="@+id/barView1"
         android:text="@string/btnPause" />
 
     <Button
@@ -313,7 +313,7 @@
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/btnPauseResume"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="85dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="0dp"
         android:text="@string/btnStop" />
 

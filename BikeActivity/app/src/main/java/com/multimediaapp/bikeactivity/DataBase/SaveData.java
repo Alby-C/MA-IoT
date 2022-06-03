@@ -52,7 +52,6 @@ public class SaveData implements IMeasurementHandler {
         rollValues.put(MyContentProvider.IstantRoll_Col, currentRoll);
         rollValues.put(MyContentProvider.TimeStamp_Col, timestamp);
         context.getContentResolver().insert(MyContentProvider.ROLL_URI, rollValues);
-
     }
 
     @Override
