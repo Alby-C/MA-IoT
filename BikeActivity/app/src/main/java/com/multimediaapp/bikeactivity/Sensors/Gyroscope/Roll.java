@@ -80,7 +80,7 @@ public class Roll extends BaseSensor<IRollListener> implements IGyroListener, IA
         this.currAngle = ( filterPercent * (this.currAngle + this.currGyroAngle)) + ((1-filterPercent)* this.currAccelAngle);
 
         for(IRollListener listener
-                : internalListeners){
+                : listeners){
             listener.onChangeRoll(prevTimestamp, currAngle);
         }
 

@@ -1,155 +1,321 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    tools:context=".ActivityManagement">
+    android:layout_height="match_parent">
 
-    <TableLayout
+    <View
+        android:id="@+id/barView1"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="521dp"
+        android:background="@color/black" />
+
+    <View
+        android:id="@+id/barView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_height="1dp"
+        android:layout_alignEnd="@+id/barView1"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="135dp"
+        android:layout_marginEnd="0dp"
+        android:background="@color/black" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tvMaxSpeed"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/defaultTVMaxSpeed"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/tvAverageSpeed"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/defaultTVAvgSpeed"
-                android:textSize="20dp" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tvCurrSpeed"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/defaultTVCurrSpeed"
-                android:textSize="20dp" />
-
-        </TableRow>
-    </TableLayout>
-
-    <TableLayout
+    <View
+        android:id="@+id/barView3"
         android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignEnd="@+id/barView1"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="135dp"
+        android:background="@color/black" />
+
+    <TextView
+        android:id="@+id/tvAvgSpeed"
+        android:layout_width="124dp"
+        android:layout_height="35dp"
+        android:layout_alignTop="@+id/barView2"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="-83dp"
+        android:gravity="center"
+        android:text="@string/defaultTVAvgSpeed"
+        android:textSize="13dp" />
+
+    <TextView
+        android:id="@+id/tvAverageSpeed"
+        android:gravity="center"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp">
+        android:layout_below="@+id/tvAvgSpeed"
+        android:layout_alignStart="@+id/tvAvgSpeed"
+        android:layout_alignEnd="@+id/tvAvgSpeed"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:textSize="30dp" />
+    <!---====================================================-->
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tvIstSpeed"
+        android:layout_width="123dp"
+        android:layout_height="35dp"
+        android:layout_alignTop="@+id/tvAvgSpeed"
+        android:layout_marginStart="46dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="46dp"
+        android:layout_toStartOf="@+id/tvMxSpeed"
+        android:layout_toEndOf="@+id/tvAvgSpeed"
+        android:gravity="center"
+        android:text="@string/defaultTVCurrSpeed"
+        android:textSize="13dp" />
 
-            <TextView
-                android:id="@+id/tvCurrRoll"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/defaultTVCurrRoll"
-                android:textSize="20dp" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tvLeftMaxRoll"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/defaultTVLeftMaxRoll"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/tvRightMaxRoll"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/defaultTVRightMaxTilt"
-                android:textSize="20dp" />
-
-        </TableRow>
-    </TableLayout>
-
-    <TableLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tvCurrSpeed"
+        android:gravity="center"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp">
+        android:layout_below="@+id/tvIstSpeed"
+        android:layout_alignStart="@+id/tvIstSpeed"
+        android:layout_alignEnd="@+id/tvIstSpeed"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:textSize="30dp" />
+    <!---====================================================-->
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tvMxSpeed"
+        android:layout_width="123dp"
+        android:layout_height="35dp"
+        android:layout_alignTop="@+id/tvAvgSpeed"
+        android:layout_alignEnd="@+id/barView1"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="30dp"
+        android:gravity="center"
+        android:text="@string/defaultTVMaxSpeed"
+        android:textSize="13dp" />
 
-            <TextView
-                android:id="@+id/tvCurrX"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/defaultTVCurrX"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/tvCurrY"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/defaultTVCurrY"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/tvCurrZ"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/defaultTVCurrZ"
-                android:textSize="20dp" />
-
-        </TableRow>
-
-    </TableLayout>
-
-    <TableLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tvMaxSpeed"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp">
+        android:layout_below="@+id/tvMxSpeed"
+        android:layout_alignStart="@+id/tvMxSpeed"
+        android:layout_alignEnd="@+id/tvMxSpeed"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:gravity="center"
+        android:textSize="30dp" />
+    <!---=ANGLES=============================================-->
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
+    <TextView
+        android:id="@+id/tvLMRoll"
+        android:layout_width="123dp"
+        android:layout_height="35dp"
+        android:layout_alignStart="@+id/tvAvgSpeed"
+        android:layout_alignTop="@+id/barView2"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="29dp"
+        android:gravity="center"
+        android:text="@string/defaultTVLeftMaxRoll"
+        android:textSize="13dp" />
 
-            <Button
-                android:id="@+id/Pause"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pause" />
+    <TextView
+        android:id="@+id/tvLeftMaxRoll"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvLMRoll"
+        android:layout_alignStart="@+id/tvLMRoll"
+        android:layout_alignEnd="@+id/tvLMRoll"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:textSize="30dp" />
+    <!---====================================================-->
 
-            <Button
-                android:id="@+id/btnStop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Stop" />
-        </TableRow>
-    </TableLayout>
+    <TextView
+        android:id="@+id/tvCRoll"
+        android:layout_width="123dp"
+        android:layout_height="35dp"
+        android:layout_alignTop="@+id/tvLMRoll"
+        android:layout_marginStart="46dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="46dp"
+        android:layout_toStartOf="@+id/tvRMRoll"
+        android:layout_toEndOf="@+id/tvLMRoll"
+        android:gravity="center"
+        android:text="@string/defaultTVCurrRoll"
+        android:textSize="13dp" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tvCurrRoll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvCRoll"
+        android:layout_alignStart="@+id/tvCRoll"
+        android:layout_alignEnd="@+id/tvCRoll"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:gravity="center"
+        android:textSize="30dp" />
+    <!---====================================================-->
+
+    <TextView
+        android:id="@+id/tvRMRoll"
+        android:layout_width="123dp"
+        android:layout_height="35dp"
+        android:layout_alignTop="@+id/tvLMRoll"
+        android:layout_alignEnd="@+id/tvMxSpeed"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:gravity="center"
+        android:text="@string/defaultTVRightMaxTilt"
+        android:textSize="13dp" />
+
+    <TextView
+        android:id="@+id/tvRightMaxRoll"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvRMRoll"
+        android:layout_alignStart="@+id/tvRMRoll"
+        android:layout_alignEnd="@+id/tvRMRoll"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:textSize="30dp" />
+    <!---=ACCELERATIONS======================================-->
+
+    <TextView
+        android:id="@+id/tvX"
+        android:layout_width="123dp"
+        android:layout_height="35dp"
+        android:layout_alignStart="@+id/tvAvgSpeed"
+        android:layout_alignTop="@+id/barView3"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="9dp"
+        android:gravity="center"
+        android:text="@string/defaultTVCurrX"
+        android:textSize="13dp" />
+
+    <TextView
+        android:id="@+id/tvCurrX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvX"
+        android:layout_alignStart="@+id/tvX"
+        android:layout_alignEnd="@+id/tvX"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:gravity="center"
+        android:textSize="30dp"/>
+    <!---====================================================-->
+
+    <TextView
+        android:id="@+id/tvY"
+        android:layout_width="123dp"
+        android:layout_height="35dp"
+        android:layout_alignTop="@+id/tvX"
+        android:layout_marginStart="46dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="46dp"
+        android:layout_toStartOf="@+id/tvZ"
+        android:layout_toEndOf="@+id/tvX"
+        android:gravity="center"
+        android:text="@string/defaultTVCurrY"
+        android:textSize="13dp" />
+
+    <TextView
+        android:id="@+id/tvCurrY"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvY"
+        android:layout_alignStart="@+id/tvY"
+        android:layout_alignEnd="@+id/tvY"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:textSize="30dp" />
+    <!---====================================================-->
+
+    <TextView
+        android:id="@+id/tvZ"
+        android:layout_width="123dp"
+        android:layout_height="35dp"
+        android:layout_alignTop="@+id/tvX"
+        android:layout_alignEnd="@+id/tvMxSpeed"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:gravity="center"
+        android:text="@string/defaultTVCurrZ"
+        android:textSize="13dp" />
+
+    <TextView
+        android:id="@+id/tvCurrZ"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvZ"
+        android:layout_alignStart="@+id/tvZ"
+        android:layout_alignEnd="@+id/tvZ"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:textSize="30dp" />
+    <!---====================================================-->
+
+    <TextView
+        android:id="@+id/tvElapsTime"
+        android:layout_width="123dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/btnStop"
+        android:layout_alignEnd="@+id/btnPauseResume"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="-17dp"
+        android:gravity="center"
+        android:text="@string/defaultTVElapsedTime"
+        android:textSize="13dp" />
+
+    <TextView
+        android:id="@+id/tvElapsedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvElapsTime"
+        android:layout_alignStart="@+id/tvElapsTime"
+        android:layout_alignEnd="@+id/tvElapsTime"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:gravity="center"
+        android:textSize="30dp" />
+    <!---====================================================-->
+
+    <Button
+        android:id="@+id/btnPauseResume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="208dp"
+        android:layout_marginBottom="85dp"
+        android:text="@string/btnPause" />
+
+    <Button
+        android:id="@+id/btnStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/btnPauseResume"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="85dp"
+        android:layout_marginEnd="0dp"
+        android:text="@string/btnStop" />
+
+
+</RelativeLayout>

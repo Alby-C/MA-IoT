@@ -19,7 +19,7 @@ public class AccelCommutator extends BaseSensor<IAccelListener> implements IAcce
         Vector commutedVector = rfCommutator.ConvertToNewReferenceSystem(new Vector(newValues[0], newValues[1], newValues[2]));
 
         for (IAccelListener listener :
-                internalListeners) {
+                listeners) {
             listener.onChangeAccel(timestamp, commutedVector.toArray());
         }
     }

@@ -8,14 +8,14 @@ import java.util.ArrayList;
  */
 public abstract class BaseSensor<T> {
     /// Array of listeners to the new values of the gyroscope
-    protected final ArrayList<T> internalListeners = new ArrayList<>();
+    protected final ArrayList<T> listeners = new ArrayList<>();
     /// True if the sensor is getting
-    protected boolean isRunning = false;
+    protected volatile boolean isRunning = false;
     /// this flag if no listeners are subscribed, is set to true in the start method
     protected boolean requestToStart = false;
 
     /**
-     * Used to start the measuring phase.
+     * Used to start or resume the measuring phase.
      */
     public abstract void Start();
 
@@ -29,8 +29,8 @@ public abstract class BaseSensor<T> {
      * @param listener Listener class to subscribe.
      */
     public void SubscribeListener(T listener) {
-        if(!this.internalListeners.contains(listener))
-            this.internalListeners.add(listener);
+        if(!this.listeners.contains(listener))
+            this.listeners.add(listener);
 
         if(this.requestToStart){
             Start();
@@ -43,6 +43,6 @@ public abstract class BaseSensor<T> {
      * @param listener Listener to unsubscribe.
      */
     public void UnsubscribeListener(T listener) {
-        this.internalListeners.remove(listener);
+        this.listeners.remove(listener);
     }
 }

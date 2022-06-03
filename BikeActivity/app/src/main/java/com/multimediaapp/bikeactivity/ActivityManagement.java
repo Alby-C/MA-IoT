@@ -52,9 +52,9 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private Thread tvUpdater;
 
     //////////////////////////// Activity status
-    private boolean isRunning;              ///true if is running, false if is on pause
-    private boolean isPausing;              ///true if is in pause
-    private boolean isStopping;             ///true if is in stopping phase
+    private volatile boolean isRunning;              ///true if is running, false if is on pause
+    private volatile boolean isPausing;              ///true if is in pause
+    private volatile boolean isStopping;             ///true if is in stopping phase
     private long startingTimestamp;         ///[ns] The timestamp of the first Start of the activity
     private long totalPauseLength;          ///[ns] The total length of all the pauses
     private long startingPauseTimestamp;    ///[ns] The timestamp of the starting of the last pause
@@ -238,9 +238,9 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
 
     private void Pause(){
         if(isRunning) {
-            accelerometer.Stop();
-            gyroscope.Stop();
-            speedometer.Stop();
+            accelerometer.Pause();
+            gyroscope.Pause();
+            speedometer.Pause();
 
             startingPauseTimestamp = elapsedRealtimeNanos();
 
@@ -269,9 +269,41 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         accelCommutator.UnsubscribeListener(this);
         gyroCommutator.UnsubscribeListener(roll);
 
-        accelerometer.Stop();
-        gyroscope.Stop();
-        speedometer.Stop();
+        ///Generated 3 threads to stop each SensorThreaded, so that everyone has the stop method
+        ///triggered at the same time
+        Thread[] threads = new Thread[3];
+
+        threads[0] = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                accelerometer.Stop();
+            }
+        });
+        threads[1] = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                gyroscope.Stop();
+            }
+        });
+        threads[2] = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                speedometer.Stop();
+            }
+        });
+
+        for (Thread th:
+             threads) {
+            th.start();
+        }
+        for (Thread th:
+             threads) {
+            try {
+                th.join();
+            } catch (InterruptedException e) {
+                Log.e(TAG +"thr:" + chronometer.getName(), e.toString());
+            }
+        }
 
         isRunning = false;
         isPausing = false;
@@ -399,21 +431,22 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
                 cycles--;
             }
             else{
-
-                accelerometer.Stop();
                 accelerometer.UnsubscribeListener(this);
-
-                cycles = AVERAGE_CYCLES;
-
-                rsCommutator = new ReferenceSystemCommutator(new Vector(meanX/cycles,meanY/cycles, meanZ/cycles));
-
-                accelCommutator = new AccelCommutator(rsCommutator);
-                gyroCommutator = new GyroCommutator(rsCommutator);
-
-                onRSCommutatorInit = false;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        accelerometer.Stop();
+
+
+                        cycles = AVERAGE_CYCLES;
+
+                        rsCommutator = new ReferenceSystemCommutator(new Vector(meanX / cycles, meanY / cycles, meanZ / cycles));
+
+                        accelCommutator = new AccelCommutator(rsCommutator);
+                        gyroCommutator = new GyroCommutator(rsCommutator);
+
+                        onRSCommutatorInit = false;
+
                         Start();
                     }
                 });

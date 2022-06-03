@@ -1,5 +1,6 @@
 package com.multimediaapp.bikeactivity;
 
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -40,6 +41,8 @@ public class GraphActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         linechart =  findViewById(R.id.rollGraph);
 
