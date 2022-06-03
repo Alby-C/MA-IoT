@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public abstract class BaseSensor<T> {
     /// Array of listeners to the new values of the gyroscope
     protected final ArrayList<T> internalListeners = new ArrayList<>();
-    protected T[] listeners;
     /// True if the sensor is getting
     protected boolean isRunning = false;
     /// this flag if no listeners are subscribed, is set to true in the start method
