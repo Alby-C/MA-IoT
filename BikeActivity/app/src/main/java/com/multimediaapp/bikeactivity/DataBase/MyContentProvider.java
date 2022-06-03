@@ -17,11 +17,11 @@ public class MyContentProvider extends ContentProvider {
     public static final String SPEED_TABLE = "Velocità";
     public static final String ROLL_TABLE = "Angolo_di_piega";
     public static final String ACC_TABLE = "Accelerazione";
-    public static final String PROVIDER = "/MyContentProvider/";
-    public static final String SPEED_PATH = PROVIDER + SPEED_TABLE;
-    public static final String ROLL_PATH = PROVIDER + ROLL_TABLE;
-    public static final String ACC_PATH = PROVIDER + ACC_TABLE;
-    public static final String AUTHORITY = "com.multimediaapp.bikeactivity.DataBase" + PROVIDER;
+    private static final String PROVIDER = "/MyContentProvider/";
+    private static final String SPEED_PATH = PROVIDER + SPEED_TABLE;
+    private static final String ROLL_PATH = PROVIDER + ROLL_TABLE;
+    private static final String ACC_PATH = PROVIDER + ACC_TABLE;
+    private static final String AUTHORITY = "com.multimediaapp.bikeactivity.DataBase" + PROVIDER;
     public static final Uri SPEED_URI = Uri.parse("content://" + AUTHORITY + SPEED_TABLE);
     public static final Uri ROLL_URI = Uri.parse("content://" + AUTHORITY + ROLL_TABLE);
     public static final Uri ACC_URI = Uri.parse("content://" + AUTHORITY + ACC_TABLE);
@@ -73,7 +73,7 @@ public class MyContentProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Uri insert(@NonNull Uri uri, @Nullable ContentValues values)
+     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values)
     {
         /// get path of URI
         String path = uri.getPath();

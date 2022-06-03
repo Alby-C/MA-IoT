@@ -211,6 +211,11 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         accelerometer.Start();
     }
 
+    /**
+     * Start() method run after the onChangeAccel in Activity management start for the first time
+     * to getting the new reference system
+     */
+
     private void Start(){
         accelerometer.SubscribeListener(accelCommutator);
         gyroscope.SubscribeListener(gyroCommutator);

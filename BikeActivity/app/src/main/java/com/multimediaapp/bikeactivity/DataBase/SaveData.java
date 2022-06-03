@@ -41,12 +41,13 @@ public class SaveData implements IMeasurementHandler {
 
 
     @Override
-    public void onChangeSpeed(long timestamp,float newSpeed, float avgSpeed) {
+    public void onChangeSpeed(long timestamp, float newSpeed, float avgSpeed) {
         timestamp = (timestamp - startingTime);
         ContentValues speedValues = new ContentValues();
 
         speedValues.put(MyContentProvider.IstantSpeed_Col, newSpeed);
         speedValues.put(MyContentProvider.TimeStamp_Col, timestamp);
+        context.getContentResolver().insert(MyContentProvider.SPEED_URI, speedValues);
     }
 
     @Override
