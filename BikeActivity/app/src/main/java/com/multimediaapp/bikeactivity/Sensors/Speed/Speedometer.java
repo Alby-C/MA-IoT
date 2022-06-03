@@ -124,7 +124,7 @@ public class Speedometer extends BaseSensorThreaded<ISpeedListener,long[]> imple
                 @Override
                 public void run() {
                     /// Send result to activity management
-                    onSpeedChange.onChangeSpeed(timestamp, nCurrentSpeed, avgSpeed);
+                    listener.onChangeSpeed(timestamp, nCurrentSpeed, avgSpeed);
                 }
             }).start();
         }

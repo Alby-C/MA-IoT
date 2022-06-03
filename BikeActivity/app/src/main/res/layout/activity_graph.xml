@@ -1,15 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".GraphActivity">
 
-    <com.github.mikephil.charting.charts.LineChart
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/rollGraph">
-    </com.github.mikephil.charting.charts.LineChart>
-</RelativeLayout>
+        android:layout_height="59dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        >
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabStats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stats" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabRoll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Roll" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabSpeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Speed" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabAcc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accel" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="599dp"
+        />
+</LinearLayout>

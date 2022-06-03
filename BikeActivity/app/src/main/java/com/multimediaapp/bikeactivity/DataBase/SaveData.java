@@ -9,25 +9,12 @@ import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
 
 public class SaveData implements IMeasurementHandler {
 
-    String[] speedCol = {
-            MyContentProvider._ID_Col,
-            MyContentProvider.IstantSpeed_Col ,
-            MyContentProvider.TimeStamp_Col
-    };
-
-    String[] rollCol = { MyContentProvider._ID_Col,
-            MyContentProvider.IstantRoll_Col,
-            MyContentProvider.TimeStamp_Col
-    };
-
-    String[] accCol = { MyContentProvider._ID_Col,
-            MyContentProvider.IstantAcc_Col,
-            MyContentProvider.TimeStamp_Col
-    };
-    private static final long NS2S = 1000000000; ///Constant to convert from nanoseconds to seconds
     private Context context;
     private long startingTime;
 
+    private final int X = 0;
+    private final int Y = 1;
+    private final int Z = 2;
 
     public SaveData(Context context) {
         this.context = context;
@@ -36,17 +23,25 @@ public class SaveData implements IMeasurementHandler {
 
     @Override
     public void onChangeAccel(long timestamp, float[] newValues) {
+        timestamp = (timestamp - startingTime);
+        ContentValues accValues = new ContentValues();
 
+        accValues.put(MyContentProvider.IstantAccX_Col, newValues[X]);
+        accValues.put(MyContentProvider.IstantAccY_Col, newValues[Y]);
+        accValues.put(MyContentProvider.IstantAccZ_Col, newValues[Z]);
+        accValues.put(MyContentProvider.TimeStamp_Col, timestamp);
+        context.getContentResolver().insert(MyContentProvider.ACC_URI, accValues);
     }
 
 
     @Override
-    public void onChangeSpeed(long timestamp,float newSpeed, float avgSpeed) {
+    public void onChangeSpeed(long timestamp, float newSpeed, float avgSpeed) {
         timestamp = (timestamp - startingTime);
         ContentValues speedValues = new ContentValues();
 
         speedValues.put(MyContentProvider.IstantSpeed_Col, newSpeed);
         speedValues.put(MyContentProvider.TimeStamp_Col, timestamp);
+        context.getContentResolver().insert(MyContentProvider.SPEED_URI, speedValues);
     }
 
     @Override

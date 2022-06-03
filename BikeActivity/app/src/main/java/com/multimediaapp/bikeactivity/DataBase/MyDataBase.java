@@ -18,7 +18,7 @@ public class MyDataBase extends SQLiteOpenHelper {
     {
         db.execSQL("CREATE TABLE Velocità(_id INTEGER PRIMARY KEY AUTOINCREMENT, Velocità_Istantanea FLOAT , TimeStamp LONG)");
         db.execSQL("CREATE TABLE Angolo_di_piega(_id INTEGER PRIMARY KEY AUTOINCREMENT, Angolo_Istantaneo FLOAT, TimeStamp LONG)");
-        db.execSQL("CREATE TABLE Accelerazione(_id INTEGER PRIMARY KEY AUTOINCREMENT, Accelerazione_istantantea FLOAT, TimeStamp LONG)" );
+        db.execSQL("CREATE TABLE Accelerazione(_id INTEGER PRIMARY KEY AUTOINCREMENT, AccelerazioneX FLOAT, AccelerazioneY FLOAT , AccelerazioneZ FLOAT, TimeStamp LONG)");
     }
 
     @Override

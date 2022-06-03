@@ -21,6 +21,8 @@
     <string name="LAUNCH_BIKE_ACTIVITY">com.multimediaapp.bikeactivity.ActivityManagement</string>
     <string name="ORIENTATION">CHANGE_ORIENTATION_LABEL</string>
     <string name="defaultTVElapsedTime">Tempo attività:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
