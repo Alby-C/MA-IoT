@@ -117,7 +117,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         /// Drop previous table
         MyContentProvider.db.execSQL("DELETE FROM " + MyContentProvider.ACC_TABLE);
         MyContentProvider.db.execSQL("DELETE FROM " + MyContentProvider.SPEED_TABLE);
-        MyContentProvider.db.execSQL("DELETE FROM  " + MyContentProvider.ROLL_TABLE);
+        MyContentProvider.db.execSQL("DELETE FROM " + MyContentProvider.ROLL_TABLE);
 
         saveData = new SaveData(this);
 
@@ -223,9 +223,14 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         jump.SubscribeListener(this);
         roll.SubscribeListener(this);
         roll.SubscribeListener(saveData);
+
         accelCommutator.SubscribeListener(roll);
         accelCommutator.SubscribeListener(this);
+        accelCommutator.SubscribeListener(saveData);
+
         gyroCommutator.SubscribeListener(roll);
+        speedometer.SubscribeListener(this);
+        speedometer.SubscribeListener(saveData);
 
         accelerometer.Start();
         gyroscope.Start();

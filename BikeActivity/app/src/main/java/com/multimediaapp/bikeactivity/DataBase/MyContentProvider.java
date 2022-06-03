@@ -28,9 +28,10 @@ public class MyContentProvider extends ContentProvider {
     public static final String _ID_Col = "_id";
     public static final String IstantSpeed_Col = "Velocità_Istantanea";
     public static final String IstantRoll_Col = "Angolo_Istantaneo";
-    public static final String IstantAcc_Col = " Accelerazione_istantantea";
+    public static final String IstantAccX_Col = "AccelerazioneX";
+    public static final String IstantAccY_Col = "AccelerazioneY";
+    public static final String IstantAccZ_Col = "AccelerazioneZ";
     public static final String TimeStamp_Col = "TimeStamp";
-
 
     @Override
     public boolean onCreate()
@@ -91,6 +92,7 @@ public class MyContentProvider extends ContentProvider {
             /// insert data into acc table
             case ACC_PATH:
                 db.insert(ACC_TABLE, null, values);
+                break;
             default:
                 throw new IllegalArgumentException("Unsupported URI" + uri);
         }

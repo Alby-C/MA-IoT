@@ -78,7 +78,7 @@ public class Speedometer extends BaseSensor<ISpeedListener> implements LocationL
                 @Override
                 public void run() {
                     /// Send result to activity management
-                    onSpeedChange.onChangeSpeed(timestamp, nCurrentSpeed, avgSpeed);
+                    listener.onChangeSpeed(timestamp, nCurrentSpeed, avgSpeed);
                 }
             }).start();
         }
