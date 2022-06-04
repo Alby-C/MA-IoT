@@ -1,5 +1,6 @@
 package com.multimediaapp.bikeactivity.Sensors.Gyroscope;
 
+import static android.os.SystemClock.elapsedRealtimeNanos;
 import static java.lang.Math.PI;
 import static java.lang.Math.atan;
 
@@ -81,7 +82,7 @@ public class Roll extends BaseSensor<IRollListener> implements IGyroListener, IA
 
         for(IRollListener listener
                 : listeners){
-            listener.onChangeRoll(prevTimestamp, currAngle);
+            listener.onChangeRoll(elapsedRealtimeNanos(), currAngle);
         }
 
     }
