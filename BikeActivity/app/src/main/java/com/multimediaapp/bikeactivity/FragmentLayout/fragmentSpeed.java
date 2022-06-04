@@ -2,14 +2,12 @@ package com.multimediaapp.bikeactivity.FragmentLayout;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -82,7 +80,7 @@ public class fragmentSpeed extends Fragment {
 
         LineDataSet rollLineDataSet = new LineDataSet(axisValues, "Speed");
         rollLineDataSet.setDrawCircles(false);
-        rollLineDataSet.setColor(Color.YELLOW);
+        rollLineDataSet.setColor(getResources().getColor(R.color.speed));
 
         /// add to the list the rollLineDataSet create before
         listOfLineDataSets.add(rollLineDataSet);

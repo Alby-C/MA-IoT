@@ -7,4 +7,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Graphs colors -->
+    <color name="xAxisAccel">#EC1C24</color>
+    <color name="yAxisAccel">#00A8F3</color>
+    <color name="zAxisAccel">#FFF200</color>
+    <color name="speed">#298507</color>
+    <color name="roll">#B83DBA</color>
 </resources>

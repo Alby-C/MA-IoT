@@ -2,12 +2,12 @@ package com.multimediaapp.bikeactivity.FragmentLayout;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -96,17 +96,17 @@ public class fragmentAccel extends Fragment {
         /// data set for accel X
         LineDataSet rollLineDataSetAccX = new LineDataSet(AccXValues, "Acc X");
         rollLineDataSetAccX.setDrawCircles(false);
-        rollLineDataSetAccX.setColor(Color.RED);
+        rollLineDataSetAccX.setColor(getResources().getColor(R.color.xAxisAccel));
 
         /// data set for accel Y
         LineDataSet rollLineDataSetAccY = new LineDataSet(AccYValues, "Acc Y");
         rollLineDataSetAccY.setDrawCircles(false);
-        rollLineDataSetAccY.setColor(Color.GREEN);
+        rollLineDataSetAccY.setColor(getResources().getColor(R.color.yAxisAccel));
 
         /// data set for accel Z
         LineDataSet rollLineDataSetAccZ = new LineDataSet(AccZValues, "Acc Z");
         rollLineDataSetAccZ.setDrawCircles(false);
-        rollLineDataSetAccZ.setColor(Color.YELLOW);
+        rollLineDataSetAccZ.setColor(getResources().getColor(R.color.zAxisAccel));
 
 
         /// add to the list the rollLineDataSet create before
