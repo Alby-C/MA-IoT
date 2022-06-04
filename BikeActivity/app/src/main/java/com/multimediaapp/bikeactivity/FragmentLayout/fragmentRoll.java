@@ -79,13 +79,21 @@ public class fragmentRoll extends Fragment {
         LineDataSet rollLineDataSet = new LineDataSet(axisValues, "Roll");
         rollLineDataSet.setDrawCircles(false);
         rollLineDataSet.setColor(getResources().getColor(R.color.roll));
+        rollLineDataSet.setValueTextColor(getResources().getColor(R.color.teal_700));
+
 
         /// add to the list the rollLineDataSet create before
         listOfLineDataSets.add(rollLineDataSet);
 
+
+
+        linechart.setPinchZoom(true);
         /// pass the list to the linechart
         linechart.setData(new LineData(listOfLineDataSets));
         // Inflate the layout for this fragment
+        linechart.getLegend().setTextColor(getResources().getColor(R.color.teal_700));
+
+
         return v;
 
     }

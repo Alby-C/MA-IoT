@@ -114,8 +114,10 @@ public class fragmentAccel extends Fragment {
         listOfLineDataSets.add(rollLineDataSetAccY);
         listOfLineDataSets.add(rollLineDataSetAccZ);
 
+        linechart.setPinchZoom(true);
         /// pass the list to the linechart
         linechart.setData(new LineData(listOfLineDataSets));
+        linechart.getLegend().setTextColor(getResources().getColor(R.color.teal_700));
 
         // Inflate the layout for this fragment
         return v;
