@@ -18,6 +18,7 @@ import com.multimediaapp.bikeactivity.DataBase.MyContentProvider;
 import com.multimediaapp.bikeactivity.R;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 
 public class fragmentRoll extends Fragment {
@@ -75,6 +76,16 @@ public class fragmentRoll extends Fragment {
 
         /// creating a List of LineDataSet to pass to the linechart
         ArrayList<ILineDataSet> listOfLineDataSets = new ArrayList<>();
+
+        axisValues.sort(new Comparator<Entry>() {
+            @Override
+            public int compare(Entry o1, Entry o2) {
+                if(o1.getX() <= o2.getX())
+                    return -1;
+                else
+                    return 1;
+            }
+        });
 
         LineDataSet rollLineDataSet = new LineDataSet(axisValues, "Roll");
         rollLineDataSet.setDrawCircles(false);
