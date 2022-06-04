@@ -2,14 +2,12 @@ package com.multimediaapp.bikeactivity.FragmentLayout;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -80,7 +78,7 @@ public class fragmentRoll extends Fragment {
 
         LineDataSet rollLineDataSet = new LineDataSet(axisValues, "Roll");
         rollLineDataSet.setDrawCircles(false);
-        rollLineDataSet.setColor(Color.RED);
+        rollLineDataSet.setColor(getResources().getColor(R.color.roll));
 
         /// add to the list the rollLineDataSet create before
         listOfLineDataSets.add(rollLineDataSet);
