@@ -3,6 +3,7 @@ package com.multimediaapp.bikeactivity.FragmentLayout;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -29,17 +31,25 @@ public class fragmentSpeed extends Fragment {
             MyContentProvider.TimeStamp_Col
     };
 
+    private float maxSpeed;
+    private float avgSpeed;
     private LineChart linechart = null;
     private Cursor speedCursor = null;
     private int nSpeed = 0;
     private Context context;
+    private Description description = null;
     private static final float NS2S = 1.0f / 1000000000.0f; ///Constant to convert from nanoseconds to seconds
     private final int TIME_COL = 2;
     private final int SPEED_COL = 1;
 
-    public fragmentSpeed(Context context)
+    public fragmentSpeed(Context context,
+                         float maxSpeed,
+                         float avgSpeed
+    )
     {
         this.context = context;
+        this.avgSpeed = avgSpeed;
+        this.maxSpeed = maxSpeed;
     }
 
     @Override
@@ -49,6 +59,11 @@ public class fragmentSpeed extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_speed, container, false);
         linechart = v.findViewById(R.id.speedGraph);
+
+        /// Description of roll chart
+        description = new Description();
+        description.setText("ROLL CHART");
+        description.setTextSize(10f);
 
         /// Array of Roll and Time
         ArrayList<Entry> axisValues = new ArrayList <> ();
@@ -80,9 +95,12 @@ public class fragmentSpeed extends Fragment {
         ArrayList<ILineDataSet> listOfLineDataSets = new ArrayList<>();
 
         LineDataSet rollLineDataSet = new LineDataSet(axisValues, "Speed");
+
+        /// data set settings
         rollLineDataSet.setDrawCircles(false);
         rollLineDataSet.setColor(getResources().getColor(R.color.speed));
-
+        rollLineDataSet.setValueTextSize(10f);
+        rollLineDataSet.setLineWidth(3f);
 
 
         /// add to the list the rollLineDataSet create before
@@ -90,7 +108,11 @@ public class fragmentSpeed extends Fragment {
 
         /// pass the list to the linechart
         linechart.setData(new LineData(listOfLineDataSets));
-        linechart.getLegend().setTextColor(getResources().getColor(R.color.teal_700));
+
+        /// linechart settings
+        linechart.setBackgroundColor(Color.CYAN);
+        linechart.setDescription(description);
+        linechart.setPinchZoom(true);
         return v;
     }
 }

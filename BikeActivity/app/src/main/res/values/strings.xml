@@ -11,6 +11,7 @@
     <string name="defaultTVCurrX">X:</string>
     <string name="defaultTVCurrY">Y:</string>
     <string name="defaultTVCurrZ">Z:</string>
+    <string name="TotalTime">Tempo totale di attività</string>
 
     <string name="btnStart">Inizia\nattività</string>
     <string name="btnStop">Stop</string>

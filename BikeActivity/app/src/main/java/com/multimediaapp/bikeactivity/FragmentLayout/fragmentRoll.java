@@ -2,6 +2,7 @@ package com.multimediaapp.bikeactivity.FragmentLayout;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -28,17 +30,24 @@ public class fragmentRoll extends Fragment {
             MyContentProvider.TimeStamp_Col
     };
 
+    private float maxRightRoll;
+    private float maxLeftRoll;
     private LineChart linechart = null;
     private Cursor rollCursor = null;
     private int nRoll = 0;
     private Context context;
+    private Description description = null;
     private static final float NS2S = 1.0f / 1000000000.0f; ///Constant to convert from nanoseconds to seconds
     private final int TIME_COL = 2;
     private final int ROLL_COL = 1;
 
-    public fragmentRoll(Context context)
+    public fragmentRoll(Context context,
+                        float maxRightRoll,
+                        float maxLeftRoll)
     {
         this.context = context;
+        this.maxLeftRoll = maxLeftRoll;
+        this.maxRightRoll = maxRightRoll;
     }
 
     @Override
@@ -47,6 +56,11 @@ public class fragmentRoll extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_roll, container, false);
         linechart = v.findViewById(R.id.rollGraph);
+
+        /// Description of roll chart
+        description = new Description();
+        description.setText("ROLL CHART");
+        description.setTextSize(10f);
 
         /// Array of Roll and Time
         ArrayList<Entry> axisValues = new ArrayList <> ();
@@ -88,23 +102,25 @@ public class fragmentRoll extends Fragment {
         });
 
         LineDataSet rollLineDataSet = new LineDataSet(axisValues, "Roll");
+        /// Data set settings
         rollLineDataSet.setDrawCircles(false);
         rollLineDataSet.setColor(getResources().getColor(R.color.roll));
-        rollLineDataSet.setValueTextColor(getResources().getColor(R.color.teal_700));
+        rollLineDataSet.setValueTextSize(10f);
+        rollLineDataSet.setLineWidth(3f);
 
 
         /// add to the list the rollLineDataSet create before
         listOfLineDataSets.add(rollLineDataSet);
 
-
-
-        linechart.setPinchZoom(true);
         /// pass the list to the linechart
         linechart.setData(new LineData(listOfLineDataSets));
+
+        /// linechart settings
+        linechart.setBackgroundColor(Color.CYAN);
+        linechart.setDescription(description);
+        linechart.setPinchZoom(true);
+
         // Inflate the layout for this fragment
-        linechart.getLegend().setTextColor(getResources().getColor(R.color.teal_700));
-
-
         return v;
 
     }

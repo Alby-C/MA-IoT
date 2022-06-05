@@ -2,6 +2,7 @@ package com.multimediaapp.bikeactivity.FragmentLayout;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -34,6 +36,7 @@ public class fragmentAccel extends Fragment {
     private Cursor accCursor = null;
     private int nAcc = 0;
     private Context context;
+    private Description description = null;
     private static final float NS2S = 1.0f / 1000000000.0f; ///Constant to convert from nanoseconds to seconds
     private final int ACCX_COL = 1;
     private final int ACCY_COL = 2;
@@ -53,6 +56,11 @@ public class fragmentAccel extends Fragment {
 
         // Inflate the layout for this fragment
         linechart = v.findViewById(R.id.accelGraph);
+
+        /// Description of roll chart
+        description = new Description();
+        description.setText("ACCELERATION CHART");
+        description.setTextSize(10f);
 
         /// Array of Roll and Time
         ArrayList<Entry> AccXValues = new ArrayList <> ();
@@ -97,16 +105,22 @@ public class fragmentAccel extends Fragment {
         LineDataSet rollLineDataSetAccX = new LineDataSet(AccXValues, "Acc X");
         rollLineDataSetAccX.setDrawCircles(false);
         rollLineDataSetAccX.setColor(getResources().getColor(R.color.xAxisAccel));
+        rollLineDataSetAccX.setValueTextSize(10f);
+        rollLineDataSetAccX.setLineWidth(3f);
 
         /// data set for accel Y
         LineDataSet rollLineDataSetAccY = new LineDataSet(AccYValues, "Acc Y");
         rollLineDataSetAccY.setDrawCircles(false);
         rollLineDataSetAccY.setColor(getResources().getColor(R.color.yAxisAccel));
+        rollLineDataSetAccY.setValueTextSize(10f);
+        rollLineDataSetAccY.setLineWidth(3f);
 
         /// data set for accel Z
         LineDataSet rollLineDataSetAccZ = new LineDataSet(AccZValues, "Acc Z");
         rollLineDataSetAccZ.setDrawCircles(false);
         rollLineDataSetAccZ.setColor(getResources().getColor(R.color.zAxisAccel));
+        rollLineDataSetAccZ.setValueTextSize(10f);
+        rollLineDataSetAccZ.setLineWidth(3f);
 
 
         /// add to the list the rollLineDataSet create before
@@ -117,7 +131,11 @@ public class fragmentAccel extends Fragment {
         linechart.setPinchZoom(true);
         /// pass the list to the linechart
         linechart.setData(new LineData(listOfLineDataSets));
-        linechart.getLegend().setTextColor(getResources().getColor(R.color.teal_700));
+        /// linechart settings
+        linechart.setBackgroundColor(Color.CYAN);
+        linechart.setDescription(description);
+        linechart.setPinchZoom(true);
+
 
         // Inflate the layout for this fragment
         return v;
