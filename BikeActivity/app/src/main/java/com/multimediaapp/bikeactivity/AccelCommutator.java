@@ -8,7 +8,7 @@ import Space.Vector;
 
 public class AccelCommutator extends BaseSensor<IAccelListener> implements IAccelListener {
 
-    private ReferenceSystemCommutator rfCommutator;
+    private final ReferenceSystemCommutator rfCommutator;
 
     public AccelCommutator(ReferenceSystemCommutator rfCommutator){
         this.rfCommutator = rfCommutator;

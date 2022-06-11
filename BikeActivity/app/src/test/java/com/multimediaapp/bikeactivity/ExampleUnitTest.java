@@ -1,12 +1,8 @@
-<<<<<<< HEAD:BikeActivity/app/src/test/java/com/multimediaapp/bikeactivity/ExampleUnitTest.java
 package com.multimediaapp.bikeactivity;
-=======
-package com.example.gyroscope;
->>>>>>> Alby:Gyroscope/app/src/test/java/com/example/gyroscope/ExampleUnitTest.java
+
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * Example local unit test, which will execute on the development machine (host).

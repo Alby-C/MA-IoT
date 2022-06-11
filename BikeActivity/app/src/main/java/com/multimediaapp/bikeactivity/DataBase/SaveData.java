@@ -9,8 +9,8 @@ import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
 
 public class SaveData implements IMeasurementHandler {
 
-    private Context context;
-    private long startingTime;
+    private final Context context;
+    private final long startingTime;
 
     private final int X = 0;
     private final int Y = 1;
@@ -26,9 +26,9 @@ public class SaveData implements IMeasurementHandler {
         timestamp = (timestamp - startingTime);
         ContentValues accValues = new ContentValues();
 
-        accValues.put(MyContentProvider.IstantAccX_Col, newValues[X]);
-        accValues.put(MyContentProvider.IstantAccY_Col, newValues[Y]);
-        accValues.put(MyContentProvider.IstantAccZ_Col, newValues[Z]);
+        accValues.put(MyContentProvider.InstantAccX_Col, newValues[X]);
+        accValues.put(MyContentProvider.InstantAccY_Col, newValues[Y]);
+        accValues.put(MyContentProvider.InstantAccZ_Col, newValues[Z]);
         accValues.put(MyContentProvider.TimeStamp_Col, timestamp);
         context.getContentResolver().insert(MyContentProvider.ACC_URI, accValues);
     }
@@ -39,7 +39,7 @@ public class SaveData implements IMeasurementHandler {
         timestamp = (timestamp - startingTime);
         ContentValues speedValues = new ContentValues();
 
-        speedValues.put(MyContentProvider.IstantSpeed_Col, newSpeed);
+        speedValues.put(MyContentProvider.InstantSpeed_Col, newSpeed);
         speedValues.put(MyContentProvider.TimeStamp_Col, timestamp);
         context.getContentResolver().insert(MyContentProvider.SPEED_URI, speedValues);
     }
@@ -49,7 +49,7 @@ public class SaveData implements IMeasurementHandler {
         timestamp = (timestamp - startingTime);
         ContentValues rollValues = new ContentValues();
 
-        rollValues.put(MyContentProvider.IstantRoll_Col, currentRoll);
+        rollValues.put(MyContentProvider.InstantRoll_Col, currentRoll);
         rollValues.put(MyContentProvider.TimeStamp_Col, timestamp);
         context.getContentResolver().insert(MyContentProvider.ROLL_URI, rollValues);
     }

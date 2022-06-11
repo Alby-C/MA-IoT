@@ -8,6 +8,6 @@
         android:id="@+id/rollGraph"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_weight="10"></com.github.mikephil.charting.charts.LineChart>
+        android:layout_weight="10" />
 
 </FrameLayout>

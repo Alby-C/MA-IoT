@@ -55,8 +55,7 @@
             android:authorities="com.multimediaapp.bikeactivity.DataBase"
             android:name=".DataBase.MyContentProvider"
             android:exported="true"
-            android:grantUriPermissions="true"
-            ></provider>
+            android:grantUriPermissions="true" />
     </application>
 
 </manifest>

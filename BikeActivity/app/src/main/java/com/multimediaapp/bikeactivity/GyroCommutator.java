@@ -8,7 +8,7 @@ import Space.Vector;
 
 public class GyroCommutator extends BaseSensor<IGyroListener> implements IGyroListener {
 
-    private ReferenceSystemCommutator rfCommutator;
+    private final ReferenceSystemCommutator rfCommutator;
 
     public GyroCommutator(ReferenceSystemCommutator rfCommutator){
         this.rfCommutator = rfCommutator;

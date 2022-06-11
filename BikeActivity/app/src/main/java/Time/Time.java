@@ -85,37 +85,6 @@ public class Time {
 
         //3600 and 60 would be enough, but 4096 and 64 are 100000000b and 1000000b, so multiplications could be faster
         return (a.hours - b.hours) * 4096 + (a.minutes - b.minutes) * 64 + (a.seconds - b.seconds);
-
-        /*if(a.hour < b.hour) {
-            return -1;
-
-        }
-        else if(a.hour > b.hour){
-            return 1;
-        }
-        else{
-            if(a.minutes < b.minutes){
-                return -2;
-
-            }
-            else if(a.minutes > b.minutes){
-                return 2;
-            }
-            else{
-                if(a.seconds < b.seconds){
-                    return -3;
-
-                }
-                else if(a.seconds > b.seconds){
-                    return 3;
-                }
-                else{
-                    return 0;
-                }
-
-            }
-
-        }*/
     }
 
     @NonNull

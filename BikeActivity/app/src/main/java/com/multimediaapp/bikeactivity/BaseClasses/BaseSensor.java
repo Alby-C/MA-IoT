@@ -11,11 +11,11 @@ public abstract class BaseSensor<T> {
     protected final ArrayList<T> listeners = new ArrayList<>();
     /// True if the sensor is getting
     protected volatile boolean isRunning = false;
-    /// this flag if no listeners are subscribed, is set to true in the start method
+    /// Flag set to true in the start method if no listeners are subscribed
     protected boolean requestToStart = false;
 
     /**
-     * Used to start or resume the measuring phase.
+     * Used to start the measuring phase.
      */
     public abstract void Start();
 
