@@ -26,11 +26,11 @@ public class MyContentProvider extends ContentProvider {
     public static final Uri ROLL_URI = Uri.parse("content://" + AUTHORITY + ROLL_TABLE);
     public static final Uri ACC_URI = Uri.parse("content://" + AUTHORITY + ACC_TABLE);
     public static final String _ID_Col = "_id";
-    public static final String IstantSpeed_Col = "Velocità_Istantanea";
-    public static final String IstantRoll_Col = "Angolo_Istantaneo";
-    public static final String IstantAccX_Col = "AccelerazioneX";
-    public static final String IstantAccY_Col = "AccelerazioneY";
-    public static final String IstantAccZ_Col = "AccelerazioneZ";
+    public static final String InstantSpeed_Col = "Velocità_Istantanea";
+    public static final String InstantRoll_Col = "Angolo_Istantaneo";
+    public static final String InstantAccX_Col = "AccelerazioneX";
+    public static final String InstantAccY_Col = "AccelerazioneY";
+    public static final String InstantAccZ_Col = "AccelerazioneZ";
     public static final String TimeStamp_Col = "TimeStamp";
 
     @Override

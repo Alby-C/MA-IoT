@@ -62,12 +62,12 @@ public class Accelerometer extends BaseSensorThreaded<IAccelListener, SensorEven
         SensorEvent data;
         while(isRunning){
             ///Before evaluating isRunning will take all elements from the queue until it is emptied
-            while(datas.size() > 0) {
+            while(this.data.size() > 0) {
                 try {
                     /// If data is not available waits 20 milliseconds for it, if still is not
                     /// available (null) because the queue is empty go on and check if the sensor
                     /// is running
-                    if ((data = datas.poll(20, TimeUnit.MILLISECONDS)) != null) {
+                    if ((data = this.data.poll(20, TimeUnit.MILLISECONDS)) != null) {
                         for (IAccelListener listener :
                                 listeners) {
                             listener.onChangeAccel(data.timestamp, data.values);
@@ -82,7 +82,7 @@ public class Accelerometer extends BaseSensorThreaded<IAccelListener, SensorEven
     @Override
     public void onSensorChanged(SensorEvent event) {
         try{
-            datas.add(event);
+            data.add(event);
         }catch(IllegalStateException e){ }  //If the queue is full keep measuring
     }
 

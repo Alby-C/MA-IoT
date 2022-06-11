@@ -1,19 +1,18 @@
 package com.multimediaapp.bikeactivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
 import com.multimediaapp.bikeactivity.FragmentLayout.VPAdapter;
 import com.multimediaapp.bikeactivity.FragmentLayout.fragmentAccel;
 import com.multimediaapp.bikeactivity.FragmentLayout.fragmentRoll;
 import com.multimediaapp.bikeactivity.FragmentLayout.fragmentSpeed;
 import com.multimediaapp.bikeactivity.FragmentLayout.fragmentStats;
-
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.database.Cursor;
-import android.graphics.Color;
-import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import com.google.android.material.tabs.TabLayout;
 
 
 public class GraphActivity extends AppCompatActivity {

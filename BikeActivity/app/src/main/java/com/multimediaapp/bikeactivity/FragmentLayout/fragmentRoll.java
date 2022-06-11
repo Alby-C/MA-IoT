@@ -26,7 +26,7 @@ import java.util.Comparator;
 public class fragmentRoll extends Fragment {
 
     String[] rollCol = { MyContentProvider._ID_Col,
-            MyContentProvider.IstantRoll_Col,
+            MyContentProvider.InstantRoll_Col,
             MyContentProvider.TimeStamp_Col
     };
 

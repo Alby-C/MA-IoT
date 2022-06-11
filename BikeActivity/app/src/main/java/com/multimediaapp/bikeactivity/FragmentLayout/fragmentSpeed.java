@@ -1,7 +1,6 @@
 package com.multimediaapp.bikeactivity.FragmentLayout;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -27,7 +26,7 @@ public class fragmentSpeed extends Fragment {
 
     String[] speedCol = {
             MyContentProvider._ID_Col,
-            MyContentProvider.IstantSpeed_Col ,
+            MyContentProvider.InstantSpeed_Col,
             MyContentProvider.TimeStamp_Col
     };
 

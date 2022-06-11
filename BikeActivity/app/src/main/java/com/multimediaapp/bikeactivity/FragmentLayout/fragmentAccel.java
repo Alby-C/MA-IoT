@@ -26,9 +26,9 @@ public class fragmentAccel extends Fragment {
 
     String[] accCol = {
             MyContentProvider._ID_Col,
-            MyContentProvider.IstantAccX_Col,
-            MyContentProvider.IstantAccY_Col,
-            MyContentProvider.IstantAccZ_Col,
+            MyContentProvider.InstantAccX_Col,
+            MyContentProvider.InstantAccY_Col,
+            MyContentProvider.InstantAccZ_Col,
             MyContentProvider.TimeStamp_Col
     };
 
@@ -38,9 +38,9 @@ public class fragmentAccel extends Fragment {
     private Context context;
     private Description description = null;
     private static final float NS2S = 1.0f / 1000000000.0f; ///Constant to convert from nanoseconds to seconds
-    private final int ACCX_COL = 1;
-    private final int ACCY_COL = 2;
-    private final int ACCZ_COL = 3;
+    private final int ACC_X_COL = 1;
+    private final int ACC_Y_COL = 2;
+    private final int ACC_Z_COL = 3;
     private final int TIME_COL = 4;
 
 
@@ -84,15 +84,15 @@ public class fragmentAccel extends Fragment {
             /// add values of database into the axisValues list
             AccXValues.add(new Entry(
                     (float)accCursor.getLong(TIME_COL)* NS2S,
-                    accCursor.getFloat(ACCX_COL)));
+                    accCursor.getFloat(ACC_X_COL)));
 
             AccYValues.add(new Entry(
                     (float)accCursor.getLong(TIME_COL)* NS2S,
-                    accCursor.getFloat(ACCY_COL)));
+                    accCursor.getFloat(ACC_Y_COL)));
 
             AccZValues.add(new Entry(
                     (float)accCursor.getLong(TIME_COL)* NS2S,
-                    accCursor.getFloat(ACCZ_COL)));
+                    accCursor.getFloat(ACC_Z_COL)));
 
             // move to the next data roll
             accCursor.moveToNext();
