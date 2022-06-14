@@ -360,9 +360,9 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         /// Waiting for chronometer to stop, otherwise it will interrupt
         try {
             chronometer.join(5000);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e) { }
+        if(chronometer.isAlive())
             chronometer.interrupt();
-        }
     }
 
     /**

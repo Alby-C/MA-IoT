@@ -83,8 +83,8 @@ public class Time {
             return 0;
         }
 
-        //3600 and 60 would be enough, but 4096 and 64 are 100000000b and 1000000b, so multiplications could be faster
-        return (a.hours - b.hours) * 4096 + (a.minutes - b.minutes) * 64 + (a.seconds - b.seconds);
+        // Returns the number of seconds of difference
+        return (a.hours - b.hours) * 3600 + (a.minutes - b.minutes) * 60 + (a.seconds - b.seconds);
     }
 
     @NonNull

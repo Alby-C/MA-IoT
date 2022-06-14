@@ -12,6 +12,8 @@ import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
 import com.multimediaapp.bikeactivity.Interfaces.IGyroListener;
 import com.multimediaapp.bikeactivity.Interfaces.IRollListener;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 public class Roll extends BaseSensor<IRollListener> implements IGyroListener, IAccelListener {
     private final String TAG = Roll.class.getSimpleName();
 
@@ -19,9 +21,9 @@ public class Roll extends BaseSensor<IRollListener> implements IGyroListener, IA
     private static final int X = 0;
     private static final int Y = 1;
     private static final int Z = 2;
-    private static final float NS2S = 1.0f / 1000000000.0f; ///Constant to convert from nanoseconds to seconds
-    private static final double R2D = 180./ PI;             ///Constant to convert from radians to degree
-    private static final float EPSILON =0.01f;              ///Constant for threshold
+    private static final float NS2S = 1.0f / 1000000000.0f; ///<Constant to convert from nanoseconds to seconds
+    private static final double R2D = 180./ PI;             ///<Constant to convert from radians to degree
+    private static final float EPSILON =0.01f;              ///<Constant for threshold
 
     private final float filterPercent = 0.95f;
 
@@ -36,6 +38,8 @@ public class Roll extends BaseSensor<IRollListener> implements IGyroListener, IA
     private long prevTimestamp;
     // Current component to the accelerometer of the angle
     private float currAccelAngle;
+
+    public ReentrantLock mutex = new ReentrantLock();
 
     public Roll( int orientation){
         if(orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
@@ -68,18 +72,18 @@ public class Roll extends BaseSensor<IRollListener> implements IGyroListener, IA
 
     @Override
     public void onChangeAccel(long timestamp, float[] newValues) {
-        this.currAccelAngle = inverter * (float)(atan(newValues[accelRefAxis] / newValues[Z]) * R2D);
-
-        //this.currAccelAngle = (float) ((newValues[0]/abs(newValues[0]))*AngleBetween(new Vector(newValues[0],0,newValues[Z]), new Vector(0, 0, 1))*R2D);
-
-        calculateRoll();
+        float angle = inverter * (float)(atan(newValues[accelRefAxis] / newValues[Z]) * R2D);
+        if(angle != Float.NaN) {
+            this.currAccelAngle = angle;
+            calculateRoll();
+        }
     }
 
     public void calculateRoll() {
         /// Complementary filter to have very accuracy data
-
+        mutex.lock();
         this.currAngle = ( filterPercent * (this.currAngle + this.currGyroAngle)) + ((1-filterPercent)* this.currAccelAngle);
-
+        mutex.unlock();
         for(IRollListener listener
                 : listeners){
             listener.onChangeRoll(elapsedRealtimeNanos(), currAngle);
