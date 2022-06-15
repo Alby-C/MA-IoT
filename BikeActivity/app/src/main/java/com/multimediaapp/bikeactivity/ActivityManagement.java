@@ -175,6 +175,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
                 toGraphActivity.putExtra(getString(R.string.defaultTVRightMaxTilt), maxRightRoll);
                 toGraphActivity.putExtra(getString(R.string.defaultTVLeftMaxRoll), maxLeftRoll);
                 toGraphActivity.putExtra(getString(R.string.TotalTime), activityDuration.toString());
+
                 startActivity(toGraphActivity);
 
                 finish();
@@ -302,20 +303,9 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
      * and unsubscribing the listeners.
      */
     private void Stop(){
-        accelerometer.UnsubscribeListener(accelCommutator);
-        gyroscope.UnsubscribeListener(gyroCommutator);
-
-        jump.UnsubscribeListener(this);
-        roll.UnsubscribeListener(this);
-        roll.UnsubscribeListener(saveData);
-
-        accelCommutator.UnsubscribeListener(roll);
-        accelCommutator.UnsubscribeListener(this);
-        accelCommutator.UnsubscribeListener(saveData);
-
-        gyroCommutator.UnsubscribeListener(roll);
-        speedometer.UnsubscribeListener(this);
-        speedometer.UnsubscribeListener(saveData);
+        isRunning = false;
+        isPausing = false;
+        isStopping = true;
 
         /// Generated 3 threads to stop each SensorThreaded, so that everyone has the stop method
         /// triggered at the same time
@@ -341,11 +331,11 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         });
 
         for (Thread th:
-             threads) {
+                threads) {
             th.start();
         }
         for (Thread th:
-             threads) {
+                threads) {
             try {
                 th.join();
             } catch (InterruptedException e) {
@@ -353,18 +343,29 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
             }
         }
 
-        isRunning = false;
-        isPausing = false;
-        isStopping = true;
-
         /// Waiting for chronometer to stop, otherwise it will interrupt
         try {
             chronometer.join(5000);
         } catch (InterruptedException e) { }
+
         if(chronometer.isAlive())
             chronometer.interrupt();
-    }
 
+        accelerometer.UnsubscribeListener(accelCommutator);
+        gyroscope.UnsubscribeListener(gyroCommutator);
+
+        jump.UnsubscribeListener(this);
+        roll.UnsubscribeListener(this);
+        roll.UnsubscribeListener(saveData);
+
+        accelCommutator.UnsubscribeListener(roll);
+        accelCommutator.UnsubscribeListener(this);
+        accelCommutator.UnsubscribeListener(saveData);
+
+        gyroCommutator.UnsubscribeListener(roll);
+        speedometer.UnsubscribeListener(this);
+        speedometer.UnsubscribeListener(saveData);
+    }
     /**
      * Class that will be used from chronometer thread, takes care of showing
      * the duration of the activity.

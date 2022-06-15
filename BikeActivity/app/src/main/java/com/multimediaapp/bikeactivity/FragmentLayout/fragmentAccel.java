@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import com.multimediaapp.bikeactivity.DataBase.MyContentProvider;
 import com.multimediaapp.bikeactivity.R;
 
 import java.util.ArrayList;
+
+import Miscellaneous.MiscellaneousOperations;
 
 
 public class fragmentAccel extends Fragment {
@@ -97,6 +100,10 @@ public class fragmentAccel extends Fragment {
             // move to the next data roll
             accCursor.moveToNext();
         }
+
+        AccXValues = MiscellaneousOperations.getSmallerList(AccXValues);
+        AccYValues = MiscellaneousOperations.getSmallerList(AccYValues);
+        AccZValues = MiscellaneousOperations.getSmallerList(AccZValues);
 
         /// creating a List of LineDataSet to pass to the linechart
         ArrayList<ILineDataSet> listOfLineDataSets = new ArrayList<>();

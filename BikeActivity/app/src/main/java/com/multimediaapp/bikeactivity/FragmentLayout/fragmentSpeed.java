@@ -21,6 +21,8 @@ import com.multimediaapp.bikeactivity.R;
 
 import java.util.ArrayList;
 
+import Miscellaneous.MiscellaneousOperations;
+
 
 public class fragmentSpeed extends Fragment {
 
@@ -37,7 +39,7 @@ public class fragmentSpeed extends Fragment {
     private int nSpeed = 0;
     private Context context;
     private Description description = null;
-    private static final float NS2S = 1.0f / 1000000000.0f; ///Constant to convert from nanoseconds to seconds
+    private static final float NS2S = 1.0f / 1000000000.0f; ///<Constant to convert from nanoseconds to seconds
     private final int TIME_COL = 2;
     private final int SPEED_COL = 1;
 
@@ -89,6 +91,8 @@ public class fragmentSpeed extends Fragment {
             // move to the next data roll
             speedCursor.moveToNext();
         }
+
+        axisValues = MiscellaneousOperations.getSmallerList(axisValues);
 
         /// creating a List of LineDataSet to pass to the linechart
         ArrayList<ILineDataSet> listOfLineDataSets = new ArrayList<>();

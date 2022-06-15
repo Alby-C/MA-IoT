@@ -22,6 +22,8 @@ import com.multimediaapp.bikeactivity.R;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import Miscellaneous.MiscellaneousOperations;
+
 
 public class fragmentRoll extends Fragment {
 
@@ -80,9 +82,9 @@ public class fragmentRoll extends Fragment {
         for(int i = 0; i < nRoll; i++)
         {
             /// add values of database into the axisValues list
-            axisValues.add(new Entry(
-                    (float)rollCursor.getLong(TIME_COL)* NS2S,
-                    rollCursor.getFloat(ROLL_COL)));
+            axisValues.add(new Entry((float)rollCursor.getLong(TIME_COL)* NS2S,
+                    rollCursor.getFloat(ROLL_COL)
+                    ));
 
             // move to the next data roll
             rollCursor.moveToNext();
@@ -100,6 +102,8 @@ public class fragmentRoll extends Fragment {
                     return 1;
             }
         });
+
+        axisValues = MiscellaneousOperations.getSmallerList(axisValues);
 
         LineDataSet rollLineDataSet = new LineDataSet(axisValues, "Roll");
         /// Data set settings

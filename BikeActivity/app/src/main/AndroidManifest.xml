@@ -19,6 +19,7 @@
         <!--================================================================================================= -->
         <activity
             android:name=".GraphActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.multimediaapp.bikeactivity.GraphActivity" />
@@ -48,6 +49,10 @@
             <intent-filter>
                 <action android:name="com.multimediaapp.bikeactivity.MainActivityPortrait" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.multimediaapp.bikeactivity.MainActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

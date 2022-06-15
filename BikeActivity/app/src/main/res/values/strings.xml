@@ -20,6 +20,7 @@
 
     <string name="LAUNCH_GRAPH_ACTIVITY">com.multimediaapp.bikeactivity.GraphActivity</string>
     <string name="LAUNCH_BIKE_ACTIVITY">com.multimediaapp.bikeactivity.ActivityManagement</string>
+    <string name="RETURN_2_MAIN_ACTIVITY">com.multimediaapp.bikeactivity.MainActivity</string>
     <string name="ORIENTATION">CHANGE_ORIENTATION_LABEL</string>
     <string name="defaultTVElapsedTime">Tempo attività:</string>
     <!-- TODO: Remove or change this placeholder text -->
