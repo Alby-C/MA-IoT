@@ -351,6 +351,9 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         if(chronometer.isAlive())
             chronometer.interrupt();
 
+        if(tvUpdater.isAlive())
+            tvUpdater.interrupt();
+
         accelerometer.UnsubscribeListener(accelCommutator);
         gyroscope.UnsubscribeListener(gyroCommutator);
 
