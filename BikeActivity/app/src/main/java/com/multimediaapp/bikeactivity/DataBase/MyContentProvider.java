@@ -105,6 +105,7 @@ public class MyContentProvider extends ContentProvider {
                 break;
             case SESSIONS_PATH:
                 db.insert(SESSIONS_TABLE,null,values);
+                break;
             default:
                 throw new IllegalArgumentException("Unsupported URI" + uri);
         }
@@ -130,6 +131,9 @@ public class MyContentProvider extends ContentProvider {
             /// insert data into acc table
             case ACC_PATH:
                 db.delete(MyContentProvider.ACC_TABLE, selection, null);
+                break;
+            case SESSIONS_PATH:
+                db.delete(MyContentProvider.SESSIONS_TABLE, selection,null);
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported URI" + uri);
