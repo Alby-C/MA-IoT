@@ -38,7 +38,6 @@ public class GraphActivity extends AppCompatActivity {
     public float maxRightRoll;
     public float maxLeftRoll;
     public String totalTime;
-    public Button homeButton;
 
     private Context context;
     private Cursor sessionCursor;
@@ -65,22 +64,10 @@ public class GraphActivity extends AppCompatActivity {
             tabLayout = findViewById(R.id.tabLayout);
             viewPager = findViewById(R.id.viewPager);
             tabLayout.setupWithViewPager(viewPager);
-            homeButton = findViewById(R.id.homeButton);
 
             context = this;
 
-            Intent _intent = getIntent();
-            if(_intent.getStringExtra(getString(R.string.TotalTime)) != null) {
-                maxSpeed = _intent.getFloatExtra(getString(R.string.defaultTVMaxSpeed), 0);
-                avgSpeed = _intent.getFloatExtra(getString(R.string.defaultTVAvgSpeed), 0);
-                maxLeftRoll = _intent.getFloatExtra(getString(R.string.defaultTVLeftMaxRoll), 0);
-                maxRightRoll = _intent.getFloatExtra(getString(R.string.defaultTVRightMaxTilt), 0);
-                totalTime = _intent.getStringExtra(getString(R.string.TotalTime));
-            }
-            else{
-                // ArrayList<Entry> sessionValues = new ArrayList <> ();
-
-                sessionCursor = context.getContentResolver().query(
+            sessionCursor = context.getContentResolver().query(
                         MyContentProvider.SESSIONS_URI,
                         sessionColumns,
                         null , null , null
@@ -92,7 +79,6 @@ public class GraphActivity extends AppCompatActivity {
                 maxRightRoll = sessionCursor.getFloat(RIGHT_ROLL_COL);
                 maxLeftRoll = sessionCursor.getFloat(LEFT_ROLL_COL);
                 totalTime = sessionCursor.getString(TOTAL_TIME_COL);
-            }
 
             pagerAdapter = new VPAdapter(
                     getSupportFragmentManager(),
@@ -109,14 +95,6 @@ public class GraphActivity extends AppCompatActivity {
 
             viewPager.setAdapter(pagerAdapter);
 
-            homeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent toMainActivity = new Intent(getString(R.string.RETURN_2_MAIN_ACTIVITY));
-                    startActivity(toMainActivity);
-                    finish();
-                }
-            });
     }
 
 

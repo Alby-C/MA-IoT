@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">BikeActivity</string>
 
-    <string name="swOrientation">Orientazione orizzontale</string>
+    <string name="swOrientation">Orientamento orizzontale</string>
     <string name="defaultTVMaxSpeed">Velocità massima:</string>
     <string name="defaultTVAvgSpeed">Velocità media:</string>
     <string name="defaultTVCurrSpeed">Velocità istantanea:</string>

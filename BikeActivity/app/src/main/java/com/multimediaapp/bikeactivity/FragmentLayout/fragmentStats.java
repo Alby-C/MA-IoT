@@ -1,11 +1,13 @@
 package com.multimediaapp.bikeactivity.FragmentLayout;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.multimediaapp.bikeactivity.R;
@@ -24,6 +26,7 @@ public class fragmentStats extends Fragment {
     private TextView tvMaxRightRoll = null;
     private TextView tvMaxLeftRoll = null;
     private TextView tvTotalTime = null;
+    private Button homeButton = null;
 
 
     public fragmentStats(Context context,
@@ -47,6 +50,7 @@ public class fragmentStats extends Fragment {
         // Inflate the layout for this fragment
 
         View v = inflater.inflate(R.layout.fragment_stats, container, false);
+        homeButton = v.findViewById(R.id.homeButton);
         tvMaxSpeed = v.findViewById(R.id.tvMaxSpeed);
         tvAvgSpeed = v.findViewById(R.id.tvAvgSpeed);
         tvMaxLeftRoll = v.findViewById(R.id.tvLeftMaxRoll);
@@ -59,6 +63,14 @@ public class fragmentStats extends Fragment {
         tvMaxLeftRoll.setText(getString(R.string.defaultTVLeftMaxRoll)+ " " + String.format("%.2f", -1 * maxLeftRoll)+ "°");
         tvTotalTime.setText(getString(R.string.TotalTime) + ": "+ totalTime + " h");
 
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toMainActivity = new Intent(getString(R.string.RETURN_2_MAIN_ACTIVITY));
+                startActivity(toMainActivity);
+                // finish();
+            }
+        });
         return v;
     }
 }
