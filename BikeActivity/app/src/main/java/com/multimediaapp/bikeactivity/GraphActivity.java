@@ -51,11 +51,11 @@ public class GraphActivity extends AppCompatActivity {
             MyContentProvider.TotalTime_Col
     };
 
-    private final int MAX_SPEED_COL = 1;
-    private final int MEAN_SPEED_COL = 2;
-    private final int RIGHT_ROLL_COL= 3;
-    private final int LEFT_ROLL_COL= 4;
-    private final int TOTAL_TIME_COL= 5;
+    private final int MAX_SPEED_COL = 0;
+    private final int MEAN_SPEED_COL = 1;
+    private final int RIGHT_ROLL_COL= 2;
+    private final int LEFT_ROLL_COL= 3;
+    private final int TOTAL_TIME_COL= 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,11 +81,11 @@ public class GraphActivity extends AppCompatActivity {
                 // ArrayList<Entry> sessionValues = new ArrayList <> ();
 
                 sessionCursor = context.getContentResolver().query(
-                        MyContentProvider.SPEED_URI,
+                        MyContentProvider.SESSIONS_URI,
                         sessionColumns,
                         null , null , null
                 );
-                sessionCursor.moveToFirst();
+                sessionCursor.moveToLast();
 
                 maxSpeed = sessionCursor.getFloat(MAX_SPEED_COL);
                 avgSpeed = sessionCursor.getFloat(MEAN_SPEED_COL);
