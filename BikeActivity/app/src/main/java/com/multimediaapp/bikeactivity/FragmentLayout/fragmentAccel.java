@@ -30,8 +30,8 @@ public class fragmentAccel extends Fragment {
     String[] accCol = {
             MyContentProvider._ID_Col,
             MyContentProvider.InstantAccX_Col,
-            MyContentProvider.InstantAccY_Col,
-            MyContentProvider.InstantAccZ_Col,
+            //MyContentProvider.InstantAccY_Col,
+            //MyContentProvider.InstantAccZ_Col,
             MyContentProvider.TimeStamp_Col
     };
 
@@ -42,9 +42,9 @@ public class fragmentAccel extends Fragment {
     private Description description = null;
     private static final float NS2S = 1.0f / 1000000000.0f; ///Constant to convert from nanoseconds to seconds
     private final int ACC_X_COL = 1;
-    private final int ACC_Y_COL = 2;
-    private final int ACC_Z_COL = 3;
-    private final int TIME_COL = 4;
+    //private final int ACC_Y_COL = 2;
+    //private final int ACC_Z_COL = 3;
+    private final int TIME_COL = 2;
 
 
     public fragmentAccel(Context context)
@@ -67,8 +67,8 @@ public class fragmentAccel extends Fragment {
 
         /// Array of Roll and Time
         ArrayList<Entry> AccXValues = new ArrayList <> ();
-        ArrayList<Entry> AccYValues = new ArrayList <> ();
-        ArrayList<Entry> AccZValues = new ArrayList <> ();
+        //ArrayList<Entry> AccYValues = new ArrayList <> ();
+        //ArrayList<Entry> AccZValues = new ArrayList <> ();
 
         /// set cursor of roll table
         accCursor =  context.getContentResolver().query(
@@ -89,21 +89,21 @@ public class fragmentAccel extends Fragment {
                     (float)accCursor.getLong(TIME_COL)* NS2S,
                     accCursor.getFloat(ACC_X_COL)));
 
-            AccYValues.add(new Entry(
+            /*AccYValues.add(new Entry(
                     (float)accCursor.getLong(TIME_COL)* NS2S,
                     accCursor.getFloat(ACC_Y_COL)));
 
             AccZValues.add(new Entry(
                     (float)accCursor.getLong(TIME_COL)* NS2S,
-                    accCursor.getFloat(ACC_Z_COL)));
+                    accCursor.getFloat(ACC_Z_COL))); */
 
             // move to the next data roll
             accCursor.moveToNext();
         }
 
         AccXValues = MiscellaneousOperations.getSmallerList(AccXValues);
-        AccYValues = MiscellaneousOperations.getSmallerList(AccYValues);
-        AccZValues = MiscellaneousOperations.getSmallerList(AccZValues);
+        //AccYValues = MiscellaneousOperations.getSmallerList(AccYValues);
+        //AccZValues = MiscellaneousOperations.getSmallerList(AccZValues);
 
         /// creating a List of LineDataSet to pass to the linechart
         ArrayList<ILineDataSet> listOfLineDataSets = new ArrayList<>();
@@ -116,7 +116,7 @@ public class fragmentAccel extends Fragment {
         rollLineDataSetAccX.setLineWidth(3f);
 
         /// data set for accel Y
-        LineDataSet rollLineDataSetAccY = new LineDataSet(AccYValues, "Acc Y");
+        /*LineDataSet rollLineDataSetAccY = new LineDataSet(AccYValues, "Acc Y");
         rollLineDataSetAccY.setDrawCircles(false);
         rollLineDataSetAccY.setColor(getResources().getColor(R.color.yAxisAccel));
         rollLineDataSetAccY.setValueTextSize(10f);
@@ -127,13 +127,13 @@ public class fragmentAccel extends Fragment {
         rollLineDataSetAccZ.setDrawCircles(false);
         rollLineDataSetAccZ.setColor(getResources().getColor(R.color.zAxisAccel));
         rollLineDataSetAccZ.setValueTextSize(10f);
-        rollLineDataSetAccZ.setLineWidth(3f);
+        rollLineDataSetAccZ.setLineWidth(3f); */
 
 
         /// add to the list the rollLineDataSet create before
         listOfLineDataSets.add(rollLineDataSetAccX);
-        listOfLineDataSets.add(rollLineDataSetAccY);
-        listOfLineDataSets.add(rollLineDataSetAccZ);
+        //listOfLineDataSets.add(rollLineDataSetAccY);
+        //listOfLineDataSets.add(rollLineDataSetAccZ);
 
         linechart.setPinchZoom(true);
         /// pass the list to the linechart

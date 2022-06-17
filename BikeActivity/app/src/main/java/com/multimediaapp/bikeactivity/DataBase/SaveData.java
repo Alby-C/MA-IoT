@@ -16,6 +16,8 @@ public class SaveData implements IMeasurementHandler {
     private final int Y = 1;
     private final int Z = 2;
 
+    float acceleration;
+
     public SaveData(Context context) {
         this.context = context;
         this.startingTime = elapsedRealtimeNanos();
@@ -26,9 +28,12 @@ public class SaveData implements IMeasurementHandler {
         timestamp = (timestamp - startingTime);
         ContentValues accValues = new ContentValues();
 
-        accValues.put(MyContentProvider.InstantAccX_Col, newValues[X]);
-        accValues.put(MyContentProvider.InstantAccY_Col, newValues[Y]);
-        accValues.put(MyContentProvider.InstantAccZ_Col, newValues[Z]);
+        /// Get the approximated linear acceleration as the acceleration axis X and Y
+        acceleration = (float) Math.sqrt(newValues[X]*newValues[X] + newValues[Y]*newValues[Y]);
+
+        accValues.put(MyContentProvider.InstantAccX_Col, acceleration);
+        //accValues.put(MyContentProvider.InstantAccY_Col, newValues[Y]);
+        //accValues.put(MyContentProvider.InstantAccZ_Col, newValues[Z]);
         accValues.put(MyContentProvider.TimeStamp_Col, timestamp);
         context.getContentResolver().insert(MyContentProvider.ACC_URI, accValues);
     }

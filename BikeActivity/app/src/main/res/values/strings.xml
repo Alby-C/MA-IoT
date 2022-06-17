@@ -14,6 +14,7 @@
     <string name="TotalTime">Tempo totale di attività</string>
 
     <string name="btnStart">Inizia\nattività</string>
+    <string name="btnLastSession">Ultima\nsessione</string>
     <string name="btnStop">Stop</string>
     <string name="btnPause">Pause</string>
     <string name="btnResume">Resume</string>
@@ -21,6 +22,7 @@
     <string name="LAUNCH_GRAPH_ACTIVITY">com.multimediaapp.bikeactivity.GraphActivity</string>
     <string name="LAUNCH_BIKE_ACTIVITY">com.multimediaapp.bikeactivity.ActivityManagement</string>
     <string name="RETURN_2_MAIN_ACTIVITY">com.multimediaapp.bikeactivity.MainActivity</string>
+    <string name="LAUNCH_GRAPH_ACTIVTY_LAST_SESSION">com.multimediaapp.bikeactivity.GraphActivity</string>
     <string name="ORIENTATION">CHANGE_ORIENTATION_LABEL</string>
     <string name="defaultTVElapsedTime">Tempo attività:</string>
     <!-- TODO: Remove or change this placeholder text -->

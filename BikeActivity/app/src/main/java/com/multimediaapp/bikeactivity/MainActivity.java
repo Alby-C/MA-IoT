@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Switch swOrientation = null;
     private Button btnStart      = null;
+    private Button btnLastSession = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         swOrientation = findViewById(R.id.swOrientation);
         btnStart = findViewById(R.id.btnStart);
+        btnLastSession = findViewById(R.id.btnLastSession);
 
         swOrientation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
@@ -65,6 +67,15 @@ public class MainActivity extends AppCompatActivity {
                 toActivityManagement.putExtra(getString(R.string.ORIENTATION),currOrientation);
 
                 startActivity(toActivityManagement);
+                finish();
+            }
+        });
+
+        btnLastSession.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toLastSessionGraph = new Intent(getString(R.string.LAUNCH_GRAPH_ACTIVTY_LAST_SESSION));
+                startActivity(toLastSessionGraph);
                 finish();
             }
         });

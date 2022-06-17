@@ -4,6 +4,7 @@ import static android.os.SystemClock.elapsedRealtimeNanos;
 import static java.lang.Thread.sleep;
 import static Miscellaneous.MiscellaneousOperations.Truncate;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -168,6 +169,16 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
             public void onClick(View view) {
                 Stop();
 
+                ContentValues sessionValues = new ContentValues();
+
+                sessionValues.put(MyContentProvider.MaxSpeed_Col, maxSpeed);
+                sessionValues.put(MyContentProvider.MeanSpeed_Col, avgSpeed);
+                sessionValues.put(MyContentProvider.RightRoll_Col, maxRightRoll);
+                sessionValues.put(MyContentProvider.LeftRoll_Col, maxLeftRoll);
+                sessionValues.put(MyContentProvider.TotalTime_Col, activityDuration.toString());
+
+                getContentResolver().insert(MyContentProvider.SESSIONS_URI, sessionValues);
+
                 Intent toGraphActivity = new Intent((getString(R.string.LAUNCH_GRAPH_ACTIVITY)));
 
                 toGraphActivity.putExtra(getString(R.string.defaultTVMaxSpeed), maxSpeed);
@@ -314,19 +325,25 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         threads[0] = new Thread(new Runnable() {
             @Override
             public void run() {
+                Log.i(TAG, "accelerometer stopping");
                 accelerometer.Stop();
+                Log.i(TAG, "accelerometer stopped");
             }
         });
         threads[1] = new Thread(new Runnable() {
             @Override
             public void run() {
+                Log.i(TAG, "gyro stopping");
                 gyroscope.Stop();
+                Log.i(TAG, "gyro stopped");
             }
         });
         threads[2] = new Thread(new Runnable() {
             @Override
             public void run() {
+                Log.i(TAG, "speedometer stopping");
                 speedometer.Stop();
+                Log.i(TAG, "speedometer stopped");
             }
         });
 
