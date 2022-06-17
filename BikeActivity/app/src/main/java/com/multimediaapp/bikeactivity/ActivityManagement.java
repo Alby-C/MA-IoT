@@ -113,16 +113,19 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         /// Establishing screen orientation
         int _contentView;
         int _orientation = getIntent().getIntExtra(getString(R.string.ORIENTATION),ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         switch (_orientation) {
             case ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE:
                 _contentView = R.layout.activity_management_landscape;
+                Log.i(TAG,"onCreate: landscape");
                 break;
             case ActivityInfo.SCREEN_ORIENTATION_PORTRAIT:
             default:
                 _contentView = R.layout.activity_management_portrait;
+                Log.i(TAG,"onCreate: portrait");
                 break;
         }
         setRequestedOrientation(_orientation);
@@ -154,12 +157,16 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
             @Override
             public void onClick(View view) {
                 if(!isPausing){
+                    Log.i(TAG,"Pausing activity...");
                     Pause();
                     btnPauseResume.setText(getText(R.string.btnResume));
+                    Log.i(TAG,"Activity paused...");
                 }
                 else {
+                    Log.i(TAG,"Resuming activity...");
                     Resume();
                     btnPauseResume.setText(getText(R.string.btnPause));
+                    Log.i(TAG,"Activity resumed");
                 }
             }
         });
@@ -167,7 +174,9 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i(TAG,"Stopping activity...");
                 Stop();
+                Log.i(TAG,"Activity stopped");
 
                 ContentValues sessionValues = new ContentValues();
 
@@ -198,7 +207,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
             public void run() {
                 TextviewUpdater();
             }
-        });
+        },"tvUpdater");
 
         /// Activity status init
         isRunning = false;
@@ -237,11 +246,13 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         acc = gyroManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         accelerometer = new Accelerometer(acc, accManager);
 
+        Log.i(TAG,"Initializing reference system commutator");
         /// Starting the initialization of the reference system commutator
         accelerometer.SubscribeListener(this);
         accelerometer.Start();
     }
 
+    /////////////////////////// Activity status methods
     /**
      * Starts the activity monitoring, starting all the sensors and subscribing
      * to their respective listeners.
@@ -270,7 +281,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         isPausing = false;
         isRunning = true;
 
-        Log.i(TAG, "launching threads");
+        Log.i(TAG, "Launching threads");
 
         chronometer.start();
         tvUpdater.start();
@@ -318,6 +329,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         isPausing = false;
         isStopping = true;
 
+        Log.i(TAG,"Stopping threads...");
         /// Generated 3 threads to stop each SensorThreaded, so that everyone has the stop method
         /// triggered at the same time
         Thread[] threads = new Thread[3];
@@ -359,18 +371,22 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
                 Log.e(TAG +"thr:" + chronometer.getName(), e.toString());
             }
         }
+        Log.i(TAG,"Sensors threads stopped");
 
         /// Waiting for chronometer to stop, otherwise it will interrupt
         try {
             chronometer.join(5000);
         } catch (InterruptedException e) { }
 
-        if(chronometer.isAlive())
+        if(chronometer.isAlive()) {
             chronometer.interrupt();
+            Log.i(TAG, "Chronometer thread stopped");
+        }
 
-        if(tvUpdater.isAlive())
+        if(tvUpdater.isAlive()) {
             tvUpdater.interrupt();
-
+            Log.i(TAG,"tvUpdater thread interrupted");
+        }
         accelerometer.UnsubscribeListener(accelCommutator);
         gyroscope.UnsubscribeListener(gyroCommutator);
 
@@ -386,12 +402,14 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         speedometer.UnsubscribeListener(this);
         speedometer.UnsubscribeListener(saveData);
     }
+
+    /////////////////////////// Threads
     /**
      * Class that will be used from chronometer thread, takes care of showing
      * the duration of the activity.
      */
     private void Chronometer(){
-        Log.i(TAG +"thr:" + chronometer.getName(), "Thread started");
+        Log.i(TAG +"/thr:" + chronometer.getName(), "Thread started");
 
         int NS2S = 1000000000;
 
@@ -410,34 +428,11 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
                 try {
                     sleep(1000);
                 } catch (InterruptedException e) {
-                    Log.e(TAG +"thr:" + chronometer.getName(), e.toString());
+                    Log.e(TAG +"/thr:" + chronometer.getName(), e.toString());
                 }
             }
         }while(!isStopping);
-    }
-
-    @Override
-    public void onChangeRoll(long timestamp,float currRoll) {
-        if (currRoll > maxRightRoll)
-            maxRightRoll = currRoll;
-        else if (currRoll < maxLeftRoll)
-            maxLeftRoll = currRoll;
-
-        this.currRoll = currRoll;
-    }
-
-    @Override
-    public void onChangeSpeed(long timestamp, float newSpeed, float avgSpeed) {
-        this.newSpeed = newSpeed;
-        this.avgSpeed = avgSpeed;
-
-        if(newSpeed > maxSpeed)
-            maxSpeed = newSpeed;
-    }
-
-    @Override
-    public void onJumpHappened(long flightTime) {
-
+        Log.i(TAG + "/thr:" + chronometer.getName(), "Thread's routine ended");
     }
 
     /**
@@ -445,6 +440,8 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
      * variables updated from the sensors and print them out to the screen.
      */
     private void TextviewUpdater(){
+        Log.i(TAG +"/thr:" + tvUpdater.getName(), "Thread started");
+
         do {
             while(isRunning) {
                 String[] rollStrings= new String[]{
@@ -486,10 +483,36 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
                 try {
                     sleep(200);     /// Updates Textviews every 200 ms
                 } catch (InterruptedException e) {
-                    Log.e(TAG + "thr:" + chronometer.getName(), e.toString());
+                    Log.e(TAG + "/thr:" + tvUpdater.getName(), e.toString());
                 }
             }
         }while(!isStopping);
+        Log.i(TAG + "/thr:" + tvUpdater.getName(),"Thread's routine ended");
+    }
+
+    /////////////////////////// Interface implementation
+    @Override
+    public void onChangeRoll(long timestamp,float currRoll) {
+        if (currRoll > maxRightRoll)
+            maxRightRoll = currRoll;
+        else if (currRoll < maxLeftRoll)
+            maxLeftRoll = currRoll;
+
+        this.currRoll = currRoll;
+    }
+
+    @Override
+    public void onChangeSpeed(long timestamp, float newSpeed, float avgSpeed) {
+        this.newSpeed = newSpeed;
+        this.avgSpeed = avgSpeed;
+
+        if(newSpeed > maxSpeed)
+            maxSpeed = newSpeed;
+    }
+
+    @Override
+    public void onJumpHappened(long flightTime) {
+
     }
 
     private final int AVERAGE_CYCLES = 10;
