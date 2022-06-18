@@ -190,12 +190,6 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
 
                 Intent toGraphActivity = new Intent((getString(R.string.LAUNCH_GRAPH_ACTIVITY)));
 
-                toGraphActivity.putExtra(getString(R.string.defaultTVMaxSpeed), maxSpeed);
-                toGraphActivity.putExtra(getString(R.string.defaultTVAvgSpeed), avgSpeed);
-                toGraphActivity.putExtra(getString(R.string.defaultTVRightMaxTilt), maxRightRoll);
-                toGraphActivity.putExtra(getString(R.string.defaultTVLeftMaxRoll), maxLeftRoll);
-                toGraphActivity.putExtra(getString(R.string.TotalTime), activityDuration.toString());
-
                 startActivity(toGraphActivity);
 
                 finish();

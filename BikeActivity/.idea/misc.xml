@@ -4,6 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/MA&amp;IoT/Project/MA-IoT/BikeActivity/app/src/main/res/layout/activity_main.xml" value="0.18432971014492755" />
+        <entry key="..\:/Users/alexb/MA-IoT/BikeActivity/app/src/main/res/layout/activity_graph.xml" value="0.22" />
+        <entry key="..\:/Users/alexb/MA-IoT/BikeActivity/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/alexb/MA-IoT/BikeActivity/app/src/main/res/layout/activity_management_landscape.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/alexb/MA-IoT/BikeActivity/app/src/main/res/layout/fragment_accel.xml" value="0.1213768115942029" />
+        <entry key="..\:/Users/alexb/MA-IoT/BikeActivity/app/src/main/res/layout/fragment_roll.xml" value="0.1213768115942029" />
+        <entry key="..\:/Users/alexb/MA-IoT/BikeActivity/app/src/main/res/layout/fragment_speed.xml" value="0.2" />
+        <entry key="..\:/Users/alexb/MA-IoT/BikeActivity/app/src/main/res/layout/fragment_stats.xml" value="0.2" />
       </map>
     </option>
   </component>
