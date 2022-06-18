@@ -231,7 +231,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         speedometer = new Speedometer(lm, this);
 
         /// Jump manager
-        jump = new Jump();
+        jump = new Jump(this);
 
         /// Roll manager
         roll = new Roll( _orientation);
@@ -259,9 +259,12 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
      */
     private void Start() {
         accelerometer.SubscribeListener(accelCommutator);
+        accelerometer.SubscribeListener(jump);
+
         gyroscope.SubscribeListener(gyroCommutator);
 
         jump.SubscribeListener(this);
+
         roll.SubscribeListener(this);
         roll.SubscribeListener(saveData);
 
@@ -270,12 +273,14 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         accelCommutator.SubscribeListener(saveData);
 
         gyroCommutator.SubscribeListener(roll);
+
         speedometer.SubscribeListener(this);
         speedometer.SubscribeListener(saveData);
 
         accelerometer.Start();
         gyroscope.Start();
         speedometer.Start();
+        jump.Start();
 
         startingTimestamp = elapsedRealtimeNanos();
         isPausing = false;
@@ -388,8 +393,10 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
             Log.i(TAG,"tvUpdater thread interrupted");
         }
         accelerometer.UnsubscribeListener(accelCommutator);
+        accelerometer.UnsubscribeListener(jump);
         gyroscope.UnsubscribeListener(gyroCommutator);
 
+        jump.Stop();
         jump.UnsubscribeListener(this);
         roll.UnsubscribeListener(this);
         roll.UnsubscribeListener(saveData);

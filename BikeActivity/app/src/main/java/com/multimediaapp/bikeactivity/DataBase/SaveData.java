@@ -29,7 +29,7 @@ public class SaveData implements IMeasurementHandler {
         ContentValues accValues = new ContentValues();
 
         /// Get the approximated linear acceleration as the acceleration axis X and Y
-        acceleration = (float) Math.sqrt(newValues[X]*newValues[X] + newValues[Y]*newValues[Y]);
+        acceleration = (float) Math.hypot(newValues[X],newValues[Y]);
 
         accValues.put(MyContentProvider.InstantAccX_Col, acceleration);
         //accValues.put(MyContentProvider.InstantAccY_Col, newValues[Y]);
