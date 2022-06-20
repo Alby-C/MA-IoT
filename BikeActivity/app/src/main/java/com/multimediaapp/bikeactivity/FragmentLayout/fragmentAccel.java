@@ -28,9 +28,7 @@ public class fragmentAccel extends Fragment {
 
     String[] accCol = {
             MyContentProvider._ID_Col,
-            MyContentProvider.InstantAccX_Col,
-            //MyContentProvider.InstantAccY_Col,
-            //MyContentProvider.InstantAccZ_Col,
+            MyContentProvider.InstantAccXY_Col,
             MyContentProvider.TimeStamp_Col
     };
 

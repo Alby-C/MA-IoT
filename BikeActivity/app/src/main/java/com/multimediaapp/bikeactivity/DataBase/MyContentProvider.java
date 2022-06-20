@@ -31,9 +31,8 @@ public class MyContentProvider extends ContentProvider {
     public static final String _ID_Col = "_id";
     public static final String InstantSpeed_Col = "Velocità_Istantanea";
     public static final String InstantRoll_Col = "Angolo_Istantaneo";
-    public static final String InstantAccX_Col = "AccelerazioneX";
-    //public static final String InstantAccY_Col = "AccelerazioneY";
-    //public static final String InstantAccZ_Col = "AccelerazioneZ";
+    public static final String InstantAccXY_Col = "AccelerazioneXY";
+    public static final String InstantAccXYZ_Col = "AccelerazioneXYZ";
     public static final String TimeStamp_Col = "TimeStamp";
     public static final String MaxSpeed_Col = "Velocità_Max";
     public static final String MeanSpeed_Col = "Velocità_Media";

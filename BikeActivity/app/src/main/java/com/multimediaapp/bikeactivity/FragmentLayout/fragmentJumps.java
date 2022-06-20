@@ -23,9 +23,7 @@ public class fragmentJumps extends Fragment {
 
     String[] accCol = {
             MyContentProvider._ID_Col,
-            MyContentProvider.InstantAccX_Col,
-            //MyContentProvider.InstantAccY_Col,
-            //MyContentProvider.InstantAccZ_Col,
+            MyContentProvider.InstantAccXYZ_Col,
             MyContentProvider.TimeStamp_Col
     };
     private final int ACC_COL = 1;
