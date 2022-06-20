@@ -1,6 +1,7 @@
 package com.multimediaapp.bikeactivity;
 
 import static android.os.SystemClock.elapsedRealtimeNanos;
+import static com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll.NS2S;
 import static java.lang.Thread.sleep;
 import static Miscellaneous.MiscellaneousOperations.Truncate;
 
@@ -14,18 +15,19 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.multimediaapp.bikeactivity.Sensors.Accelerometer.Accelerometer;
-import com.multimediaapp.bikeactivity.Sensors.Accelerometer.Jump;
 import com.multimediaapp.bikeactivity.DataBase.MyContentProvider;
 import com.multimediaapp.bikeactivity.DataBase.SaveData;
+import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
+import com.multimediaapp.bikeactivity.Sensors.Accelerometer.Accelerometer;
+import com.multimediaapp.bikeactivity.Sensors.Accelerometer.Jump;
 import com.multimediaapp.bikeactivity.Sensors.Gyroscope.Gyroscope;
 import com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll;
-import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
 import com.multimediaapp.bikeactivity.Sensors.Speed.Speedometer;
 
 import Space.ReferenceSystemCommutator;
@@ -48,9 +50,8 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private TextView tvCurrTilt = null;
     private TextView tvLeftMaxTilt = null;
     private TextView tvRightMaxTilt= null;
-    private TextView tvCurrX = null;
-    private TextView tvCurrY = null;
-    private TextView tvCurrZ = null;
+    private TextView tvAcceleration = null;
+    private TextView tvJump = null;
     private TextView tvElapsedTime = null;
     private Button btnPauseResume = null;
     private Button btnStop = null;
@@ -66,17 +67,19 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private long totalPauseLength;          ///< [ns] The total length of all the pauses
     private long startingPauseTimestamp;    ///< [ns] The timestamp of the starting of the last pause
 
-    private float currRoll = 0;
-    private float maxLeftRoll = 0;
-    private float maxRightRoll = 0;
+    private float currRoll = 0;         ///< [°]
+    private float maxLeftRoll = 0;      ///< [°]
+    private float maxRightRoll = 0;     ///< [°]
 
-    private float newSpeed = 0;
-    private float avgSpeed = 0;
-    private float maxSpeed = 0;
+    private float newSpeed = 0;         ///< [m/s]
+    private float avgSpeed = 0;         ///< [m/s]
+    private float maxSpeed = 0;         ///< [m/s]
 
-    private float accelX = 0;
-    private float accelY = 0;
-    private float accelZ = 0;
+    private float accelX = 0;           ///< [m/s^2]
+    private float accelY = 0;           ///< [m/s^2]
+    private float accelZ = 0;           ///< [m/s^2]
+
+    private float flightTime = 0;   ///< [s]
 
     /////////////////////////// Accelerometer
     private Accelerometer accelerometer = null;
@@ -132,6 +135,8 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         super.onCreate(savedInstanceState);
         setContentView(_contentView);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         /// Drop previous table on database
         MyContentProvider.db.execSQL("DELETE FROM " + MyContentProvider.ACC_TABLE);
         MyContentProvider.db.execSQL("DELETE FROM " + MyContentProvider.SPEED_TABLE);
@@ -146,9 +151,8 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         tvCurrTilt = findViewById(R.id.tvCurrRoll);
         tvLeftMaxTilt = findViewById(R.id.tvLeftMaxRoll);
         tvRightMaxTilt = findViewById(R.id.tvRightMaxRoll);
-        tvCurrX = findViewById(R.id.tvCurrX);
-        tvCurrY = findViewById(R.id.tvCurrY);
-        tvCurrZ = findViewById(R.id.tvCurrZ);
+        tvAcceleration = findViewById(R.id.tvAcceleration);
+        tvJump = findViewById(R.id.tvJump);
         tvElapsedTime = findViewById(R.id.tvElapsedTime);
         btnPauseResume = findViewById(R.id.btnPauseResume);
         btnStop = findViewById(R.id.btnStop);
@@ -457,8 +461,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
                 };
                 String[] accStrings = new String[]{
                         Truncate(accelX, 1) + "\nm/s2",
-                        Truncate(accelY, 1) + "\nm/s2",
-                        Truncate(accelZ, 1) + "\nm/s2"
+                        Truncate(flightTime, 3) + "s"
                 };
 
                 runOnUiThread(new Runnable() {
@@ -475,9 +478,8 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
                         tvMaxSpeed.setText(speedStrings[2]);
 
                         /// onChangeAccel
-                        tvCurrX.setText(accStrings[0]);
-                        tvCurrY.setText(accStrings[1]);
-                        tvCurrZ.setText(accStrings[2]);
+                        tvAcceleration.setText(accStrings[0]);
+                        tvJump.setText(accStrings[1]);
                     }
                 });
 
@@ -512,8 +514,8 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     }
 
     @Override
-    public void onJumpHappened(long flightTime) {
-
+    public void onJumpHappened(long flightTimeNanos) {
+        flightTime = flightTimeNanos * NS2S;
     }
 
     private final int AVERAGE_CYCLES = 10;

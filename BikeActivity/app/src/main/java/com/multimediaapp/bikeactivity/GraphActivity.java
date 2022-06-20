@@ -1,34 +1,24 @@
 package com.multimediaapp.bikeactivity;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.view.View;
-import android.widget.Button;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.github.mikephil.charting.data.Entry;
 import com.google.android.material.tabs.TabLayout;
 import com.multimediaapp.bikeactivity.DataBase.MyContentProvider;
 import com.multimediaapp.bikeactivity.FragmentLayout.VPAdapter;
 import com.multimediaapp.bikeactivity.FragmentLayout.fragmentAccel;
+import com.multimediaapp.bikeactivity.FragmentLayout.fragmentJumps;
 import com.multimediaapp.bikeactivity.FragmentLayout.fragmentRoll;
 import com.multimediaapp.bikeactivity.FragmentLayout.fragmentSpeed;
 import com.multimediaapp.bikeactivity.FragmentLayout.fragmentStats;
 
-import java.util.ArrayList;
-
 
 public class GraphActivity extends AppCompatActivity {
-
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -92,6 +82,7 @@ public class GraphActivity extends AppCompatActivity {
             pagerAdapter.addFragment(new fragmentRoll(this, maxRightRoll, maxLeftRoll), "Roll");
             pagerAdapter.addFragment(new fragmentSpeed(this, maxSpeed, avgSpeed), "Speed");
             pagerAdapter.addFragment(new fragmentAccel(this), "Accel");
+            pagerAdapter.addFragment(new fragmentJumps(this),"Jumps");
 
             viewPager.setAdapter(pagerAdapter);
 

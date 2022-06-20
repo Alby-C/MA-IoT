@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +40,7 @@ public class fragmentAccel extends Fragment {
     private Context context;
     private Description description = null;
     private static final float NS2S = 1.0f / 1000000000.0f; ///Constant to convert from nanoseconds to seconds
-    private final int ACC_X_COL = 1;
-    //private final int ACC_Y_COL = 2;
-    //private final int ACC_Z_COL = 3;
+    private final int ACC_COL = 1;
     private final int TIME_COL = 2;
 
 
@@ -66,9 +63,7 @@ public class fragmentAccel extends Fragment {
         description.setTextSize(10f);
 
         /// Array of Roll and Time
-        ArrayList<Entry> AccXValues = new ArrayList <> ();
-        //ArrayList<Entry> AccYValues = new ArrayList <> ();
-        //ArrayList<Entry> AccZValues = new ArrayList <> ();
+        ArrayList<Entry> AccValues = new ArrayList <> ();
 
         /// set cursor of roll table
         accCursor =  context.getContentResolver().query(
@@ -85,64 +80,33 @@ public class fragmentAccel extends Fragment {
         for(int i = 0; i < nAcc; i++)
         {
             /// add values of database into the axisValues list
-            AccXValues.add(new Entry(
+            AccValues.add(new Entry(
                     (float)accCursor.getLong(TIME_COL)* NS2S,
-                    accCursor.getFloat(ACC_X_COL)));
-
-            /*AccYValues.add(new Entry(
-                    (float)accCursor.getLong(TIME_COL)* NS2S,
-                    accCursor.getFloat(ACC_Y_COL)));
-
-            AccZValues.add(new Entry(
-                    (float)accCursor.getLong(TIME_COL)* NS2S,
-                    accCursor.getFloat(ACC_Z_COL))); */
+                    accCursor.getFloat(ACC_COL)));
 
             // move to the next data roll
             accCursor.moveToNext();
         }
 
-        AccXValues = MiscellaneousOperations.getSmallerList(AccXValues);
-        //AccYValues = MiscellaneousOperations.getSmallerList(AccYValues);
-        //AccZValues = MiscellaneousOperations.getSmallerList(AccZValues);
+        AccValues = MiscellaneousOperations.getSmallerList(AccValues);
 
         /// creating a List of LineDataSet to pass to the linechart
         ArrayList<ILineDataSet> listOfLineDataSets = new ArrayList<>();
 
         /// data set for accel X
-        LineDataSet rollLineDataSetAccX = new LineDataSet(AccXValues, "Acc X");
+        LineDataSet rollLineDataSetAccX = new LineDataSet(AccValues, "Acc X");
         rollLineDataSetAccX.setDrawCircles(false);
         rollLineDataSetAccX.setColor(getResources().getColor(R.color.xAxisAccel));
         rollLineDataSetAccX.setValueTextSize(10f);
         rollLineDataSetAccX.setLineWidth(3f);
 
-        /// data set for accel Y
-        /*LineDataSet rollLineDataSetAccY = new LineDataSet(AccYValues, "Acc Y");
-        rollLineDataSetAccY.setDrawCircles(false);
-        rollLineDataSetAccY.setColor(getResources().getColor(R.color.yAxisAccel));
-        rollLineDataSetAccY.setValueTextSize(10f);
-        rollLineDataSetAccY.setLineWidth(3f);
-
-        /// data set for accel Z
-        LineDataSet rollLineDataSetAccZ = new LineDataSet(AccZValues, "Acc Z");
-        rollLineDataSetAccZ.setDrawCircles(false);
-        rollLineDataSetAccZ.setColor(getResources().getColor(R.color.zAxisAccel));
-        rollLineDataSetAccZ.setValueTextSize(10f);
-        rollLineDataSetAccZ.setLineWidth(3f); */
-
-
-        /// add to the list the rollLineDataSet create before
         listOfLineDataSets.add(rollLineDataSetAccX);
-        //listOfLineDataSets.add(rollLineDataSetAccY);
-        //listOfLineDataSets.add(rollLineDataSetAccZ);
 
-        linechart.setPinchZoom(true);
         /// pass the list to the linechart
         linechart.setData(new LineData(listOfLineDataSets));
         /// linechart settings
         linechart.setBackgroundColor(Color.CYAN);
         linechart.setDescription(description);
-        linechart.setPinchZoom(true);
-
 
         // Inflate the layout for this fragment
         return v;

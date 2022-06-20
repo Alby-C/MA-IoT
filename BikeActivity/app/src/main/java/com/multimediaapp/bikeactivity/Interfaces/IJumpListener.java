@@ -4,7 +4,7 @@ public interface IJumpListener {
     /**
      * Method to handle the jump event.
      *
-     * @param flightTime The flight time of the jump.
+     * @param flightTimeNanos The flight time of the jump in nanoseconds.
      */
-    void onJumpHappened(long flightTime);
+    void onJumpHappened(long flightTimeNanos);
 }

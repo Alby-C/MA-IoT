@@ -8,9 +8,9 @@
     <string name="defaultTVCurrRoll">Inclinazione corrente:</string>
     <string name="defaultTVLeftMaxRoll">Massima inclinazione sinistra:</string>
     <string name="defaultTVRightMaxTilt">Massima inclinazione destra:</string>
-    <string name="defaultTVCurrX">X:</string>
+    <string name="defaultTVCurrX">Accelerazione:</string>
     <string name="defaultTVCurrY">Y:</string>
-    <string name="defaultTVCurrZ">Z:</string>
+    <string name="defaultTVJump">Ultimo salto:</string>
     <string name="TotalTime">Tempo totale di attività</string>
 
     <string name="btnStart">Inizia\nattività</string>

@@ -2,6 +2,9 @@ package com.multimediaapp.bikeactivity.DataBase;
 
 import static android.os.SystemClock.elapsedRealtimeNanos;
 
+import static java.lang.Math.hypot;
+import static Miscellaneous.MiscellaneousOperations.Truncate;
+
 import android.content.ContentValues;
 import android.content.Context;
 
@@ -29,11 +32,9 @@ public class SaveData implements IMeasurementHandler {
         ContentValues accValues = new ContentValues();
 
         /// Get the approximated linear acceleration as the acceleration axis X and Y
-        acceleration = (float) Math.hypot(newValues[X],newValues[Y]);
+        acceleration = (float) hypot(newValues[X], newValues[Y]);
 
         accValues.put(MyContentProvider.InstantAccX_Col, acceleration);
-        //accValues.put(MyContentProvider.InstantAccY_Col, newValues[Y]);
-        //accValues.put(MyContentProvider.InstantAccZ_Col, newValues[Z]);
         accValues.put(MyContentProvider.TimeStamp_Col, timestamp);
         context.getContentResolver().insert(MyContentProvider.ACC_URI, accValues);
     }
@@ -54,13 +55,13 @@ public class SaveData implements IMeasurementHandler {
         timestamp = (timestamp - startingTime);
         ContentValues rollValues = new ContentValues();
 
-        rollValues.put(MyContentProvider.InstantRoll_Col, currentRoll);
+        rollValues.put(MyContentProvider.InstantRoll_Col, Truncate(currentRoll,2));
         rollValues.put(MyContentProvider.TimeStamp_Col, timestamp);
         context.getContentResolver().insert(MyContentProvider.ROLL_URI, rollValues);
     }
 
     @Override
-    public void onJumpHappened(long flightTime) {
+    public void onJumpHappened(long flightTimeNanos) {
 
     }
 

@@ -122,7 +122,6 @@ public class fragmentRoll extends Fragment {
         /// linechart settings
         linechart.setBackgroundColor(Color.CYAN);
         linechart.setDescription(description);
-        linechart.setPinchZoom(true);
 
         // Inflate the layout for this fragment
         return v;

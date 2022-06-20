@@ -21,9 +21,8 @@ public class Roll extends BaseSensor<IRollListener> implements IGyroListener, IA
     private static final int X = 0;
     private static final int Y = 1;
     private static final int Z = 2;
-    private static final float NS2S = 1.0f / 1000000000.0f; ///<Constant to convert from nanoseconds to seconds
-    private static final double R2D = 180./ PI;             ///<Constant to convert from radians to degree
-    private static final float EPSILON =0.01f;              ///<Constant for threshold
+    public static final float NS2S = 1.0f / 1000000000.0f; ///<Constant to convert from nanoseconds to seconds
+    public static final double R2D = 180./ PI;             ///<Constant to convert from radians to degree
 
     private final float filterPercent = 0.95f;
 
@@ -84,11 +83,12 @@ public class Roll extends BaseSensor<IRollListener> implements IGyroListener, IA
         mutex.lock();
         this.currAngle = ( filterPercent * (this.currAngle + this.currGyroAngle)) + ((1-filterPercent)* this.currAccelAngle);
         mutex.unlock();
-        for(IRollListener listener
-                : listeners){
-            listener.onChangeRoll(elapsedRealtimeNanos(), currAngle);
+        if (!(currAngle > 90) && !(currAngle < -90)) {
+            for (IRollListener listener
+                    : listeners) {
+                listener.onChangeRoll(elapsedRealtimeNanos(), currAngle);
+            }
         }
-
     }
 
     @Override

@@ -45,9 +45,7 @@ public class fragmentSpeed extends Fragment {
 
     public fragmentSpeed(Context context,
                          float maxSpeed,
-                         float avgSpeed
-    )
-    {
+                         float avgSpeed){
         this.context = context;
         this.avgSpeed = avgSpeed;
         this.maxSpeed = maxSpeed;
@@ -81,8 +79,7 @@ public class fragmentSpeed extends Fragment {
         /// get number of data
         nSpeed = speedCursor.getCount();
 
-        for(int i = 0; i < nSpeed; i++)
-        {
+        for(int i = 0; i < nSpeed; i++) {
             /// add values of database into the axisValues list
             axisValues.add(new Entry(
                     (float)speedCursor.getLong(TIME_COL)* NS2S,
@@ -115,7 +112,6 @@ public class fragmentSpeed extends Fragment {
         /// linechart settings
         linechart.setBackgroundColor(Color.CYAN);
         linechart.setDescription(description);
-        linechart.setPinchZoom(true);
         return v;
     }
 }
