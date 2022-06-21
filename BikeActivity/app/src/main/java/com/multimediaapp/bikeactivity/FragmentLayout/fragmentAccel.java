@@ -59,7 +59,7 @@ public class fragmentAccel extends Fragment {
 
         /// Description of roll chart
         description = new Description();
-        description.setText("ACCELERATION CHART");
+        description.setText("ACCELERAZIONE [g]");
         description.setTextSize(10f);
 
         /// Array of Roll and Time
@@ -106,13 +106,13 @@ public class fragmentAccel extends Fragment {
         ArrayList<ILineDataSet> listOfLineDataSets = new ArrayList<>();
 
         /// data set for accel X
-        LineDataSet rollLineDataSetAccX = new LineDataSet(axisValues, "Acceleration");
-        rollLineDataSetAccX.setDrawCircles(false);
-        rollLineDataSetAccX.setColor(getResources().getColor(R.color.accel));
-        rollLineDataSetAccX.setValueTextSize(10f);
-        rollLineDataSetAccX.setLineWidth(2f);
+        LineDataSet lineDataSet = new LineDataSet(axisValues, "Accelerazione");
+        lineDataSet.setDrawCircles(false);
+        lineDataSet.setColor(getResources().getColor(R.color.accel));
+        lineDataSet.setValueTextSize(10f);
+        lineDataSet.setLineWidth(2f);
 
-        listOfLineDataSets.add(rollLineDataSetAccX);
+        listOfLineDataSets.add(lineDataSet);
 
         /// pass the list to the linechart
         linechart.setData(new LineData(listOfLineDataSets));

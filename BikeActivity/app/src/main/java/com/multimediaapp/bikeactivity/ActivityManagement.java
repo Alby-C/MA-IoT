@@ -50,6 +50,8 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
 
     private final String TAG = ActivityManagement.class.getSimpleName();
 
+    public static final float G = 9.80665f;      ///< [m/s^2]
+
     //////////////////////////// Views
     private TextView tvMaxSpeed = null;
     private TextView tvAvgSpeed = null;
@@ -495,12 +497,12 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
                         (int) currRoll + "°"
                 };
                 String[] speedStrings = new String[]{
-                        Truncate(newSpeed, 2) + "",
-                        Truncate(avgSpeed, 2) + "",
-                        Truncate(maxSpeed, 2) + ""
+                        (int)newSpeed + "m/s",
+                        (int)avgSpeed + "m/s",
+                        (int)maxSpeed + "m/s"
                 };
                 String[] accStrings = new String[]{
-                        Truncate(currAccel, 1) + "\nm/s2",
+                        Truncate(currAccel / G, 2) + "g",
                         Truncate(flightTime, 3) + "s"
                 };
 

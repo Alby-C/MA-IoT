@@ -1,6 +1,7 @@
 package com.multimediaapp.bikeactivity.DataBase;
 
 import static android.os.SystemClock.elapsedRealtimeNanos;
+import static com.multimediaapp.bikeactivity.ActivityManagement.G;
 import static com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll.X;
 import static com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll.Y;
 import static com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll.Z;
@@ -10,7 +11,6 @@ import static Miscellaneous.MiscellaneousOperations.Truncate;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.util.Log;
 
 import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
 import com.multimediaapp.bikeactivity.Interfaces.ILinearAccelListener;
@@ -50,9 +50,7 @@ public class SaveData implements IAccelListener, ILinearAccelListener, IRollList
         timestamp = (timestamp - startingTime);
         ContentValues linAccValues = new ContentValues();
 
-        Log.i("SaveData", "axis: " + accelAxis + " value: " +  newValues[accelAxis]+ "\nts: "+ timestamp);
-
-        linAccValues.put(MyContentProvider.InstantLinAcc_Col, Truncate(newValues[accelAxis], 3));
+        linAccValues.put(MyContentProvider.InstantLinAcc_Col, Truncate(newValues[accelAxis] / G, 1));
         linAccValues.put(MyContentProvider.TimeStamp_Col, timestamp);
         context.getContentResolver().insert(MyContentProvider.LIN_ACC_URI, linAccValues);
     }
@@ -62,7 +60,7 @@ public class SaveData implements IAccelListener, ILinearAccelListener, IRollList
         timestamp = (timestamp - startingTime);
         ContentValues speedValues = new ContentValues();
 
-        speedValues.put(MyContentProvider.InstantSpeed_Col, newSpeed);
+        speedValues.put(MyContentProvider.InstantSpeed_Col, (int)(newSpeed));
         speedValues.put(MyContentProvider.TimeStamp_Col, timestamp);
         context.getContentResolver().insert(MyContentProvider.SPEED_URI, speedValues);
     }
@@ -72,7 +70,7 @@ public class SaveData implements IAccelListener, ILinearAccelListener, IRollList
         timestamp = (timestamp - startingTime);
         ContentValues rollValues = new ContentValues();
 
-        rollValues.put(MyContentProvider.InstantRoll_Col, Truncate(currentRoll,2));
+        rollValues.put(MyContentProvider.InstantRoll_Col, Truncate(currentRoll,1));
         rollValues.put(MyContentProvider.TimeStamp_Col, timestamp);
         context.getContentResolver().insert(MyContentProvider.ROLL_URI, rollValues);
     }

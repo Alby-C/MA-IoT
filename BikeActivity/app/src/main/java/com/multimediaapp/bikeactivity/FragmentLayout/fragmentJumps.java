@@ -81,11 +81,11 @@ public class fragmentJumps extends Fragment {
             }
         });
 
-        StringBuilder toPrint = new StringBuilder("Jumps:\n\n");
+        StringBuilder toPrint = new StringBuilder();
 
         for(int i = 0; i< accValues.size(); i++){
             if(accValues.get(i).getY() < 1.5f) {
-                toPrint.append("flag at: ").append(accValues.get(i).getX()).append(",\n");
+                toPrint.append("flag at: ").append(accValues.get(i).getX()).append("\n");
                 i = JumpEvaluator(i, toPrint);
             }
 
@@ -109,7 +109,7 @@ public class fragmentJumps extends Fragment {
             if(goingToPeak || (goingToPeak = module > 9.5f)) {
                 if (module < prevModule) { ///peak reached
                     jumpStartTimestamp = accValues.get(i + 1).getX();
-                    str.append("initial peak: ").append(jumpStartTimestamp).append(",\n");
+                    str.append("initial peak: ").append(jumpStartTimestamp).append("\n");
                     break;
                 }
             }
@@ -123,10 +123,9 @@ public class fragmentJumps extends Fragment {
             module = accValues.get(i).getY();
 
             if (goingToPeak || (goingToPeak = module > 9.5f) ) {
-
                 if(module < prevModule) {
-                    str.append("final peak: ").append(accValues.get(i - 1).getX()).append(",\n");
-                    str.append("length: ").append(accValues.get(i - 1).getX() - jumpStartTimestamp).append(".\n\n");
+                    str.append("final peak: ").append(accValues.get(i - 1).getX()).append("\n");
+                    str.append("length: ").append(accValues.get(i - 1).getX() - jumpStartTimestamp).append("\n\n");
                     return i;
                 }
             }

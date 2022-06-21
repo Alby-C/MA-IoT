@@ -11,7 +11,15 @@
     <TextView
         android:id="@+id/tvJumps"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:textSize="15dp"/>
     </ScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="65dp"
+        android:text="@string/defaultTVJumps"
+        android:textSize="25dp" />
 
 </FrameLayout>

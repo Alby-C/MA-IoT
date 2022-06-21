@@ -63,7 +63,7 @@ public class fragmentSpeed extends Fragment {
 
         /// Description of roll chart
         description = new Description();
-        description.setText("ROLL CHART");
+        description.setText("VELOCITÀ [m/s]");
         description.setTextSize(10f);
 
         /// Array of Roll and Time
@@ -108,17 +108,17 @@ public class fragmentSpeed extends Fragment {
         /// creating a List of LineDataSet to pass to the linechart
         ArrayList<ILineDataSet> listOfLineDataSets = new ArrayList<>();
 
-        LineDataSet rollLineDataSet = new LineDataSet(axisValues, "Speed");
+        LineDataSet lineDataSet = new LineDataSet(axisValues, "Speed");
 
         /// data set settings
-        rollLineDataSet.setDrawCircles(false);
-        rollLineDataSet.setColor(getResources().getColor(R.color.speed));
-        rollLineDataSet.setValueTextSize(10f);
-        rollLineDataSet.setLineWidth(2f);
+        lineDataSet.setDrawCircles(false);
+        lineDataSet.setColor(getResources().getColor(R.color.speed));
+        lineDataSet.setValueTextSize(10f);
+        lineDataSet.setLineWidth(2f);
 
 
         /// add to the list the rollLineDataSet create before
-        listOfLineDataSets.add(rollLineDataSet);
+        listOfLineDataSets.add(lineDataSet);
 
         /// pass the list to the linechart
         linechart.setData(new LineData(listOfLineDataSets));

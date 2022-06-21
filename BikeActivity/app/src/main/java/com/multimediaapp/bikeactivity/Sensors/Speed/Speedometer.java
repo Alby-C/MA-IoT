@@ -19,7 +19,10 @@ import java.util.concurrent.TimeUnit;
 public class Speedometer extends BaseSensorThreaded<ISpeedListener,long[]> implements LocationListener {
     private final String TAG = Speedometer.class.getSimpleName();
 
-    private static final float FLOAT2LONG = 10000000f; ///constant to convert float to long if multiplied and vice versa if divided
+    /**
+     * Constant to convert a float to long if multiplied and vice versa if divided
+     */
+    private static final float FLOAT2LONG = 10000000f;
 
     public LocationManager lm;
     private Context context;

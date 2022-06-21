@@ -62,7 +62,7 @@ public class fragmentRoll extends Fragment {
 
         /// Description of roll chart
         description = new Description();
-        description.setText("ROLL CHART");
+        description.setText("INCLINAZIONE [°]");
         description.setTextSize(10f);
 
         /// Array of Roll and Time
@@ -108,16 +108,16 @@ public class fragmentRoll extends Fragment {
 
         axisValues = MiscellaneousOperations.getSmallerList(axisValues);
 
-        LineDataSet rollLineDataSet = new LineDataSet(axisValues, "Roll");
+        LineDataSet lineDataSet = new LineDataSet(axisValues, "Inclinazione");
         /// Data set settings
-        rollLineDataSet.setDrawCircles(false);
-        rollLineDataSet.setColor(getResources().getColor(R.color.roll));
-        rollLineDataSet.setValueTextSize(10f);
-        rollLineDataSet.setLineWidth(2f);
+        lineDataSet.setDrawCircles(false);
+        lineDataSet.setColor(getResources().getColor(R.color.roll));
+        lineDataSet.setValueTextSize(10f);
+        lineDataSet.setLineWidth(2f);
 
 
         /// add to the list the rollLineDataSet create before
-        listOfLineDataSets.add(rollLineDataSet);
+        listOfLineDataSets.add(lineDataSet);
 
         /// pass the list to the linechart
         linechart.setData(new LineData(listOfLineDataSets));
