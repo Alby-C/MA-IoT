@@ -1,26 +1,26 @@
-package com.multimediaapp.bikeactivity;
+package com.multimediaapp.bikeactivity.Commutators;
 
 import com.multimediaapp.bikeactivity.BaseClasses.BaseSensor;
-import com.multimediaapp.bikeactivity.Interfaces.IGyroListener;
+import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
 
 import Space.ReferenceSystemCommutator;
 import Space.Vector;
 
-public class GyroCommutator extends BaseSensor<IGyroListener> implements IGyroListener {
+public class AccelCommutator extends BaseSensor<IAccelListener> implements IAccelListener {
 
     private final ReferenceSystemCommutator rfCommutator;
 
-    public GyroCommutator(ReferenceSystemCommutator rfCommutator){
+    public AccelCommutator(ReferenceSystemCommutator rfCommutator){
         this.rfCommutator = rfCommutator;
     }
 
     @Override
-    public void onChangeGyro(long timestamp, float[] newValues) {
+    public void onChangeAccel(long timestamp, float[] newValues) {
         Vector commutedVector = rfCommutator.ConvertToNewReferenceSystem(new Vector(newValues[0], newValues[1], newValues[2]));
 
-        for (IGyroListener listener :
+        for (IAccelListener listener :
                 listeners) {
-            listener.onChangeGyro(timestamp, commutedVector.toArray());
+            listener.onChangeAccel(timestamp, commutedVector.toArray());
         }
     }
 
@@ -33,6 +33,4 @@ public class GyroCommutator extends BaseSensor<IGyroListener> implements IGyroLi
     public void Stop() {
 
     }
-
-
 }

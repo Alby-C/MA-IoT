@@ -18,13 +18,27 @@ public class Roll extends BaseSensor<IRollListener> implements IGyroListener, IA
     private final String TAG = Roll.class.getSimpleName();
 
     ///////////////////////////
-    private static final int X = 0;
-    private static final int Y = 1;
-    private static final int Z = 2;
-    public static final float NS2S = 1.0f / 1000000000.0f; ///<Constant to convert from nanoseconds to seconds
-    public static final double R2D = 180./ PI;             ///<Constant to convert from radians to degree
-
-    private final float filterPercent = 0.95f;
+    /**
+     * Represents x axis in a vector.
+     */
+    public static final int X = 0;
+    /**
+     * Represents y axis in a vector.
+     */
+    public static final int Y = 1;
+    /**
+     * Represents z axis in a vector.
+     */
+    public static final int Z = 2;
+    /**
+     * Constant to convert from nanoseconds to seconds.
+     */
+    public static final float NS2S = 1.0E-9f;
+    /**
+     * Constant to convert from radians to degrees.
+     */
+    public static final double R2D = 180./ PI;
+    private static final float filterPercent = 0.95f;
 
     private final int gyroAxis;
     private final int accelRefAxis;

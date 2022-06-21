@@ -1,5 +1,7 @@
 package com.multimediaapp.bikeactivity.FragmentLayout;
 
+import static com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll.NS2S;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -20,6 +22,7 @@ import com.multimediaapp.bikeactivity.DataBase.MyContentProvider;
 import com.multimediaapp.bikeactivity.R;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import Miscellaneous.MiscellaneousOperations;
 
@@ -39,7 +42,6 @@ public class fragmentSpeed extends Fragment {
     private int nSpeed = 0;
     private Context context;
     private Description description = null;
-    private static final float NS2S = 1.0f / 1000000000.0f; ///<Constant to convert from nanoseconds to seconds
     private final int TIME_COL = 2;
     private final int SPEED_COL = 1;
 
@@ -89,6 +91,18 @@ public class fragmentSpeed extends Fragment {
             speedCursor.moveToNext();
         }
 
+        axisValues.sort(new Comparator<Entry>() {
+            @Override
+            public int compare(Entry o1, Entry o2) {
+                if(o1.getX() < o2.getX())
+                    return -1;
+                else if(o1.getX() > o2.getX())
+                    return 1;
+                else
+                    return 0;
+            }
+        });
+
         axisValues = MiscellaneousOperations.getSmallerList(axisValues);
 
         /// creating a List of LineDataSet to pass to the linechart
@@ -100,7 +114,7 @@ public class fragmentSpeed extends Fragment {
         rollLineDataSet.setDrawCircles(false);
         rollLineDataSet.setColor(getResources().getColor(R.color.speed));
         rollLineDataSet.setValueTextSize(10f);
-        rollLineDataSet.setLineWidth(3f);
+        rollLineDataSet.setLineWidth(2f);
 
 
         /// add to the list the rollLineDataSet create before

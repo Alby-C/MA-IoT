@@ -1,5 +1,5 @@
 package com.multimediaapp.bikeactivity.Interfaces;
 
-public interface IMeasurementHandler extends IAccelListener, IGyroListener, IJumpListener, IRollListener, ISpeedListener {
+public interface IMeasurementHandler extends ILinearAccelListener, IGyroListener, IJumpListener, IRollListener, ISpeedListener {
 
 }

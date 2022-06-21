@@ -1,5 +1,7 @@
 package com.multimediaapp.bikeactivity.FragmentLayout;
 
+import static com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll.NS2S;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -20,6 +22,7 @@ import com.multimediaapp.bikeactivity.DataBase.MyContentProvider;
 import com.multimediaapp.bikeactivity.R;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import Miscellaneous.MiscellaneousOperations;
 
@@ -28,17 +31,16 @@ public class fragmentAccel extends Fragment {
 
     String[] accCol = {
             MyContentProvider._ID_Col,
-            MyContentProvider.InstantAccXY_Col,
+            MyContentProvider.InstantLinAcc_Col,
             MyContentProvider.TimeStamp_Col
     };
 
     private LineChart linechart = null;
-    private Cursor accCursor = null;
+    private Cursor linAccCursor = null;
     private int nAcc = 0;
     private Context context;
     private Description description = null;
-    private static final float NS2S = 1.0f / 1000000000.0f; ///Constant to convert from nanoseconds to seconds
-    private final int ACC_COL = 1;
+    private final int LIN_ACC_COL = 1;
     private final int TIME_COL = 2;
 
 
@@ -61,42 +63,54 @@ public class fragmentAccel extends Fragment {
         description.setTextSize(10f);
 
         /// Array of Roll and Time
-        ArrayList<Entry> AccValues = new ArrayList <> ();
+        ArrayList<Entry> axisValues = new ArrayList <> ();
 
         /// set cursor of roll table
-        accCursor =  context.getContentResolver().query(
-                MyContentProvider.ACC_URI,
+        linAccCursor =  context.getContentResolver().query(
+                MyContentProvider.LIN_ACC_URI,
                 accCol,
                 null , null , null);
 
         /// set cursor to the first data
-        accCursor.moveToFirst();
+        linAccCursor.moveToFirst();
 
         /// get number of data
-        nAcc = accCursor.getCount();
+        nAcc = linAccCursor.getCount();
 
         for(int i = 0; i < nAcc; i++)
         {
             /// add values of database into the axisValues list
-            AccValues.add(new Entry(
-                    (float)accCursor.getLong(TIME_COL)* NS2S,
-                    accCursor.getFloat(ACC_COL)));
+            axisValues.add(new Entry(
+                    (float) linAccCursor.getLong(TIME_COL)* NS2S,
+                    linAccCursor.getFloat(LIN_ACC_COL)));
 
             // move to the next data roll
-            accCursor.moveToNext();
+            linAccCursor.moveToNext();
         }
 
-        AccValues = MiscellaneousOperations.getSmallerList(AccValues);
+        axisValues.sort(new Comparator<Entry>() {
+            @Override
+            public int compare(Entry o1, Entry o2) {
+                if(o1.getX() < o2.getX())
+                    return -1;
+                else if(o1.getX() > o2.getX())
+                    return 1;
+                else
+                    return 0;
+            }
+        });
+
+        axisValues = MiscellaneousOperations.getSmallerList(axisValues);
 
         /// creating a List of LineDataSet to pass to the linechart
         ArrayList<ILineDataSet> listOfLineDataSets = new ArrayList<>();
 
         /// data set for accel X
-        LineDataSet rollLineDataSetAccX = new LineDataSet(AccValues, "Acc X");
+        LineDataSet rollLineDataSetAccX = new LineDataSet(axisValues, "Acceleration");
         rollLineDataSetAccX.setDrawCircles(false);
-        rollLineDataSetAccX.setColor(getResources().getColor(R.color.xAxisAccel));
+        rollLineDataSetAccX.setColor(getResources().getColor(R.color.accel));
         rollLineDataSetAccX.setValueTextSize(10f);
-        rollLineDataSetAccX.setLineWidth(3f);
+        rollLineDataSetAccX.setLineWidth(2f);
 
         listOfLineDataSets.add(rollLineDataSetAccX);
 

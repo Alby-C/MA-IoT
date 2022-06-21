@@ -2,6 +2,8 @@ package com.multimediaapp.bikeactivity;
 
 import static android.os.SystemClock.elapsedRealtimeNanos;
 import static com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll.NS2S;
+import static com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll.X;
+import static com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll.Y;
 import static java.lang.Thread.sleep;
 import static Miscellaneous.MiscellaneousOperations.Truncate;
 
@@ -21,11 +23,16 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.multimediaapp.bikeactivity.Commutators.AccelCommutator;
+import com.multimediaapp.bikeactivity.Commutators.GyroCommutator;
+import com.multimediaapp.bikeactivity.Commutators.LinearAccelCommutator;
 import com.multimediaapp.bikeactivity.DataBase.MyContentProvider;
 import com.multimediaapp.bikeactivity.DataBase.SaveData;
+import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
 import com.multimediaapp.bikeactivity.Interfaces.IMeasurementHandler;
 import com.multimediaapp.bikeactivity.Sensors.Accelerometer.Accelerometer;
 import com.multimediaapp.bikeactivity.Sensors.Accelerometer.Jump;
+import com.multimediaapp.bikeactivity.Sensors.Accelerometer.LinearAccelerometer;
 import com.multimediaapp.bikeactivity.Sensors.Gyroscope.Gyroscope;
 import com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll;
 import com.multimediaapp.bikeactivity.Sensors.Speed.Speedometer;
@@ -39,7 +46,7 @@ import Time.Time;
  * such as initialization and sensor management.
  */
 @SuppressWarnings("ALL")
-public class ActivityManagement extends AppCompatActivity implements IMeasurementHandler {
+public class ActivityManagement extends AppCompatActivity implements IMeasurementHandler, IAccelListener {
 
     private final String TAG = ActivityManagement.class.getSimpleName();
 
@@ -75,9 +82,8 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private float avgSpeed = 0;         ///< [m/s]
     private float maxSpeed = 0;         ///< [m/s]
 
-    private float accelX = 0;           ///< [m/s^2]
-    private float accelY = 0;           ///< [m/s^2]
-    private float accelZ = 0;           ///< [m/s^2]
+    private float currAccel = 0;        ///< [m/s^2]
+    private int accelAxis = 0;        ///< 0 = x axis, 1 = y axis, 2 = z axys
 
     private float flightTime = 0;   ///< [s]
 
@@ -85,6 +91,11 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private Accelerometer accelerometer = null;
     private Sensor acc = null;
     private SensorManager accManager = null;
+
+    /////////////////////////// Linear Accelerometer
+    private LinearAccelerometer linearAccelerometer = null;
+    private Sensor linAcc = null;
+    private SensorManager linAccManager = null;
 
     //////////////////////////// Gyroscope
     private Sensor gyro = null;
@@ -105,6 +116,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private ReferenceSystemCommutator rsCommutator;
 
     private AccelCommutator accelCommutator;
+    private LinearAccelCommutator linearAccelCommutator;
     private GyroCommutator gyroCommutator;
 
     /////////////////////////// Activity duration
@@ -123,11 +135,13 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         switch (_orientation) {
             case ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE:
                 _contentView = R.layout.activity_management_landscape;
+                accelAxis = Y;
                 Log.i(TAG,"onCreate: landscape");
                 break;
             case ActivityInfo.SCREEN_ORIENTATION_PORTRAIT:
             default:
                 _contentView = R.layout.activity_management_portrait;
+                accelAxis = X;
                 Log.i(TAG,"onCreate: portrait");
                 break;
         }
@@ -139,10 +153,11 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
 
         /// Drop previous table on database
         MyContentProvider.db.execSQL("DELETE FROM " + MyContentProvider.ACC_TABLE);
+        MyContentProvider.db.execSQL("DELETE FROM " + MyContentProvider.LIN_ACC_TABLE);
         MyContentProvider.db.execSQL("DELETE FROM " + MyContentProvider.SPEED_TABLE);
         MyContentProvider.db.execSQL("DELETE FROM " + MyContentProvider.ROLL_TABLE);
 
-        saveData = new SaveData(this);
+        saveData = new SaveData(this, _orientation);
 
         /// Setting up all textviews and button
         tvMaxSpeed = findViewById(R.id.tvMaxSpeed);
@@ -241,8 +256,13 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
 
         /// Accelerometer service request
         accManager = (SensorManager) getSystemService((Context.SENSOR_SERVICE));
-        acc = gyroManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        acc = accManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         accelerometer = new Accelerometer(acc, accManager);
+
+        /// Linear accelerometer service request
+        linAccManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        linAcc =  linAccManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+        linearAccelerometer = new LinearAccelerometer(linAcc, linAccManager);
 
         Log.i(TAG,"Initializing reference system commutator");
         /// Starting the initialization of the reference system commutator
@@ -250,32 +270,38 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         accelerometer.Start();
     }
 
-    /////////////////////////// Activity status methods
+    //////////////////////////////////////////////////////////////////// Activity status methods
     /**
      * Starts the activity monitoring, starting all the sensors and subscribing
      * to their respective listeners.
      */
     private void Start() {
-        accelerometer.SubscribeListener(accelCommutator);
         accelerometer.SubscribeListener(jump);
+        accelerometer.SubscribeListener(accelCommutator);
+
+        accelCommutator.SubscribeListener(roll);
+        accelCommutator.SubscribeListener(saveData);
+
+        linearAccelerometer.SubscribeListener(linearAccelCommutator);
+
+        linearAccelCommutator.SubscribeListener(this);
+        linearAccelCommutator.SubscribeListener(saveData);
 
         gyroscope.SubscribeListener(gyroCommutator);
+
+        gyroCommutator.SubscribeListener(roll);
 
         jump.SubscribeListener(this);
 
         roll.SubscribeListener(this);
         roll.SubscribeListener(saveData);
 
-        accelCommutator.SubscribeListener(roll);
-        accelCommutator.SubscribeListener(this);
-        accelCommutator.SubscribeListener(saveData);
-
-        gyroCommutator.SubscribeListener(roll);
-
         speedometer.SubscribeListener(this);
         speedometer.SubscribeListener(saveData);
 
+        ///Starting sensors
         accelerometer.Start();
+        linearAccelerometer.Start();
         gyroscope.Start();
         speedometer.Start();
         jump.Start();
@@ -297,6 +323,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private void Pause(){
         if(isRunning) {
             accelerometer.Pause();
+            linearAccelerometer.Pause();
             gyroscope.Pause();
             speedometer.Pause();
 
@@ -313,6 +340,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private void Resume(){
         if(isPausing) {
             accelerometer.Start();
+            linearAccelerometer.Start();
             gyroscope.Start();
             speedometer.Start();
 
@@ -335,30 +363,38 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         Log.i(TAG,"Stopping threads...");
         /// Generated 3 threads to stop each SensorThreaded, so that everyone has the stop method
         /// triggered at the same time
-        Thread[] threads = new Thread[3];
+        Thread[] threads = new Thread[4];
 
         threads[0] = new Thread(new Runnable() {
             @Override
             public void run() {
-                Log.i(TAG, "accelerometer stopping");
+                Log.i(TAG, "Stopping accelerometer");
                 accelerometer.Stop();
-                Log.i(TAG, "accelerometer stopped");
+                Log.i(TAG, "Accelerometer stopped");
             }
         });
         threads[1] = new Thread(new Runnable() {
             @Override
             public void run() {
-                Log.i(TAG, "gyro stopping");
-                gyroscope.Stop();
-                Log.i(TAG, "gyro stopped");
+                Log.i(TAG, "Stopping linear accelerometer");
+                linearAccelerometer.Stop();
+                Log.i(TAG, "Linear accelerometer stopped");
             }
         });
         threads[2] = new Thread(new Runnable() {
             @Override
             public void run() {
-                Log.i(TAG, "speedometer stopping");
+                Log.i(TAG, "Stopping gyroscope");
+                gyroscope.Stop();
+                Log.i(TAG, "Gyroscope stopped");
+            }
+        });
+        threads[3] = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(TAG, "Stopping speedometer");
                 speedometer.Stop();
-                Log.i(TAG, "speedometer stopped");
+                Log.i(TAG, "Speedometer stopped");
             }
         });
 
@@ -390,25 +426,29 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
             tvUpdater.interrupt();
             Log.i(TAG,"tvUpdater thread interrupted");
         }
-        accelerometer.UnsubscribeListener(accelCommutator);
-        accelerometer.UnsubscribeListener(jump);
-        gyroscope.UnsubscribeListener(gyroCommutator);
-
+        Log.i(TAG, "Stopping jump");
         jump.Stop();
+        Log.i(TAG, "Jump Stopped");
+
+        accelerometer.UnsubscribeListener(jump);
+        accelerometer.UnsubscribeListener(accelCommutator);
+        linearAccelerometer.UnsubscribeListener(linearAccelCommutator);
+        gyroscope.UnsubscribeListener(gyroCommutator);
+        speedometer.UnsubscribeListener(this);
+        speedometer.UnsubscribeListener(saveData);
+
+        accelCommutator.UnsubscribeListener(roll);
+        accelCommutator.UnsubscribeListener(saveData);
+        linearAccelCommutator.UnsubscribeListener(this);
+        linearAccelCommutator.UnsubscribeListener(saveData);
+        gyroCommutator.UnsubscribeListener(roll);
+
         jump.UnsubscribeListener(this);
         roll.UnsubscribeListener(this);
         roll.UnsubscribeListener(saveData);
-
-        accelCommutator.UnsubscribeListener(roll);
-        accelCommutator.UnsubscribeListener(this);
-        accelCommutator.UnsubscribeListener(saveData);
-
-        gyroCommutator.UnsubscribeListener(roll);
-        speedometer.UnsubscribeListener(this);
-        speedometer.UnsubscribeListener(saveData);
     }
 
-    /////////////////////////// Threads
+    //////////////////////////////////////////////////////////////////// Threads
     /**
      * Class that will be used from chronometer thread, takes care of showing
      * the duration of the activity.
@@ -460,7 +500,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
                         Truncate(maxSpeed, 2) + ""
                 };
                 String[] accStrings = new String[]{
-                        Truncate(accelX, 1) + "\nm/s2",
+                        Truncate(currAccel, 1) + "\nm/s2",
                         Truncate(flightTime, 3) + "s"
                 };
 
@@ -493,7 +533,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         Log.i(TAG + "/thr:" + tvUpdater.getName(),"Thread's routine ended");
     }
 
-    /////////////////////////// Interface implementation
+    //////////////////////////////////////////////////////////////////// Interface implementation
     @Override
     public void onChangeRoll(long timestamp,float currRoll) {
         if (currRoll > maxRightRoll)
@@ -521,7 +561,6 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     private final int AVERAGE_CYCLES = 10;
     private int cycles = AVERAGE_CYCLES;
     private float meanX = 0,meanY = 0, meanZ = 0;
-    private boolean onRSCommutatorInit = true;
 
     /**
      * It takes care of initializing the rfCommutator, then it will simply get new data.
@@ -530,44 +569,41 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
      */
     @Override
     public void onChangeAccel(long timestamp, float[] newValues) {
-        if(onRSCommutatorInit){     /// rfCommutator initializing phase
-            if(cycles > 0){
-                meanX += newValues[0];
-                meanY += newValues[1];
-                meanZ += newValues[2];
+        if(cycles > 0){
+            meanX += newValues[0];
+            meanY += newValues[1];
+            meanZ += newValues[2];
 
-                cycles--;
-            }
-            else{
-                /// First unsubscribes the current instance from receiving updates
-                /// from the accelerometer. Then passes the control to the UI thread
-                /// to effectively start the activity monitoring.
-                accelerometer.UnsubscribeListener(this);
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        accelerometer.Stop();
-
-                        cycles = AVERAGE_CYCLES;
-
-                        rsCommutator = new ReferenceSystemCommutator(new Vector(meanX / cycles, meanY / cycles, meanZ / cycles));
-
-                        accelCommutator = new AccelCommutator(rsCommutator);
-                        gyroCommutator = new GyroCommutator(rsCommutator);
-
-                        onRSCommutatorInit = false;
-
-                        Start();
-                    }
-                });
-            }
+            cycles--;
         }
         else{
-            accelX = newValues[0];
-            accelY = newValues[1];
-            accelZ = newValues[2];
+            /// First unsubscribes the current instance from receiving updates
+            /// from the accelerometer. Then passes the control to the UI thread
+            /// to effectively start the activity monitoring.
+            accelerometer.UnsubscribeListener(this);
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    accelerometer.Stop();
+
+                    cycles = AVERAGE_CYCLES;
+
+                    rsCommutator = new ReferenceSystemCommutator(new Vector(meanX / cycles, meanY / cycles, meanZ / cycles));
+
+                    accelCommutator = new AccelCommutator(rsCommutator);
+                    linearAccelCommutator = new LinearAccelCommutator(rsCommutator);
+                    gyroCommutator = new GyroCommutator(rsCommutator);
+
+                    Start();
+                }
+            });
         }
+    }
+
+    @Override
+    public void onChangeLinearAccel(long timestamp, float[] newValues) {
+        currAccel = newValues[accelAxis];
     }
 
     @Override

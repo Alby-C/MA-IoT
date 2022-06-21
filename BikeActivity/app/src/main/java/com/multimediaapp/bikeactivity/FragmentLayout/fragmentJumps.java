@@ -17,18 +17,19 @@ import com.multimediaapp.bikeactivity.DataBase.MyContentProvider;
 import com.multimediaapp.bikeactivity.R;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 
 public class fragmentJumps extends Fragment {
 
     String[] accCol = {
             MyContentProvider._ID_Col,
-            MyContentProvider.InstantAccXYZ_Col,
+            MyContentProvider.InstantAcc_Col,
             MyContentProvider.TimeStamp_Col
     };
     private final int ACC_COL = 1;
     private final int TIME_COL = 2;
-    ArrayList<Entry> AccValues;
+    ArrayList<Entry> accValues;
 
     private Context context;
     private TextView tvJumps = null;
@@ -45,7 +46,7 @@ public class fragmentJumps extends Fragment {
         View v = inflater.inflate(R.layout.fragment_jumps, container, false);
         tvJumps = v.findViewById(R.id.tvJumps);
 
-        AccValues = new ArrayList<>();
+        accValues = new ArrayList<>();
 
         Cursor cursor = context.getContentResolver().query(
                 MyContentProvider.ACC_URI,
@@ -61,18 +62,30 @@ public class fragmentJumps extends Fragment {
         for(int i = 0; i < nAcc; i++)
         {
             /// add values of database into the axisValues list
-            AccValues.add(new Entry(
+            accValues.add(new Entry(
                     (float)cursor.getLong(TIME_COL)* NS2S,
                     cursor.getFloat(ACC_COL)));
 
             cursor.moveToNext();
         }
-                ///x=timestamp, y = accel
+
+        accValues.sort(new Comparator<Entry>() {
+            @Override
+            public int compare(Entry o1, Entry o2) {
+                if(o1.getX() < o2.getX())
+                    return -1;
+                else if(o1.getX() > o2.getX())
+                    return 1;
+                else
+                    return 0;
+            }
+        });
+
         StringBuilder toPrint = new StringBuilder("Jumps:\n\n");
 
-        for(int i = 0; i<AccValues.size(); i++){
-            if(AccValues.get(i).getY() < 1.5f) {
-                toPrint.append("flag at: ").append(AccValues.get(i).getX()).append(",\n");
+        for(int i = 0; i< accValues.size(); i++){
+            if(accValues.get(i).getY() < 1.5f) {
+                toPrint.append("flag at: ").append(accValues.get(i).getX()).append(",\n");
                 i = JumpEvaluator(i, toPrint);
             }
 
@@ -91,11 +104,11 @@ public class fragmentJumps extends Fragment {
 
         for (int i = index; i >= 0; i--) {
             prevModule = module;
-            module = AccValues.get(i).getY();
+            module = accValues.get(i).getY();
 
             if(goingToPeak || (goingToPeak = module > 9.5f)) {
                 if (module < prevModule) { ///peak reached
-                    jumpStartTimestamp = AccValues.get(i + 1).getX();
+                    jumpStartTimestamp = accValues.get(i + 1).getX();
                     str.append("initial peak: ").append(jumpStartTimestamp).append(",\n");
                     break;
                 }
@@ -105,15 +118,15 @@ public class fragmentJumps extends Fragment {
         goingToPeak = false;
         module = 0;
 
-        for (int i = index; i < AccValues.size(); i++) {
+        for (int i = index; i < accValues.size(); i++) {
             prevModule = module;
-            module = AccValues.get(i).getY();
+            module = accValues.get(i).getY();
 
             if (goingToPeak || (goingToPeak = module > 9.5f) ) {
 
                 if(module < prevModule) {
-                    str.append("final peak: ").append(AccValues.get(i - 1).getX()).append(",\n");
-                    str.append("length: ").append(AccValues.get(i - 1).getX() - jumpStartTimestamp).append(".\n\n");
+                    str.append("final peak: ").append(accValues.get(i - 1).getX()).append(",\n");
+                    str.append("length: ").append(accValues.get(i - 1).getX() - jumpStartTimestamp).append(".\n\n");
                     return i;
                 }
             }
