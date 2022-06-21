@@ -70,7 +70,7 @@ public class SaveData implements IAccelListener, ILinearAccelListener, IRollList
         timestamp = (timestamp - startingTime);
         ContentValues rollValues = new ContentValues();
 
-        rollValues.put(MyContentProvider.InstantRoll_Col, Truncate(currentRoll,1));
+        rollValues.put(MyContentProvider.InstantRoll_Col, (int)(currentRoll));
         rollValues.put(MyContentProvider.TimeStamp_Col, timestamp);
         context.getContentResolver().insert(MyContentProvider.ROLL_URI, rollValues);
     }
