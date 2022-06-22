@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 
-public class fragmentJumps extends Fragment {
+public class fragmentJump extends Fragment {
 
     String[] accCol = {
             MyContentProvider._ID_Col,
@@ -34,7 +34,7 @@ public class fragmentJumps extends Fragment {
     private Context context;
     private TextView tvJumps = null;
 
-    public fragmentJumps(Context context) {
+    public fragmentJump(Context context) {
         this.context = context;
     }
 
@@ -43,7 +43,7 @@ public class fragmentJumps extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View v = inflater.inflate(R.layout.fragment_jumps, container, false);
+        View v = inflater.inflate(R.layout.fragment_jump, container, false);
         tvJumps = v.findViewById(R.id.tvJumps);
 
         accValues = new ArrayList<>();

@@ -13,15 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="59dp"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        >
+        android:layout_alignParentTop="true" >
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabStats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Stats"
-      />
+            android:text="Stats" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabRoll"
@@ -42,10 +40,10 @@
             android:text="Accel" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/tabJumps"
+            android:id="@+id/tabJump"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Jumps"
+            android:text="Jump"
             />
     </com.google.android.material.tabs.TabLayout>
 

@@ -12,7 +12,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.multimediaapp.bikeactivity.DataBase.MyContentProvider;
 import com.multimediaapp.bikeactivity.FragmentLayout.VPAdapter;
 import com.multimediaapp.bikeactivity.FragmentLayout.fragmentAccel;
-import com.multimediaapp.bikeactivity.FragmentLayout.fragmentJumps;
+import com.multimediaapp.bikeactivity.FragmentLayout.fragmentJump;
 import com.multimediaapp.bikeactivity.FragmentLayout.fragmentRoll;
 import com.multimediaapp.bikeactivity.FragmentLayout.fragmentSpeed;
 import com.multimediaapp.bikeactivity.FragmentLayout.fragmentStats;
@@ -82,7 +82,7 @@ public class GraphActivity extends AppCompatActivity {
             pagerAdapter.addFragment(new fragmentRoll(this, maxRightRoll, maxLeftRoll), "Roll");
             pagerAdapter.addFragment(new fragmentSpeed(this, maxSpeed, avgSpeed), "Speed");
             pagerAdapter.addFragment(new fragmentAccel(this), "Accel");
-            pagerAdapter.addFragment(new fragmentJumps(this),"Jumps");
+            pagerAdapter.addFragment(new fragmentJump(this),"Jumps");
 
             viewPager.setAdapter(pagerAdapter);
 

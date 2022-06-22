@@ -607,9 +607,4 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
     public void onChangeLinearAccel(long timestamp, float[] newValues) {
         currAccel = newValues[accelAxis];
     }
-
-    @Override
-    public void onChangeGyro(long timestamp, float[] newValues) {
-
-    }
 }
