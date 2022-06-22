@@ -82,7 +82,7 @@ public class GraphActivity extends AppCompatActivity {
             pagerAdapter.addFragment(new fragmentRoll(this, maxRightRoll, maxLeftRoll), "Roll");
             pagerAdapter.addFragment(new fragmentSpeed(this, maxSpeed, avgSpeed), "Speed");
             pagerAdapter.addFragment(new fragmentAccel(this), "Accel");
-            pagerAdapter.addFragment(new fragmentJump(this),"Jumps");
+            pagerAdapter.addFragment(new fragmentJump(this),"Jump");
 
             viewPager.setAdapter(pagerAdapter);
 
