@@ -1,12 +1,12 @@
 package com.multimediaapp.bikeactivity.DataBase;
 
 import static android.os.SystemClock.elapsedRealtimeNanos;
-import static com.multimediaapp.bikeactivity.ActivityManagement.G;
-import static com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll.X;
-import static com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll.Y;
-import static com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll.Z;
 import static java.lang.Math.sqrt;
+import static Miscellaneous.MiscellaneousOperations.G;
 import static Miscellaneous.MiscellaneousOperations.Truncate;
+import static Miscellaneous.MiscellaneousOperations.X;
+import static Miscellaneous.MiscellaneousOperations.Y;
+import static Miscellaneous.MiscellaneousOperations.Z;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -17,11 +17,23 @@ import com.multimediaapp.bikeactivity.Interfaces.ILinearAccelListener;
 import com.multimediaapp.bikeactivity.Interfaces.IRollListener;
 import com.multimediaapp.bikeactivity.Interfaces.ISpeedListener;
 
+/**
+ * Class that manages the saving of the data in the SQLite database.
+ * This saves in real time the measurements of:
+ * - The module of the acceleration [m/s^2] measured from the accelerometer (needed for the jump evaluation);
+ * - The component relative to the forward direction of the linear acceleration [g], based on
+ *   the orientation of the device (Y axis if portrait, X if landscape);
+ * - The roll angle [°] measured from the Roll sensor;
+ * - The speed [km/h] from the speedometer.
+ */
 public class SaveData implements IAccelListener, ILinearAccelListener, IRollListener, ISpeedListener {
     private final Context context;
 
+    /**
+     * The starting time of the activity, all the timestamps are
+     * reevaluated relatively to this value.
+     */
     private final long startingTime;
-
     int accelAxis;
 
     public SaveData(Context context, int orientation) {
@@ -50,6 +62,8 @@ public class SaveData implements IAccelListener, ILinearAccelListener, IRollList
         timestamp = (timestamp - startingTime);
         ContentValues linAccValues = new ContentValues();
 
+        /// The linear acceleration is measured in function of g
+        /// (e.g. 1.5g of acceleration is equal to 1 and an half time the gravitational acceleration)
         linAccValues.put(MyContentProvider.InstantLinAcc_Col, Truncate(newValues[accelAxis] / G, 1));
         linAccValues.put(MyContentProvider.TimeStamp_Col, timestamp);
         context.getContentResolver().insert(MyContentProvider.LIN_ACC_URI, linAccValues);

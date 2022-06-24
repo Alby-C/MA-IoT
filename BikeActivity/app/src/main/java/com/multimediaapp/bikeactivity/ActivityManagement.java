@@ -1,11 +1,11 @@
 package com.multimediaapp.bikeactivity;
 
 import static android.os.SystemClock.elapsedRealtimeNanos;
-import static com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll.NS2S;
-import static com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll.X;
-import static com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll.Y;
+import static Miscellaneous.MiscellaneousOperations.NS2S;
 import static java.lang.Thread.sleep;
 import static Miscellaneous.MiscellaneousOperations.Truncate;
+import static Miscellaneous.MiscellaneousOperations.X;
+import static Miscellaneous.MiscellaneousOperations.Y;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -37,6 +37,7 @@ import com.multimediaapp.bikeactivity.Sensors.Gyroscope.Gyroscope;
 import com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll;
 import com.multimediaapp.bikeactivity.Sensors.Speed.Speedometer;
 
+import Miscellaneous.MiscellaneousOperations;
 import Space.ReferenceSystemCommutator;
 import Space.Vector;
 import Time.Time;
@@ -49,8 +50,6 @@ import Time.Time;
 public class ActivityManagement extends AppCompatActivity implements IMeasurementHandler, IAccelListener {
 
     private final String TAG = ActivityManagement.class.getSimpleName();
-
-    public static final float G = 9.80665f;      ///< [m/s^2]
 
     //////////////////////////// Views
     private TextView tvMaxSpeed = null;
@@ -246,7 +245,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
         speedometer = new Speedometer(lm, this);
 
         /// Jump manager
-        jump = new Jump(this);
+        jump = new Jump();
 
         /// Roll manager
         roll = new Roll( _orientation);
@@ -502,7 +501,7 @@ public class ActivityManagement extends AppCompatActivity implements IMeasuremen
                         (int)maxSpeed + "m/s"
                 };
                 String[] accStrings = new String[]{
-                        Truncate(currAccel / G, 2) + "g",
+                        Truncate(currAccel / MiscellaneousOperations.G, 2) + "g",
                         Truncate(flightTime, 3) + "s"
                 };
 

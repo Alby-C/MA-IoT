@@ -3,7 +3,7 @@ package Space;
 import androidx.annotation.NonNull;
 
 /**
- * Representation of a point in Cartesian space.
+ * Represents a point in a Cartesian space.
  */
 public class Point {
     public final float X;

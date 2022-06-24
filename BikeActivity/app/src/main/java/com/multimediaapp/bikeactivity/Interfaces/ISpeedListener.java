@@ -1,5 +1,8 @@
 package com.multimediaapp.bikeactivity.Interfaces;
 
+/**
+ * Interface for a class that wants to get updates from the speed sensor.
+ */
 public interface ISpeedListener {
     /**
      * Method to handle the variation of speed.

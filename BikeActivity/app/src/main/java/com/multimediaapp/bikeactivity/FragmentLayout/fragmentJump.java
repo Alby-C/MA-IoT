@@ -1,6 +1,6 @@
 package com.multimediaapp.bikeactivity.FragmentLayout;
 
-import static com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll.NS2S;
+import static Miscellaneous.MiscellaneousOperations.NS2S;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -19,7 +19,12 @@ import com.multimediaapp.bikeactivity.R;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-
+/**
+ * Manages the data shown in the fragment_jump layout.
+ * Each jump is re-evaulated from the data taken by the accelerometer. Sometimes can happen
+ * that these measurements don't corresponds to the ones measured in
+ * real time, these are more accurate.
+ */
 public class fragmentJump extends Fragment {
 
     String[] accCol = {
@@ -59,8 +64,7 @@ public class fragmentJump extends Fragment {
         /// get number of data
         int nAcc = cursor.getCount();
 
-        for(int i = 0; i < nAcc; i++)
-        {
+        for(int i = 0; i < nAcc; i++) {
             /// add values of database into the axisValues list
             accValues.add(new Entry(
                     (float)cursor.getLong(TIME_COL)* NS2S,

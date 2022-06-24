@@ -5,8 +5,8 @@ import android.util.Log;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
- * Base class for a sensor manager class that uses a thread to communicate 
- * new values to listeners.
+ * Base class for a sensor class that uses a thread to communicate new values
+ * to his listeners.
  * @param <T> The type of listener that can subscribe to this sensor.
  * @param <Q> The type of values that can be handled from the thread.
  */

@@ -1,6 +1,6 @@
 package com.multimediaapp.bikeactivity.FragmentLayout;
 
-import static com.multimediaapp.bikeactivity.Sensors.Gyroscope.Roll.NS2S;
+import static Miscellaneous.MiscellaneousOperations.NS2S;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -26,7 +26,9 @@ import java.util.Comparator;
 
 import Miscellaneous.MiscellaneousOperations;
 
-
+/**
+ * Manages the data shown in the fragment_roll layout.
+ */
 public class fragmentRoll extends Fragment {
 
     String[] rollCol = { MyContentProvider._ID_Col,

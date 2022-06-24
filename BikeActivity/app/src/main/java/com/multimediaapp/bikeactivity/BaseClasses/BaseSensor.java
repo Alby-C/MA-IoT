@@ -3,7 +3,7 @@ package com.multimediaapp.bikeactivity.BaseClasses;
 import java.util.ArrayList;
 
 /**
- * Base class for a sensor manager class.
+ * Base class for a sensor class.
  * @param <T> The type of listener that can subscribe to this sensor.
  */
 public abstract class BaseSensor<T> {

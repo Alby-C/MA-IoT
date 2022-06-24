@@ -6,6 +6,10 @@ import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
 import Space.ReferenceSystemCommutator;
 import Space.Vector;
 
+/**
+ * Manages the extraction of the components of an acceleration vector in a determined reference system,
+ * starting by his components in another reference system.
+ */
 public class AccelCommutator extends BaseSensor<IAccelListener> implements IAccelListener {
 
     private final ReferenceSystemCommutator rfCommutator;

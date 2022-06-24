@@ -17,7 +17,9 @@ import com.multimediaapp.bikeactivity.FragmentLayout.fragmentRoll;
 import com.multimediaapp.bikeactivity.FragmentLayout.fragmentSpeed;
 import com.multimediaapp.bikeactivity.FragmentLayout.fragmentStats;
 
-
+/**
+ * Manages the activity_graph layout.
+ */
 public class GraphActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;

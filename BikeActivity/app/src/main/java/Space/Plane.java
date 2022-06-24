@@ -3,7 +3,7 @@ package Space;
 import androidx.annotation.NonNull;
 
 /**
- *
+ * Represents a plane in a Cartesian space.
  */
 public class Plane {
     public final Vector normalVector;

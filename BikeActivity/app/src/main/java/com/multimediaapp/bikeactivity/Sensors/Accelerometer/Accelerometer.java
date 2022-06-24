@@ -10,6 +10,10 @@ import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Hardware sensor class, gets the acceleration [m/s^2] of the device along 3 axis
+ * considering the gravitational contribute.
+ */
 public class Accelerometer extends BaseSensorThreaded<IAccelListener, SensorEvent> implements SensorEventListener {
     private final String TAG = Accelerometer.class.getSimpleName();
 

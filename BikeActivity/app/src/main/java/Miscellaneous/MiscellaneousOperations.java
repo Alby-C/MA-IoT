@@ -1,12 +1,53 @@
 package Miscellaneous;
 
+import static java.lang.Math.PI;
+
 import android.util.Log;
 
 import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
 
+/**
+ * Groups miscellaneous operations and constant that don't fall into other classes,
+ * and are used here and there.
+ */
 public class MiscellaneousOperations {
+    //////////////////////////// Constants
+    /**
+     * A constant that multiplied by a float converts it to a long,
+     * and if a long is divided by this is converted to a float.
+     */
+    public static final float FLOAT2LONG = 10000000f;
+
+    /**
+     * Constant that represents the gravitational acceleration.
+     */
+    public static final float G = 9.80665f;      ///< [m/s^2]
+
+    /**
+     * Represents x axis in a vector.
+     */
+    public static final int X = 0;
+    /**
+     * Represents y axis in a vector.
+     */
+    public static final int Y = 1;
+    /**
+     * Represents z axis in a vector.
+     */
+    public static final int Z = 2;
+
+    /**
+     * Constant to convert from nanoseconds to seconds.
+     */
+    public static final float NS2S = 1.0E-9f;
+    /**
+     * Constant to convert from radians to degrees.
+     */
+    public static final double R2D = 180./ PI;
+
+    //////////////////////////// Methods
     private static final int SIGNIFICANT_DIGITS = 5;
     private static final float TRUNCATE_CONSTANT = (float) Math.pow(10, SIGNIFICANT_DIGITS);
 

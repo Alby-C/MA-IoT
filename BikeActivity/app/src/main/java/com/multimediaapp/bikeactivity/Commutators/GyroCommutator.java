@@ -6,6 +6,10 @@ import com.multimediaapp.bikeactivity.Interfaces.IGyroListener;
 import Space.ReferenceSystemCommutator;
 import Space.Vector;
 
+/**
+ * Manages the extraction of the components of a angular velocity vector in a determined reference system,
+ * starting by his components in another reference system.
+ */
 public class GyroCommutator extends BaseSensor<IGyroListener> implements IGyroListener {
 
     private final ReferenceSystemCommutator rfCommutator;

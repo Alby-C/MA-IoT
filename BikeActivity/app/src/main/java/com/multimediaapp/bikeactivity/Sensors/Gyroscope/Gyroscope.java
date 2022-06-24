@@ -10,7 +10,9 @@ import com.multimediaapp.bikeactivity.Interfaces.IGyroListener;
 
 import java.util.concurrent.TimeUnit;
 
-
+/**
+ * Hardware sensor class, gets the angular velocity [rad/s] of the device around 3 axis.
+ */
 public class Gyroscope extends BaseSensorThreaded<IGyroListener,SensorEvent> implements SensorEventListener {
     private final String TAG = Gyroscope.class.getSimpleName();
 

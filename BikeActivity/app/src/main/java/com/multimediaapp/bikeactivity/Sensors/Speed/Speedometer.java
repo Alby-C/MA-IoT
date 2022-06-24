@@ -16,13 +16,14 @@ import com.multimediaapp.bikeactivity.Interfaces.ISpeedListener;
 
 import java.util.concurrent.TimeUnit;
 
-public class Speedometer extends BaseSensorThreaded<ISpeedListener,long[]> implements LocationListener {
-    private final String TAG = Speedometer.class.getSimpleName();
+import Miscellaneous.MiscellaneousOperations;
 
-    /**
-     * Constant to convert a float to long if multiplied and vice versa if divided
-     */
-    private static final float FLOAT2LONG = 10000000f;
+/**
+ * Sensor class, uses a GPS service to get the speed [km/h] and returns it as measurement.
+ * It also takes care of calculating the average speed.
+ */
+public class Speedometer extends BaseSensorThreaded<ISpeedListener, long[]> implements LocationListener {
+    private final String TAG = Speedometer.class.getSimpleName();
 
     public LocationManager lm;
     private Context context;
@@ -92,7 +93,7 @@ public class Speedometer extends BaseSensorThreaded<ISpeedListener,long[]> imple
                     if ((data = this.data.poll(20, TimeUnit.MILLISECONDS)) != null) {
                         for (ISpeedListener listener :
                                 listeners) {
-                            listener.onChangeSpeed(data[0], data[1] / FLOAT2LONG, data[2] / FLOAT2LONG);
+                            listener.onChangeSpeed(data[0], data[1] / MiscellaneousOperations.FLOAT2LONG, data[2] / MiscellaneousOperations.FLOAT2LONG);
                         }
                     }
                 } catch (InterruptedException e) {
@@ -111,7 +112,7 @@ public class Speedometer extends BaseSensorThreaded<ISpeedListener,long[]> imple
         n++;
 
         try {
-            data.add(new long[]{timestamp, (long) (nCurrentSpeed * FLOAT2LONG) , (long) ( avgSpeed * FLOAT2LONG)});
+            data.add(new long[]{timestamp, (long) (nCurrentSpeed * MiscellaneousOperations.FLOAT2LONG) , (long) ( avgSpeed * MiscellaneousOperations.FLOAT2LONG)});
         } catch(IllegalStateException e){ }  //If the queue is full keep measuring
 
         for (ISpeedListener listener:
