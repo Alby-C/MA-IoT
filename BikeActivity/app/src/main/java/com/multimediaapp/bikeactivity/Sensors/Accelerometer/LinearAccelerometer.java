@@ -6,27 +6,27 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 import com.multimediaapp.bikeactivity.BaseClasses.BaseSensorThreaded;
-import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
+import com.multimediaapp.bikeactivity.Interfaces.ILinearAccelListener;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * Hardware sensor class, gets the acceleration [m/s^2] of the device along 3 axis
- * considering the gravitational contribute.
- */
-public class Accelerometer extends BaseSensorThreaded<IAccelListener, SensorEvent> implements SensorEventListener {
-    private final String TAG = Accelerometer.class.getSimpleName();
+ * Software sensor class, gets the acceleration [m/s^2] of the device along 3 axis
+ * not considering the gravitational contribute.
+ * */
+public class LinearAccelerometer extends BaseSensorThreaded<ILinearAccelListener, SensorEvent> implements SensorEventListener {
+    private final String TAG = LinearAccelerometer.class.getSimpleName();
 
-    private final Sensor acc;
-    private final SensorManager accManager;
-    private final SensorEventListener accListener;
+    private final Sensor linAcc;
+    private final SensorManager linAccManager;
+    private final SensorEventListener linAccListener;
 
-    public Accelerometer(Sensor acc, SensorManager accManager){
+    public LinearAccelerometer(Sensor linAcc, SensorManager linAccManager){
         super();
 
-        this.acc = acc;
-        this.accManager = accManager;
-        this.accListener = this;
+        this.linAcc = linAcc;
+        this.linAccManager = linAccManager;
+        this.linAccListener = this;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class Accelerometer extends BaseSensorThreaded<IAccelListener, SensorEven
         if(listeners.size() == 0)
             requestToStart = true;
         else {
-            accManager.registerListener(accListener, acc, SensorManager.SENSOR_DELAY_GAME);
+            linAccManager.registerListener(linAccListener, linAcc, SensorManager.SENSOR_DELAY_NORMAL);
             isRunning = true;
 
             super.Start();
@@ -44,7 +44,7 @@ public class Accelerometer extends BaseSensorThreaded<IAccelListener, SensorEven
     @Override
     public void Pause() {
         if(isRunning)
-            accManager.unregisterListener(accListener);
+            linAccManager.unregisterListener(linAccListener);
 
         isRunning = false;
         requestToStart = false;
@@ -53,7 +53,7 @@ public class Accelerometer extends BaseSensorThreaded<IAccelListener, SensorEven
     @Override
     public void Stop() {
         if(isRunning)
-            accManager.unregisterListener(accListener);
+            linAccManager.unregisterListener(linAccListener);
 
         isRunning = false;
         requestToStart = false;
@@ -72,13 +72,12 @@ public class Accelerometer extends BaseSensorThreaded<IAccelListener, SensorEven
                     /// available (null) because the queue is empty go on and check if the sensor
                     /// is running
                     if ((data = this.data.poll(20, TimeUnit.MILLISECONDS)) != null) {
-                        for (IAccelListener listener :
+                        for (ILinearAccelListener listener :
                                 listeners) {
-                            listener.onChangeAccel(data.timestamp, data.values);
+                            listener.onChangeLinearAccel(data.timestamp, data.values);
                         }
                     }
-                } catch (InterruptedException e) {
-                }    //If interrupted keep polling
+                } catch (InterruptedException e) { }    //If interrupted keep polling
             }
         }
     }

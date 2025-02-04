@@ -19,13 +19,14 @@
         <!--================================================================================================= -->
         <activity
             android:name=".GraphActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.multimediaapp.bikeactivity.GraphActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <!-- ==MUST BE SHOWN VERTICALLY===================================================================== -->
+        <!-- =============================================================================================== -->
         <activity
             android:name=".ActivityManagement"
             android:exported="false">
@@ -33,8 +34,7 @@
                 <action android:name="com.multimediaapp.bikeactivity.ActivityManagement" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity> <!-- ==MUST BE SHOWN HORIZONTALLY=================================================================== -->
-        <!-- =============================================================================================== -->
+        </activity>
         <!-- =============================================================================================== -->
         <activity
             android:name=".MainActivity"
@@ -50,13 +50,16 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="com.multimediaapp.bikeactivity.MainActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <provider
             android:authorities="com.multimediaapp.bikeactivity.DataBase"
             android:name=".DataBase.MyContentProvider"
             android:exported="true"
-            android:grantUriPermissions="true"
-            ></provider>
+            android:grantUriPermissions="true" />
     </application>
 
 </manifest>

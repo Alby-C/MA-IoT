@@ -1,0 +1,25 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.multimediaapp.bikeactivity.FragmentLayout.fragmentAccel">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="513dp"
+        android:layout_marginTop="100dp">
+    <TextView
+        android:id="@+id/tvJumps"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="15dp"/>
+    </ScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="65dp"
+        android:text="@string/defaultTVJumps"
+        android:textSize="25dp" />
+
+</FrameLayout>

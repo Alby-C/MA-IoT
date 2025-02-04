@@ -1,28 +1,33 @@
 <resources>
     <string name="app_name">BikeActivity</string>
 
-    <string name="swOrientation">Orientazione orizzontale</string>
+    <string name="swOrientation">Orientamento orizzontale</string>
     <string name="defaultTVMaxSpeed">Velocità massima:</string>
     <string name="defaultTVAvgSpeed">Velocità media:</string>
     <string name="defaultTVCurrSpeed">Velocità istantanea:</string>
     <string name="defaultTVCurrRoll">Inclinazione corrente:</string>
     <string name="defaultTVLeftMaxRoll">Massima inclinazione sinistra:</string>
     <string name="defaultTVRightMaxTilt">Massima inclinazione destra:</string>
-    <string name="defaultTVCurrX">X:</string>
+    <string name="defaultTVCurrX">Accelerazione:</string>
     <string name="defaultTVCurrY">Y:</string>
-    <string name="defaultTVCurrZ">Z:</string>
+    <string name="defaultTVJump">Ultimo salto:</string>
+    <string name="TotalTime">Tempo totale di attività</string>
 
     <string name="btnStart">Inizia\nattività</string>
+    <string name="btnLastSession">Ultima\nsessione</string>
     <string name="btnStop">Stop</string>
     <string name="btnPause">Pause</string>
     <string name="btnResume">Resume</string>
 
     <string name="LAUNCH_GRAPH_ACTIVITY">com.multimediaapp.bikeactivity.GraphActivity</string>
     <string name="LAUNCH_BIKE_ACTIVITY">com.multimediaapp.bikeactivity.ActivityManagement</string>
+    <string name="RETURN_2_MAIN_ACTIVITY">com.multimediaapp.bikeactivity.MainActivity</string>
+    <string name="LAUNCH_GRAPH_ACTIVTY_LAST_SESSION">com.multimediaapp.bikeactivity.GraphActivity</string>
     <string name="ORIENTATION">CHANGE_ORIENTATION_LABEL</string>
     <string name="defaultTVElapsedTime">Tempo attività:</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="defaultTVJumps">Jumps:</string>
 
 
 </resources>

@@ -3,28 +3,22 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/alexb/MA-IoT/BikeActivity/app/src/main/res/layout/activity_graph.xml" value="0.25" />
-        <entry key="..\:/Users/alexb/MA-IoT/BikeActivity/app/src/main/res/layout/activity_main.xml" value="0.14791666666666667" />
-        <entry key="..\:/Users/alexb/MA-IoT/BikeActivity/app/src/main/res/layout/activity_main_portrait.xml" value="0.17074275362318841" />
-        <entry key="..\:/Users/alexb/MA-IoT/BikeActivity/app/src/main/res/layout/activity_management_landscape.xml" value="0.22" />
-        <entry key="..\:/Users/alexb/MA-IoT/BikeActivity/app/src/main/res/layout/activity_management_portrait.xml" value="0.1359375" />
-        <entry key="..\:/Users/alexb/MA-IoT/BikeActivity/app/src/main/res/layout/activity_real_time_stats_landscape.xml" value="0.17074275362318841" />
-        <entry key="..\:/Users/alexb/MA-IoT/BikeActivity/app/src/main/res/layout/activity_real_time_stats_portrait.xml" value="0.17074275362318841" />
-        <entry key="..\:/Users/alexb/MA-IoT/BikeActivity/app/src/main/res/layout/fragment_accel.xml" value="0.1" />
-        <entry key="..\:/Users/alexb/MA-IoT/BikeActivity/app/src/main/res/layout/fragment_roll.xml" value="0.1" />
-        <entry key="..\:/Users/alexb/MA-IoT/BikeActivity/app/src/main/res/layout/fragment_speed.xml" value="0.15760869565217392" />
-        <entry key="..\:/Users/alexb/MA-IoT/BikeActivity/app/src/main/res/layout/fragment_stats.xml" value="0.15760869565217392" />
-        <entry key="..\:/Users/moret/Desktop/DroneDetection/BikeActivity/app/src/main/res/layout/activity_main.xml" value="0.22447916666666667" />
-        <entry key="..\:/Users/moret/Desktop/DroneDetection/BikeActivity/app/src/main/res/layout/activity_main_landscape.xml" value="0.20359019264448336" />
-        <entry key="..\:/Users/moret/Desktop/DroneDetection/BikeActivity/app/src/main/res/layout/activity_real_time_stats_landscape.xml" value="0.2421875" />
-        <entry key="..\:/Users/moret/Desktop/DroneDetection/BikeActivity/app/src/main/res/layout/activity_real_time_stats_portrait.xml" value="0.22447916666666667" />
-        <entry key="..\:/Users/moret/Desktop/DroneDetection/BikeActivity/app/src/main/res/layout/orizzontal_main_activity.xml" value="0.24114583333333334" />
-        <entry key="..\:/Users/moret/GIT/MultimediaApp/BikeActivity/app/src/main/res/drawable/ic_launcher_background.xml" value="0.252" />
-        <entry key="..\:/Users/moret/GIT/MultimediaApp/BikeActivity/app/src/main/res/layout/activity_graph.xml" value="0.19880290722530997" />
-        <entry key="..\:/Users/moret/GIT/MultimediaApp/BikeActivity/app/src/main/res/layout/activity_main.xml" value="0.19880290722530997" />
-        <entry key="..\:/Users/moret/GIT/MultimediaApp/BikeActivity/app/src/main/res/layout/activity_management_p.xml" value="0.264" />
+        <entry key="..\:/MA&amp;IoT/Project/MA-IoT/BikeActivity/app/src/main/res/layout/activity_graph.xml" value="0.27447916666666666" />
+        <entry key="..\:/MA&amp;IoT/Project/MA-IoT/BikeActivity/app/src/main/res/layout/activity_main.xml" value="0.27447916666666666" />
+        <entry key="..\:/MA&amp;IoT/Project/MA-IoT/BikeActivity/app/src/main/res/layout/activity_management_portrait.xml" value="0.27447916666666666" />
+        <entry key="..\:/MA&amp;IoT/Project/MA-IoT/BikeActivity/app/src/main/res/layout/fragment_accel.xml" value="0.27447916666666666" />
+        <entry key="..\:/MA&amp;IoT/Project/MA-IoT/BikeActivity/app/src/main/res/layout/fragment_roll.xml" value="0.27447916666666666" />
+        <entry key="..\:/MA&amp;IoT/Project/MA-IoT/BikeActivity/app/src/main/res/layout/fragment_speed.xml" value="0.27447916666666666" />
+        <entry key="..\:/MA&amp;IoT/Project/MA-IoT/BikeActivity/app/src/main/res/layout/fragment_stats.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/moret/GIT/MultimediaApp/BikeActivity/app/src/main/res/layout/activity_graph.xml" value="0.17815049864007254" />
+        <entry key="..\:/Users/moret/GIT/MultimediaApp/BikeActivity/app/src/main/res/layout/activity_main.xml" value="0.17815049864007254" />
+        <entry key="..\:/Users/moret/GIT/MultimediaApp/BikeActivity/app/src/main/res/layout/activity_management_landscape.xml" value="0.4" />
         <entry key="..\:/Users/moret/GIT/MultimediaApp/BikeActivity/app/src/main/res/layout/activity_management_portrait.xml" value="0.4" />
-        <entry key="..\:/Users/moret/GIT/MultimediaApp/BikeActivity/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.252" />
+        <entry key="..\:/Users/moret/GIT/MultimediaApp/BikeActivity/app/src/main/res/layout/fragment_accel.xml" value="0.17815049864007254" />
+        <entry key="..\:/Users/moret/GIT/MultimediaApp/BikeActivity/app/src/main/res/layout/fragment_jump.xml" value="0.19880290722530997" />
+        <entry key="..\:/Users/moret/GIT/MultimediaApp/BikeActivity/app/src/main/res/layout/fragment_jumps.xml" value="0.19880290722530997" />
+        <entry key="..\:/Users/moret/GIT/MultimediaApp/BikeActivity/app/src/main/res/layout/fragment_roll.xml" value="0.17815049864007254" />
+        <entry key="..\:/Users/moret/GIT/MultimediaApp/BikeActivity/app/src/main/res/layout/fragment_stats.xml" value="0.19880290722530997" />
       </map>
     </option>
   </component>

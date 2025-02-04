@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center_horizontal"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
 
@@ -13,17 +12,22 @@
         android:id="@+id/swOrientation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:text="@string/swOrientation"
-        android:textSize="20dp"
-        android:layout_marginTop="15dp"/>
+        android:textSize="20dp" />
 
     <Button
         android:id="@+id/btnStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/btnStart"
-        android:layout_marginTop="200dp"
-        />
+        android:layout_marginTop="150dp"
+        android:text="@string/btnStart" />
 
+    <Button
+        android:id="@+id/btnLastSession"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/btnLastSession" />
 
 </LinearLayout>

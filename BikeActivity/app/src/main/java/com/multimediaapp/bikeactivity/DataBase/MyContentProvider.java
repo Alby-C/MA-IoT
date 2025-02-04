@@ -17,20 +17,31 @@ public class MyContentProvider extends ContentProvider {
     public static final String SPEED_TABLE = "Velocità";
     public static final String ROLL_TABLE = "Angolo_di_piega";
     public static final String ACC_TABLE = "Accelerazione";
+    public static final String LIN_ACC_TABLE = "Accelerazione_Lineare";
+    public static final String SESSIONS_TABLE = "Sessioni";
     private static final String PROVIDER = "/MyContentProvider/";
     private static final String SPEED_PATH = PROVIDER + SPEED_TABLE;
     private static final String ROLL_PATH = PROVIDER + ROLL_TABLE;
     private static final String ACC_PATH = PROVIDER + ACC_TABLE;
+    private static final String LIN_ACC_PATH = PROVIDER + LIN_ACC_TABLE;
+    private static final String SESSIONS_PATH = PROVIDER + SESSIONS_TABLE;
     private static final String AUTHORITY = "com.multimediaapp.bikeactivity.DataBase" + PROVIDER;
     public static final Uri SPEED_URI = Uri.parse("content://" + AUTHORITY + SPEED_TABLE);
     public static final Uri ROLL_URI = Uri.parse("content://" + AUTHORITY + ROLL_TABLE);
     public static final Uri ACC_URI = Uri.parse("content://" + AUTHORITY + ACC_TABLE);
+    public static final Uri LIN_ACC_URI = Uri.parse("content://" + AUTHORITY + LIN_ACC_TABLE);
+    public static final Uri SESSIONS_URI = Uri.parse("content://" + AUTHORITY + SESSIONS_TABLE);
     public static final String _ID_Col = "_id";
-    public static final String IstantSpeed_Col = "Velocità_Istantanea";
-    public static final String IstantRoll_Col = "Angolo_Istantaneo";
-    public static final String IstantAcc_Col = " Accelerazione_istantantea";
+    public static final String InstantSpeed_Col = "Velocità_Istantanea";
+    public static final String InstantRoll_Col = "Angolo_Istantaneo";
+    public static final String InstantAcc_Col = "Accelerazione";
+    public static final String InstantLinAcc_Col = "Accelerazione_Lineare";
     public static final String TimeStamp_Col = "TimeStamp";
-
+    public static final String MaxSpeed_Col = "Velocità_Max";
+    public static final String MeanSpeed_Col = "Velocità_Media";
+    public static final String RightRoll_Col = "Angolo_Dx";
+    public static final String LeftRoll_Col = "Angolo_Sx";
+    public static final String TotalTime_Col = "Tempo_Tot";
 
     @Override
     public boolean onCreate()
@@ -60,6 +71,10 @@ public class MyContentProvider extends ContentProvider {
             /// get data into acc table
             case ACC_PATH:
                 return db.query(ACC_TABLE, projection, selection,null , null, null, sortOrder);
+            case LIN_ACC_PATH:
+                return db.query(LIN_ACC_TABLE, projection, selection,null , null, null, sortOrder);
+            case SESSIONS_PATH:
+                return db.query(SESSIONS_TABLE, projection, selection,null , null, null, sortOrder);
             default:
                 throw new IllegalArgumentException("Unsupported URI" + uri);
         }
@@ -91,6 +106,13 @@ public class MyContentProvider extends ContentProvider {
             /// insert data into acc table
             case ACC_PATH:
                 db.insert(ACC_TABLE, null, values);
+                break;
+            case LIN_ACC_PATH:
+                db.insert(LIN_ACC_TABLE, null, values);
+                break;
+            case SESSIONS_PATH:
+                db.insert(SESSIONS_TABLE,null,values);
+                break;
             default:
                 throw new IllegalArgumentException("Unsupported URI" + uri);
         }
@@ -116,6 +138,12 @@ public class MyContentProvider extends ContentProvider {
             /// insert data into acc table
             case ACC_PATH:
                 db.delete(MyContentProvider.ACC_TABLE, selection, null);
+                break;
+            case LIN_ACC_PATH:
+                db.delete(MyContentProvider.LIN_ACC_TABLE, selection, null);
+                break;
+            case SESSIONS_PATH:
+                db.delete(MyContentProvider.SESSIONS_TABLE, selection,null);
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported URI" + uri);

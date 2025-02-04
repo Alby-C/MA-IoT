@@ -1,4 +1,4 @@
-package com.multimediaapp.bikeactivity.Sensors.Accelerometer;
+package com.multimediaapp.bikeactivity.Sensors.Gyroscope;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -6,27 +6,27 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 import com.multimediaapp.bikeactivity.BaseClasses.BaseSensorThreaded;
-import com.multimediaapp.bikeactivity.Interfaces.IAccelListener;
+import com.multimediaapp.bikeactivity.Interfaces.IGyroListener;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * Hardware sensor class, gets the acceleration [m/s^2] of the device along 3 axis
- * considering the gravitational contribute.
+ * Hardware sensor class, gets the angular velocity [rad/s] of the device around 3 axis.
  */
-public class Accelerometer extends BaseSensorThreaded<IAccelListener, SensorEvent> implements SensorEventListener {
-    private final String TAG = Accelerometer.class.getSimpleName();
+public class Gyroscope extends BaseSensorThreaded<IGyroListener,SensorEvent> implements SensorEventListener {
+    private final String TAG = Gyroscope.class.getSimpleName();
 
-    private final Sensor acc;
-    private final SensorManager accManager;
-    private final SensorEventListener accListener;
+    private final Sensor gyro;
+    private final SensorManager gyroManager;
+    private final SensorEventListener gyroListener;
 
-    public Accelerometer(Sensor acc, SensorManager accManager){
+
+    public Gyroscope(Sensor gyro, SensorManager gyroManager ){
         super();
 
-        this.acc = acc;
-        this.accManager = accManager;
-        this.accListener = this;
+        this.gyro = gyro;
+        this.gyroManager = gyroManager;
+        this.gyroListener = this;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class Accelerometer extends BaseSensorThreaded<IAccelListener, SensorEven
         if(listeners.size() == 0)
             requestToStart = true;
         else {
-            accManager.registerListener(accListener, acc, SensorManager.SENSOR_DELAY_GAME);
+            gyroManager.registerListener(gyroListener, gyro, SensorManager.SENSOR_DELAY_GAME);
             isRunning = true;
 
             super.Start();
@@ -44,7 +44,7 @@ public class Accelerometer extends BaseSensorThreaded<IAccelListener, SensorEven
     @Override
     public void Pause() {
         if(isRunning)
-            accManager.unregisterListener(accListener);
+            gyroManager.unregisterListener(gyroListener);
 
         isRunning = false;
         requestToStart = false;
@@ -53,7 +53,7 @@ public class Accelerometer extends BaseSensorThreaded<IAccelListener, SensorEven
     @Override
     public void Stop() {
         if(isRunning)
-            accManager.unregisterListener(accListener);
+            gyroManager.unregisterListener(gyroListener);
 
         isRunning = false;
         requestToStart = false;
@@ -62,7 +62,7 @@ public class Accelerometer extends BaseSensorThreaded<IAccelListener, SensorEven
     }
 
     @Override
-    public void updateListeners() {
+    public void updateListeners(){
         SensorEvent data;
         while(isRunning){
             ///Before evaluating isRunning will take all elements from the queue until it is emptied
@@ -72,9 +72,9 @@ public class Accelerometer extends BaseSensorThreaded<IAccelListener, SensorEven
                     /// available (null) because the queue is empty go on and check if the sensor
                     /// is running
                     if ((data = this.data.poll(20, TimeUnit.MILLISECONDS)) != null) {
-                        for (IAccelListener listener :
+                        for (IGyroListener listener :
                                 listeners) {
-                            listener.onChangeAccel(data.timestamp, data.values);
+                            listener.onChangeGyro(data.timestamp, data.values);
                         }
                     }
                 } catch (InterruptedException e) {
@@ -91,8 +91,7 @@ public class Accelerometer extends BaseSensorThreaded<IAccelListener, SensorEven
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    public void onAccuracyChanged(Sensor sensor, int accuracy){
 
     }
-
 }

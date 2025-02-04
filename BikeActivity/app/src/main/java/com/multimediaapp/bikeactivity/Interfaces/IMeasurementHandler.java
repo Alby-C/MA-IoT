@@ -1,5 +1,8 @@
 package com.multimediaapp.bikeactivity.Interfaces;
 
-public interface IMeasurementHandler extends IAccelListener, IGyroListener, IJumpListener, IRollListener, ISpeedListener {
+/**
+ * Interface for a class that wants to get updates from the linear accelerometer, jump, roll and speed sensors.
+ */
+public interface IMeasurementHandler extends ILinearAccelListener, IJumpListener, IRollListener, ISpeedListener {
 
 }

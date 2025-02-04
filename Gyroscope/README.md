@@ -1,3 +1,0 @@
-ENG: This application is able to calculate the angle caused by the rotation of the phone on the y-axis. The data collection starts when the users clicks on the "Start" button and ends when the "Stop" button is clicked; at this point the calculation starts and it prints the result in degrees on the screen
-
-ITA: Questa applicazione è in grado di calcolare l'angolo causato dalla rotazione del telefono rispetto all'asse y. L'acquisizione dei dati comincia alla pressione del tasto "Start" e termina con quella di "Stop".; a questo punto comincia il calcolo e viene stampato il risultato sullo schermo
